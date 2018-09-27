@@ -1,3 +1,53 @@
 <resources>
     <string name="app_name">3amp</string>
+    <string name="amplifier">Amplifier:</string>
+    <string name="gain">gain</string>
+    <string name="master">master</string>
+    <string name="bass">bass</string>
+    <string name="middle">middle</string>
+    <string name="treble">treble</string>
+    <string name="light">Light</string>
+    <string name="compressor">Compressor</string>
+    <string name="rack">RACK</string>
+    <string name="stomp">STOMP</string>
+    <string name="sustain">sustain</string>
+    <string name="output">output</string>
+    <string name="effect">Effect</string>
+    <string name="chorus">CHORUS</string>
+    <string name="flanger">FLANGER</string>
+    <string name="phaser">PHASER</string>
+    <string name="tremolo">TREMOLO</string>
+    <string name="delay">Delay</string>
+    <string name="reverb">Reverb</string>
+    <string name="threshold">threshold</string>
+    <string name="release">release</string>
+    <string name="gate">Gate</string>
+    <string name="amp">AMP</string>
+    <dimen name="knoob_margin">7dp</dimen>
+    <string-array name="effects">
+        <item>chorus</item>
+        <item>flanger</item>
+        <item>flanger</item>
+        <item>tremolo</item>
+    </string-array>
+    <string-array name="reverbs">
+        <item>hall</item>
+        <item>room</item>
+        <item>palate</item>
+        <item>spring</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="speed">speed</string>
+    <string name="depth">depth</string>
+    <string name="mix">mix</string>
+    <string name="time">time</string>
+    <string name="feedback">feedback</string>
+    <string name="high_cut">high cut</string>
+    <string name="low_cut">low cut</string>
+    <string name="level">level</string>
+    <string name="pre_dalay">pre dalay</string>
+    <string name="high_ratio">high ratio</string>
+    <string name="low_ratio">low ratio</string>
 </resources>

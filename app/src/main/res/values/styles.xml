@@ -1,11 +1,40 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <!-- Knob style -->
+    <style name="AppTheme.knobs" parent="AppTheme">
+        <item name="kKnobDrawable">@drawable/knob6</item>
+        <item name="android:layout_width">96dp</item>
+        <item name="android:layout_height">96dp</item>
+        <item name="kAnimationBounciness">10</item>
+        <item name="kAnimationSpeed">5</item>
+        <item name="kBalloonValuesAnimation">fade</item>
+        <item name="kBalloonValuesRelativePosition">0</item>
+        <item name="kBalloonValuesTextSize">4sp</item>
+        <item name="kBorderWidth">0dp</item>
+        <item name="kDefaultState">0</item>
+        <item name="kFreeRotation">false</item>
+        <item name="kIndicatorWidth">0dp</item>
+        <item name="kKnobDrawableRotates">true</item>
+        <item name="kMaxAngle">150</item>
+        <item name="kMinAngle">-150</item>
+        <item name="kNumberOfStates">101</item>
+        <item name="kSelectedStateMarkerColor">@color/green_a200</item>
+        <item name="kSelectedStateMarkerContinuous">true</item>
+        <item name="kShowBalloonValues">true</item>
+        <item name="kStateMarkersAccentColor">@color/grey_800</item>
+        <item name="kStateMarkersAccentPeriodicity">10</item>
+        <item name="kStateMarkersAccentRelativeLength">0.09</item>
+        <item name="kStateMarkersAccentWidth">2dp</item>
+        <item name="kStateMarkersColor">@color/grey_800</item>
+        <item name="kStateMarkersRelativeLength">0.08</item>
+        <item name="kStateMarkersWidth">1dp</item>
+        <item name="kSwipe">circular</item>
+        <item name="kSwipeSensitivityPixels">3</item>
+    </style>
 </resources>
