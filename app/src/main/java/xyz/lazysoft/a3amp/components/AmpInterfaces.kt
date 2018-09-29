@@ -11,3 +11,9 @@ interface AmpSwitch {
     fun setOnCheckedChangeListener(function: (isChecked: Boolean) -> Unit)
     var isChecked: Boolean
 }
+
+
+interface AmpSpinner {
+    fun setOnSelectItem(function: (pos: Int) -> Unit)
+    var pos: Int
+}

@@ -14,13 +14,19 @@ class YdlDataConverter {
 
         fun binDataToCmdList(settings: ByteArray): List<ByteArray> {
             val result = ArrayList<ByteArray>()
+            val add = {cmd: ByteArray -> result.add(cmd + Amp.END)}
             if (settings.size == THR_DUMP_SIZE) {
                 val dump = settings.slice(IntRange(THR_DUMP_OFFSET, THR_DUMP_SIZE - 3))
-                result.add(Amp.K_GAIN + dump[129] + Amp.END)
-                result.add(Amp.K_MASTER + dump[130] + Amp.END)
-                result.add(Amp.K_BASS + dump[131] + Amp.END)
-                result.add(Amp.K_MID + dump[132] + Amp.END)
-                result.add(Amp.K_TREB + dump[133] + Amp.END)
+                add(Amp.AMP + dump[128])
+                add(Amp.K_GAIN + dump[129])
+                add(Amp.K_MASTER + dump[130])
+                add(Amp.K_BASS + dump[131])
+                add(Amp.K_MID + dump[132])
+                add(Amp.K_TREB + dump[133])
+                // cab
+                add(Amp.CAB + dump[134])
+                // compressor
+                add(Amp.COMPRESSOR_ON + dump[159])
             }
             return result
         }

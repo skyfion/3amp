@@ -1,6 +1,7 @@
 package xyz.lazysoft.a3amp.components
 
 import xyz.lazysoft.a3amp.UsbMidiManager
+import java.util.logging.Logger
 import kotlin.properties.Delegates
 
 enum class AmpModel(val model: Byte) {
@@ -12,7 +13,7 @@ enum class AmpModel(val model: Byte) {
 }
 
 class Amp(private val midiManager: UsbMidiManager) {
-
+    val logger = Logger.getLogger(this.javaClass.name)
     private val knobs: MutableList<AmpKnob> = mutableListOf()
     private val switchers: MutableList<AmpSwitch> = mutableListOf()
     private var ampModel: AmpModel? by Delegates.observable<AmpModel?>(null) {
@@ -49,8 +50,11 @@ class Amp(private val midiManager: UsbMidiManager) {
      */
     fun addKnob(knob: AmpKnob, id: ByteArray): Amp {
         knobs.add(knob)
+        logger.info("add id "+ id.joinToString())
         midiManager.sysExtListeners.add {
             if (it != null && it.size > 9) {
+                logger.info("it " + it.joinToString())
+
                 val cmd = it.slice(IntRange(0, 8)).toByteArray()
                 if (cmd.contentEquals(id)) {
                     knob.state = it[9].toInt()
@@ -81,6 +85,21 @@ class Amp(private val midiManager: UsbMidiManager) {
         }
     }
 
+    fun addSpinner(spinner: AmpSpinner, id: ByteArray): Amp {
+        midiManager.sysExtListeners.add {
+            if (it != null && it.size > 9) {
+                val cmd = it.slice(IntRange(0, 8)).toByteArray()
+                if (cmd.contentEquals(id)) {
+                    spinner.pos = it[9].toInt()
+                }
+            }
+        }
+        spinner.setOnSelectItem {
+            midiManager.sendSysExCmd(id + it.toByte() + END)
+        }
+        return this
+    }
+
     companion object {
         private fun byteArrayOf(vararg a: Int): ByteArray {
             return if (a.isNotEmpty())
@@ -99,11 +118,18 @@ class Amp(private val midiManager: UsbMidiManager) {
         // CMD ID
         // knobs id
         val K_GAIN = SEND_CMD + byteArrayOf(0x01, 0x00)
-        val K_MASTER = SEND_CMD + byteArrayOf(0x01, 0x02)
-        val K_BASS = SEND_CMD + byteArrayOf(0x01, 0x03)
-        val K_MID = SEND_CMD + byteArrayOf(0x01, 0x04)
-        val K_TREB = SEND_CMD + byteArrayOf(0x01, 0x05)
-
+        val K_MASTER = SEND_CMD + byteArrayOf(0x02, 0x00)
+        val K_BASS = SEND_CMD + byteArrayOf(0x03, 0x00)
+        val K_MID = SEND_CMD + byteArrayOf(0x04, 0x00)
+        val K_TREB = SEND_CMD + byteArrayOf(0x05, 0x00)
+        val CAB = SEND_CMD + byteArrayOf(0x06, 0x00) // range 0x00 - 0x05
+        val AMP = SEND_CMD + byteArrayOf(0x00, 0x00)
+        val COMPRESSOR_ON = SEND_CMD + byteArrayOf(0x1F, 0x00) // 00 - on, 7f - off
+        val COMPRESSOR_STOMP = SEND_CMD + byteArrayOf(0x10, 0x00, 0x00)
+        val COMPRESSOR_STOMP_SUSTAIN = SEND_CMD + byteArrayOf(0x11, 0x00)
+        val COMPRESSOR_STOMP_OUTPUT = SEND_CMD + byteArrayOf(0x12, 0x00)
+        val COMPRESSOR_RACK = SEND_CMD + byteArrayOf(0x10, 0x00, 0x01)
+        val COMPRESSOR_RACK_THRESHOLD = SEND_CMD + byteArrayOf(0x11)
         // light
         val LIGHT_ON = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x01) + END
         val LIGHT_OFF = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x00) + END

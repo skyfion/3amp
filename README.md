@@ -39,10 +39,10 @@ Cabs	US4x12	06 00 00
 
 Controls	
     Gain	01 00 xx	00-64
-	Master	01 02 xx	00-64
-	Bass	01 03 xx	00-64
-	Middle	01 04 xx	00-64
-	Treble	01 05 xx	00-64
+	Master	02 00 xx	00-64
+	Bass	03 00 xx	00-64
+	Middle	04 00 xx	00-64
+	Treble	05 00 xx	00-64
 
 Gate	On	5f 00 00
 	Off	5f 00 7f

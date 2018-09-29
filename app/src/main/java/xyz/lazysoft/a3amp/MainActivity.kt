@@ -9,9 +9,10 @@ import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
 import com.google.android.flexbox.FlexboxLayout
-import xyz.lazysoft.a3amp.components.Amp
-import xyz.lazysoft.a3amp.components.AmpKnobWrapper
 import java.util.logging.Logger
+import `in`.goodiebag.carouselpicker.CarouselPicker
+import xyz.lazysoft.a3amp.components.*
+
 
 class MainActivity : AppCompatActivity() {
     //    F0 43 7D 10 41 30 01 XX XX XX F7
@@ -28,11 +29,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initSpinner(spiner: Int, content: Int) {
+    private fun initSpinner(spiner: Int, content: Int): AmpSpinner {
         val adapter = ArrayAdapter.createFromResource(this,
                 content, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        findViewById<Spinner>(spiner).adapter = adapter
+        val s = findViewById<Spinner>(spiner)
+        s.adapter = adapter
+        return AmpSpinnerWrapper(s)
+    }
+
+    private fun initCarousel(carousel: Int, content: Int): AmpSpinner {
+        val carouselPicker = findViewById<CarouselPicker>(carousel)
+        val textItems = resources.getStringArray(content)
+                .map { CarouselPicker.TextItem(it, 10) }
+
+        val textAdapter = CarouselPicker.CarouselViewAdapter(this, textItems, 0)
+        carouselPicker.adapter = textAdapter
+        return AmpCarouselWrapper(carouselPicker)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,19 +55,27 @@ class MainActivity : AppCompatActivity() {
         thr.addKnob(AmpKnobWrapper(findViewById(R.id.gain_knob)), Amp.K_GAIN)
                 .addKnob(AmpKnobWrapper(findViewById(R.id.master_knob)), Amp.K_MASTER)
                 .addKnob(AmpKnobWrapper(findViewById(R.id.bass_knob)), Amp.K_BASS)
+                .addKnob(AmpKnobWrapper(findViewById(R.id.treble_knob)), Amp.K_TREB)
+                .addKnob(AmpKnobWrapper(findViewById(R.id.middle_knob)), Amp.K_MID)
 
         // amp model detect
         val ampNameText = findViewById<TextView>(R.id.amp_name)
         thr.modelAmpDetect = {s -> runOnUiThread{ ampNameText.text = s} }
 
-        initSpinner(R.id.effect_spinner, R.array.effects)
-        initSpinner(R.id.reverb_spinner, R.array.reverbs)
+//        thr.addSpinner(initSpinner(R.id.amp_spinner, R.array.thr10_amps), Amp.AMP)
+//        thr.addSpinner(initSpinner(R.id.cab_spinner, R.array.thr10_cabs), Amp.CAB)
 
-        initSwithBlock(R.id.compressor_switch, R.id.compressor_block)
-        initSwithBlock(R.id.effect_switch, R.id.effect_block)
-        initSwithBlock(R.id.delay_switch, R.id.delay_block)
-        initSwithBlock(R.id.reverb_switch, R.id.reverb_block)
-        initSwithBlock(R.id.gate_switch, R.id.gate_block)
+       thr.addSpinner(initCarousel(R.id.amp_carousel, R.array.thr10_amps), Amp.AMP)
+       thr.addSpinner(initCarousel(R.id.cab_carousel, R.array.thr10_cabs), Amp.CAB)
+
+       // initSpinner(R.id.effect_spinner, R.array.effects)
+       // initSpinner(R.id.reverb_spinner, R.array.reverbs)
+
+//        initSwithBlock(R.id.compressor_switch, R.id.compressor_block)
+//        initSwithBlock(R.id.effect_switch, R.id.effect_block)
+//        initSwithBlock(R.id.delay_switch, R.id.delay_block)
+//        initSwithBlock(R.id.reverb_switch, R.id.reverb_block)
+//        initSwithBlock(R.id.gate_switch, R.id.gate_block)
         // midiManager.onMidiAttachedEvent = { b: Boolean -> knobs.enable = b }
         midiManager.open()
 

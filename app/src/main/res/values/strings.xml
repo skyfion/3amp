@@ -24,6 +24,25 @@
     <string name="gate">Gate</string>
     <string name="amp">AMP</string>
     <dimen name="knoob_margin">7dp</dimen>
+    <string-array name="thr10_amps">
+        <item>Clean</item>
+        <item>Crunch</item>
+        <item>Lead</item>
+        <item>BritHi</item>
+        <item>Modern</item>
+        <item>Bass</item>
+        <item>Aco</item>
+        <item>Flat</item>
+    </string-array>
+    <string-array name="thr10_cabs">
+        <item>US4x12</item>
+        <item>US2x12</item>
+        <item>Brit4x12</item>
+        <item>Brit2x12</item>
+        <item>1x12</item>
+        <item>4x10</item>
+        <item>None</item>
+    </string-array>
     <string-array name="effects">
         <item>chorus</item>
         <item>flanger</item>

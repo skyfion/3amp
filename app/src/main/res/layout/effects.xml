@@ -1,0 +1,100 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/activity_main">
+    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/effect_block"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/block_margin_bottom"
+        app:alignContent="stretch"
+        app:alignItems="stretch"
+        app:flexWrap="wrap">
+
+
+        <!--<RadioGroup-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--&gt;-->
+
+        <!--<RadioButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/chorus" />-->
+
+        <!--<RadioButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/flanger" />-->
+
+        <!--<RadioButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/phaser" />-->
+
+        <!--<RadioButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/tremolo" />-->
+        <!--</RadioGroup>-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/knoob_margin"
+            android:orientation="vertical">
+
+            <it.beppi.knoblibrary.Knob
+                android:id="@+id/speed_knob"
+                style="@style/AppTheme.knobs" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/speed" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/knoob_margin"
+            android:orientation="vertical">
+
+            <it.beppi.knoblibrary.Knob
+                android:id="@+id/depth_knob"
+                style="@style/AppTheme.knobs" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/depth" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/knoob_margin"
+            android:orientation="vertical">
+
+            <it.beppi.knoblibrary.Knob
+                android:id="@+id/mix_knob"
+                style="@style/AppTheme.knobs" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/mix" />
+
+        </LinearLayout>
+
+    </com.google.android.flexbox.FlexboxLayout>
+</FrameLayout>
