@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">3amp</string>
+    <string name="app_name">3AMP</string>
     <string name="amplifier">Amplifier:</string>
     <string name="gain">gain</string>
     <string name="master">master</string>
@@ -19,11 +19,10 @@
     <string name="tremolo">TREMOLO</string>
     <string name="delay">Delay</string>
     <string name="reverb">Reverb</string>
-    <string name="threshold">threshold</string>
     <string name="release">release</string>
     <string name="gate">Gate</string>
     <string name="amp">AMP</string>
-    <dimen name="knoob_margin">7dp</dimen>
+    <dimen name="knob_margin">7dp</dimen>
     <string-array name="thr10_amps">
         <item>Clean</item>
         <item>Crunch</item>
@@ -43,21 +42,38 @@
         <item>4x10</item>
         <item>None</item>
     </string-array>
-    <string-array name="effects">
-        <item>chorus</item>
-        <item>flanger</item>
-        <item>flanger</item>
-        <item>tremolo</item>
-    </string-array>
     <string-array name="reverbs">
-        <item>hall</item>
-        <item>room</item>
-        <item>palate</item>
-        <item>spring</item>
+        <item>Disable</item>
+        <item>Hall</item>
+        <item>Room</item>
+        <item>Palate</item>
+        <item>Spring</item>
+    </string-array>
+    <string-array name="compressor_modes">
+        <item>Disable</item>
+        <item>Stomp</item>
+        <item>Rack</item>
+    </string-array>
+    <string-array name="effects">
+        <item>Disable</item>
+        <item>Chorus</item>
+        <item>Flanger</item>
+        <item>Tremolo</item>
+        <item>Phaser</item>
+    </string-array>
+    <string-array name="tabs">
+        <item>Amp</item>
+        <item>Compressor</item>
+        <item>Effects</item>
+        <item>Delay</item>
+        <item>Reverb</item>
+        <item>Gate</item>
+    </string-array>
+    <string-array name="sw_modes">
+        <item>Disable</item>
+        <item>Enable</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="speed">speed</string>
     <string name="depth">depth</string>
     <string name="mix">mix</string>
@@ -69,4 +85,9 @@
     <string name="pre_dalay">pre dalay</string>
     <string name="high_ratio">high ratio</string>
     <string name="low_ratio">low ratio</string>
+    <string name="attack">attack</string>
+    <string name="threshold">threshold</string>
+    <string name="manual">manual</string>
+    <string name="spread">spread</string>
+    <string name="freq">freq</string>
 </resources>

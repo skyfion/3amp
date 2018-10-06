@@ -1,72 +1,175 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:showIn="@layout/activity_main">
-    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/compressor_block"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/block_margin_bottom"
-        app:alignContent="stretch"
-        app:alignItems="stretch"
-        app:flexWrap="wrap">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/sustain_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/sustain" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/output_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/output" />
-
-        </LinearLayout>
-
-        <RadioGroup
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RadioButton
+            <in.goodiebag.carouselpicker.CarouselPicker
+                android:id="@+id/compressor_mode_carousel"
+                style="@style/AppTheme.carouselPicker" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/compressor_empty_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/compressor_stomp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/block_margin_bottom"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            android:visibility="gone"
+            app:flexWrap="wrap">
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/rack"
-                android:textColor="@color/white" />
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
 
-            <RadioButton
+                <it.beppi.knoblibrary.Knob
+                    android:id="@+id/compressor_sustain_knob"
+                    style="@style/AppTheme.knobs" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/sustain" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stomp"
-                android:textColor="@color/white" />
-        </RadioGroup>
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
 
-    </com.google.android.flexbox.FlexboxLayout>
+                <it.beppi.knoblibrary.Knob
+                    android:id="@+id/compressor_output_knob"
+                    style="@style/AppTheme.knobs" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/output" />
+
+            </LinearLayout>
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/compressor_rack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/block_margin_bottom"
+            android:visibility="gone"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
+
+                <it.beppi.knoblibrary.Knob
+                    android:id="@+id/c_threshold_knob"
+                    style="@style/AppTheme.knobs"
+                    app:kNumberOfStates="600"
+                    app:kStateMarkersAccentPeriodicity="10"
+                    app:kStateMarkersAccentWidth="0dp"
+                    app:kStateMarkersWidth="0dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/threshold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
+
+                <it.beppi.knoblibrary.Knob
+                    android:id="@+id/c_attack_knob"
+                    style="@style/AppTheme.knobs" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/attack" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
+
+                <it.beppi.knoblibrary.Knob
+                    android:id="@+id/c_release_knob"
+                    style="@style/AppTheme.knobs" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/release" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
+
+                <it.beppi.knoblibrary.Knob
+                    android:id="@+id/c_output_knob"
+                    style="@style/AppTheme.knobs" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/release" />
+
+            </LinearLayout>
+        </com.google.android.flexbox.FlexboxLayout>
+    </LinearLayout>
+
 </FrameLayout>

@@ -30,281 +30,48 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/amp_name"/>
 
-            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+           <in.goodiebag.carouselpicker.CarouselPicker
+               android:id="@+id/tabs_carousel"
+
+               style="@style/AppTheme.carouselPicker"/>
+
+           <include
+               android:id="@+id/tab_amp"
+               layout="@layout/amp"/>
+
+           <include
+               android:id="@+id/tab_compressor"
+               android:visibility="gone"
+               layout="@layout/compressor"/>
+
+           <include
+               android:id="@+id/tab_effects"
+               layout="@layout/effects"
+               android:visibility="gone"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+
+           <include layout="@layout/delay"
+               android:id="@+id/tab_delay"
+               android:visibility="gone"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"/>
+
+
+            <include
+                android:id="@+id/tab_reverb"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/block_margin_bottom"
-                app:alignContent="stretch"
-                app:alignItems="stretch"
-                app:flexWrap="wrap">
-                <in.goodiebag.carouselpicker.CarouselPicker
-                    android:id="@+id/amp_carousel"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    app:items_visible="three" />
-                <in.goodiebag.carouselpicker.CarouselPicker
-                    android:id="@+id/cab_carousel"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    app:items_visible="three" />
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal">-->
-                    <!--<Spinner-->
-                        <!--android:id="@+id/amp_spinner"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_weight=".50"-->
-                        <!--android:layout_height="wrap_content">-->
-
-                    <!--</Spinner>-->
-                    <!--<Spinner-->
-                        <!--android:id="@+id/cab_spinner"-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_weight=".50"-->
-                        <!--android:layout_height="wrap_content">-->
-
-                    <!--</Spinner>-->
-                <!--</LinearLayout>-->
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/knoob_margin"
-                        android:orientation="vertical">
-
-                        <it.beppi.knoblibrary.Knob
-                            android:id="@+id/gain_knob"
-                            style="@style/AppTheme.knobs" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lines="1"
-                            android:text="@string/gain" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/knoob_margin"
-                        android:orientation="vertical">
-
-                        <it.beppi.knoblibrary.Knob
-                            android:id="@+id/master_knob"
-                            style="@style/AppTheme.knobs" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-
-                            android:lines="1"
-                            android:text="@string/master" />
-
-                    </LinearLayout>
-                </LinearLayout>
+                android:layout_height="wrap_content"
+                layout="@layout/reverb" />
 
 
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/knoob_margin"
-                        android:orientation="vertical">
-
-                        <it.beppi.knoblibrary.Knob
-                            android:id="@+id/bass_knob"
-                            style="@style/AppTheme.knobs" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lines="1"
-                            android:text="@string/bass" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/knoob_margin"
-                        android:orientation="vertical">
-
-                        <it.beppi.knoblibrary.Knob
-                            android:id="@+id/middle_knob"
-                            style="@style/AppTheme.knobs" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lines="1"
-
-                            android:text="@string/middle" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/knoob_margin"
-                        android:orientation="vertical">
-
-                        <it.beppi.knoblibrary.Knob
-                            android:id="@+id/treble_knob"
-                            style="@style/AppTheme.knobs" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lines="1"
-                            android:text="@string/treble" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-
-            </com.google.android.flexbox.FlexboxLayout>
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingTop="10dp">-->
-
-                <!--<Switch-->
-                    <!--android:id="@+id/compressor_switch"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="15dp"-->
-                    <!--android:layout_marginRight="15dp" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/compressor" />-->
-            <!--</LinearLayout>-->
-
-           <!--<include layout="@layout/compressor"/>-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingTop="10dp">-->
-
-                <!--<Switch-->
-                    <!--android:id="@+id/effect_switch"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="15dp"-->
-                    <!--android:layout_marginRight="15dp" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/effect" />-->
-
-
-            <!--</LinearLayout>-->
-
-            <!--<RelativeLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<Spinner-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:id="@+id/effect_spinner"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</RelativeLayout>-->
-            <!--<include layout="@layout/effects"/>-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingTop="10dp">-->
-
-                <!--<Switch-->
-                    <!--android:id="@+id/delay_switch"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="15dp"-->
-                    <!--android:layout_marginRight="15dp" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/delay" />-->
-            <!--</LinearLayout>-->
-
-            <!--<include layout="@layout/delay" />-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingTop="10dp">-->
-
-                <!--<Switch-->
-                    <!--android:id="@+id/reverb_switch"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="15dp"-->
-                    <!--android:layout_marginRight="15dp" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/reverb" />-->
-            <!--</LinearLayout>-->
-
-            <!--<include layout="@layout/reverb" />-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingTop="10dp">-->
-
-                <!--<Switch-->
-                    <!--android:id="@+id/gate_switch"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="15dp"-->
-                    <!--android:layout_marginRight="15dp" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/gate" />-->
-            <!--</LinearLayout>-->
-            <!--<include layout="@layout/gate" />-->
+            <include
+                android:id="@+id/tab_gate"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/gate" />
 
             <!--<Switch-->
             <!--android:id="@+id/switchLight"-->

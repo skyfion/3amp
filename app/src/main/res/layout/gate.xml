@@ -3,111 +3,80 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:showIn="@layout/activity_main" >
-    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/gate_block"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:alignContent="stretch"
-        app:alignItems="stretch"
-        app:flexWrap="wrap"
-        android:layout_marginBottom="@dimen/block_margin_bottom">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
-            <it.beppi.knoblibrary.Knob
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                app:kAnimationBounciness="20"
-                app:kAnimationSpeed="10"
-                app:kBalloonValuesAnimation="fade"
-                app:kBalloonValuesRelativePosition="0.25"
-                app:kBalloonValuesTextSize="4sp"
-                app:kBorderWidth="0dp"
-                app:kCircularIndicatorColor="@color/green_a200"
-                app:kCircularIndicatorRelativePosition="0.55"
-                app:kCircularIndicatorRelativeRadius="0.03"
-                app:kDefaultState="0"
-                app:kEnabled="false"
-                app:kFreeRotation="false"
-                app:kIndicatorWidth="0dp"
-                app:kKnobDrawable="@drawable/knob6"
-                app:kKnobDrawableRotates="true"
-                app:kMaxAngle="120"
-                app:kMinAngle="-120"
-                app:kNumberOfStates="30"
-                app:kSelectedStateMarkerColor="@color/green_a200"
-                app:kSelectedStateMarkerContinuous="true"
-                app:kShowBalloonValues="true"
-                app:kStateMarkersAccentColor="@color/grey_800"
-                app:kStateMarkersAccentPeriodicity="5"
-                app:kStateMarkersAccentRelativeLength="0.09"
-                app:kStateMarkersAccentWidth="2dp"
-                app:kStateMarkersColor="@color/grey_800"
-                app:kStateMarkersRelativeLength="0.08"
-                app:kStateMarkersWidth="1dp"
-                app:kSwipe="vertical_horizontal"
-                app:kSwipeSensitivityPixels="15" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/threshold" />
+            <in.goodiebag.carouselpicker.CarouselPicker
+                android:id="@+id/gate_carousel"
+                style="@style/AppTheme.carouselPicker" />
 
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/gate_empty_block"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
+            android:orientation="horizontal" />
 
-            <it.beppi.knoblibrary.Knob
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                app:kAnimationBounciness="20"
-                app:kAnimationSpeed="10"
-                app:kBalloonValuesAnimation="fade"
-                app:kBalloonValuesRelativePosition="0.25"
-                app:kBalloonValuesTextSize="4sp"
-                app:kBorderWidth="0dp"
-                app:kCircularIndicatorColor="@color/green_a200"
-                app:kCircularIndicatorRelativePosition="0.55"
-                app:kCircularIndicatorRelativeRadius="0.03"
-                app:kDefaultState="0"
-                app:kEnabled="false"
-                app:kFreeRotation="false"
-                app:kIndicatorWidth="0dp"
-                app:kKnobDrawable="@drawable/knob6"
-                app:kKnobDrawableRotates="true"
-                app:kMaxAngle="120"
-                app:kMinAngle="-120"
-                app:kNumberOfStates="30"
-                app:kSelectedStateMarkerColor="@color/green_a200"
-                app:kSelectedStateMarkerContinuous="true"
-                app:kShowBalloonValues="true"
-                app:kStateMarkersAccentColor="@color/grey_800"
-                app:kStateMarkersAccentPeriodicity="5"
-                app:kStateMarkersAccentRelativeLength="0.09"
-                app:kStateMarkersAccentWidth="2dp"
-                app:kStateMarkersColor="@color/grey_800"
-                app:kStateMarkersRelativeLength="0.08"
-                app:kStateMarkersWidth="1dp"
-                app:kSwipe="vertical_horizontal"
-                app:kSwipeSensitivityPixels="15" />
+        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/gate_block"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/block_margin_bottom">
 
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/release" />
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </com.google.android.flexbox.FlexboxLayout>
+                <it.beppi.knoblibrary.Knob
+                    style="@style/AppTheme.knobs"
+                    android:id="@+id/gate_threshold_knob"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/threshold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/knob_margin"
+                android:orientation="vertical">
+
+                <it.beppi.knoblibrary.Knob
+                 style="@style/AppTheme.knobs"
+                    android:id="@+id/gate_release_knob"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:text="@string/release" />
+
+            </LinearLayout>
+        </com.google.android.flexbox.FlexboxLayout>
+    </LinearLayout>
+
 </FrameLayout>

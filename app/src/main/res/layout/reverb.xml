@@ -4,152 +4,177 @@
     android:layout_height="wrap_content"
     tools:showIn="@layout/activity_main">
 
-    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/reverb_block"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/block_margin_bottom"
-        app:alignContent="stretch"
-        app:alignItems="stretch"
-        app:flexWrap="wrap">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_time_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/time" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_pre_delay_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/pre_dalay" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_low_cut"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/low_cut" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_hi_cut_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/high_cut" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_hi_ratio_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/high_ratio" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_low_ratio_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/low_ratio" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/knoob_margin"
-            android:orientation="vertical">
-
-            <it.beppi.knoblibrary.Knob
-                android:id="@+id/reverb_level_knob"
-                style="@style/AppTheme.knobs" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="1"
-                android:text="@string/level" />
-
-        </LinearLayout>
-
-        <Spinner
-            android:id="@+id/reverb_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.flexbox.FlexboxLayout>
+            android:layout_height="wrap_content">
+
+            <in.goodiebag.carouselpicker.CarouselPicker
+                android:id="@+id/reverb_mode_carousel"
+                style="@style/AppTheme.carouselPicker" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reverb_block"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/block_margin_bottom"
+                app:alignContent="stretch"
+                app:alignItems="stretch"
+                app:flexWrap="wrap">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_time_knob"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/time" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_pre_delay_knob"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/pre_dalay" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_low_cut"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/low_cut" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_hi_cut_knob"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/high_cut" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_hi_ratio_knob"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/high_ratio" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_low_ratio_knob"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/low_ratio" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/knob_margin"
+                    android:orientation="vertical">
+
+                    <it.beppi.knoblibrary.Knob
+                        android:id="@+id/reverb_level_knob"
+                        style="@style/AppTheme.knobs" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="@string/level" />
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/reverb_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.flexbox.FlexboxLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
 </FrameLayout>

@@ -72,7 +72,7 @@ Modulation
 	Chorus	20 00 00
 	Speed	21 00 xx	00-64
 	Depth	22 00 xx	00-64
-	Mix	23 00 xx	00-64
+	Mix	    23 00 xx	00-64
 
 	Flanger	20 00 01
 	Speed 	21 00 xx	00-64

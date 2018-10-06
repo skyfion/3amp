@@ -26,15 +26,23 @@
         <item name="kNumberOfStates">101</item>
         <item name="kSelectedStateMarkerColor">@color/green_a200</item>
         <item name="kSelectedStateMarkerContinuous">true</item>
-        <item name="kShowBalloonValues">true</item>
+        <item name="kShowBalloonValues">false</item>
         <item name="kStateMarkersAccentColor">@color/grey_800</item>
         <item name="kStateMarkersAccentPeriodicity">10</item>
         <item name="kStateMarkersAccentRelativeLength">0.09</item>
         <item name="kStateMarkersAccentWidth">2dp</item>
+        <item name="kStateMarkersWidth">1dp</item>
         <item name="kStateMarkersColor">@color/grey_800</item>
         <item name="kStateMarkersRelativeLength">0.08</item>
-        <item name="kStateMarkersWidth">1dp</item>
         <item name="kSwipe">circular</item>
         <item name="kSwipeSensitivityPixels">3</item>
+    </style>
+
+    <style name="AppTheme.carouselPicker" parent="AppTheme">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="items_visible">three</item>
     </style>
 </resources>
