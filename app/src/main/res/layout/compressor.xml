@@ -33,9 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/block_margin_bottom"
+            android:visibility="gone"
             app:alignContent="stretch"
             app:alignItems="stretch"
-            android:visibility="gone"
             app:flexWrap="wrap">
 
             <LinearLayout
@@ -48,13 +48,19 @@
                     android:id="@+id/compressor_sustain_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/sustain" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/sustain" />
+
+                    <TextView
+                        android:id="@+id/c_sustain_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -67,13 +73,19 @@
                     android:id="@+id/compressor_output_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/output" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/output" />
+
+                    <TextView
+                        android:id="@+id/c_output_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
         </com.google.android.flexbox.FlexboxLayout>
@@ -92,24 +104,39 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <in.goodiebag.carouselpicker.CarouselPicker
+                    android:id="@+id/compressor_ratio_carousel"
+                    style="@style/AppTheme.carouselPicker" />
+
+                <in.goodiebag.carouselpicker.CarouselPicker
+                    android:id="@+id/compressor_knee_carousel"
+                    style="@style/AppTheme.carouselPicker" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/knob_margin"
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/c_threshold_knob"
-                    style="@style/AppTheme.knobs"
-                    app:kNumberOfStates="600"
-                    app:kStateMarkersAccentPeriodicity="10"
-                    app:kStateMarkersAccentWidth="0dp"
-                    app:kStateMarkersWidth="0dp" />
+                    style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/threshold" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/threshold" />
+
+                    <TextView
+                        android:id="@+id/c_rack_threshold_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -122,12 +149,18 @@
                     android:id="@+id/c_attack_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/attack" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/attack" />
+                    <TextView
+                        android:id="@+id/c_rack_attack_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -141,13 +174,18 @@
                     android:id="@+id/c_release_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/release" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/release" />
+                    <TextView
+                        android:id="@+id/c_release_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -158,15 +196,22 @@
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
-                    android:id="@+id/c_output_knob"
+                    android:id="@+id/c_rack_output_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/release" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/output" />
+                    <TextView
+                        android:id="@+id/c_rack_output_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
 
             </LinearLayout>
         </com.google.android.flexbox.FlexboxLayout>

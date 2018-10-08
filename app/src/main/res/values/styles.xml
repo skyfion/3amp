@@ -13,9 +13,10 @@
         <item name="android:layout_height">96dp</item>
         <item name="kAnimationBounciness">10</item>
         <item name="kAnimationSpeed">5</item>
-        <item name="kBalloonValuesAnimation">fade</item>
+        <item name="kShowBalloonValues">false</item>
         <item name="kBalloonValuesRelativePosition">0</item>
         <item name="kBalloonValuesTextSize">4sp</item>
+        <item name="kBalloonValuesTimeToLive">0</item>
         <item name="kBorderWidth">0dp</item>
         <item name="kDefaultState">0</item>
         <item name="kFreeRotation">false</item>
@@ -26,7 +27,6 @@
         <item name="kNumberOfStates">101</item>
         <item name="kSelectedStateMarkerColor">@color/green_a200</item>
         <item name="kSelectedStateMarkerContinuous">true</item>
-        <item name="kShowBalloonValues">false</item>
         <item name="kStateMarkersAccentColor">@color/grey_800</item>
         <item name="kStateMarkersAccentPeriodicity">10</item>
         <item name="kStateMarkersAccentRelativeLength">0.09</item>
@@ -44,5 +44,18 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="items_visible">three</item>
+    </style>
+
+    <style name="AppTheme.textKnob" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">.50</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="AppTheme.valueTextKnob" parent="AppTheme.textKnob">
+        <item name="android:text">0</item>
+        <item name="android:textColor">@color/green_a200</item>
     </style>
 </resources>

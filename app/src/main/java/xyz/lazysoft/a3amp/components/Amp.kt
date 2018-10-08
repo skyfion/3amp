@@ -1,6 +1,7 @@
 package xyz.lazysoft.a3amp.components
 
 import xyz.lazysoft.a3amp.UsbMidiManager
+import java.nio.ByteBuffer
 import java.util.logging.Logger
 import kotlin.properties.Delegates
 
@@ -22,6 +23,7 @@ class Amp(private val midiManager: UsbMidiManager) {
     }
     var modelAmpDetect: ((String) -> Unit)? = null
 
+
     init {
         midiManager.sysExtListeners.add { data: ByteArray? ->
             if (data != null) {
@@ -42,7 +44,15 @@ class Amp(private val midiManager: UsbMidiManager) {
 
     }
 
+    private fun paramToInt(param: ByteArray): Int {
+        return ByteBuffer.wrap(param).short.toInt()
+    }
 
+    private fun intToParam(value: Int): ByteArray {
+        return ByteBuffer.wrap(ByteArray(4))
+                .putInt(value)
+                .array().drop(2).toByteArray()
+    }
     /**
      * Add common knob
      * @param knob interface AmpComponent
@@ -55,14 +65,14 @@ class Amp(private val midiManager: UsbMidiManager) {
             if (it != null && it.size > 9) {
                 logger.info("it " + it.joinToString())
 
-                val cmd = it.slice(IntRange(0, 8)).toByteArray()
+                val cmd = it.slice(IntRange(0, 7)).toByteArray()
                 if (cmd.contentEquals(id)) {
-                    knob.state = it[9].toInt()
+                    knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
                 }
             }
         }
         knob.setOnStateChanged {
-            midiManager.sendSysExCmd( id + it.toByte() + END)
+            midiManager.sendSysExCmd( id + intToParam(it) + END)
         }
         return this
     }
@@ -76,9 +86,9 @@ class Amp(private val midiManager: UsbMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 8)).toByteArray()
                 if (cmd.contentEquals(id)) {
-                     when (it[9]) {
-                         ON.toByte() -> sw.state = true
-                         OFF.toByte() -> sw.state = false
+                     when (it[9].toInt()) {
+                         ON -> sw.state = true
+                         OFF -> sw.state = false
                      }
                 }
             }
@@ -163,38 +173,44 @@ class Amp(private val midiManager: UsbMidiManager) {
         val HEART_BEAT = HEAD + byteArrayOf(0x60, 0x44, 0x54, 0x41)
         // CMD ID
         // knobs id
-        val K_GAIN = SEND_CMD + byteArrayOf(0x01, 0x00)
-        val K_MASTER = SEND_CMD + byteArrayOf(0x02, 0x00)
-        val K_BASS = SEND_CMD + byteArrayOf(0x03, 0x00)
-        val K_MID = SEND_CMD + byteArrayOf(0x04, 0x00)
-        val K_TREB = SEND_CMD + byteArrayOf(0x05, 0x00)
+        val K_GAIN = SEND_CMD + byteArrayOf(0x01)
+        val K_MASTER = SEND_CMD + byteArrayOf(0x02)
+        val K_BASS = SEND_CMD + byteArrayOf(0x03)
+        val K_MID = SEND_CMD + byteArrayOf(0x04)
+        val K_TREB = SEND_CMD + byteArrayOf(0x05)
         val CAB = SEND_CMD + byteArrayOf(0x06, 0x00) // range 0x00 - 0x05
         val AMP = SEND_CMD + byteArrayOf(0x00, 0x00)
         val COMPRESSOR_SW = SEND_CMD + byteArrayOf(0x1F, 0x00) // 00 - on, 7f - off
         val COMPRESSOR_MODE = SEND_CMD + byteArrayOf(0x10, 0x00)
-        val COMPRESSOR_STOMP_SUSTAIN = SEND_CMD + byteArrayOf(0x11, 0x00)
-        val COMPRESSOR_STOMP_OUTPUT = SEND_CMD + byteArrayOf(0x12, 0x00)
+        val COMPRESSOR_STOMP_SUSTAIN = SEND_CMD + byteArrayOf(0x11)
+        val COMPRESSOR_STOMP_OUTPUT = SEND_CMD + byteArrayOf(0x12)
         val COMPRESSOR_RACK_THRESHOLD = SEND_CMD + byteArrayOf(0x11)
+        val COMPRESSOR_RACK_ATTACK = SEND_CMD + byteArrayOf(0x13)
+        val COMPRESSOR_RACK_RELEASE = SEND_CMD + byteArrayOf(0x14)
+        val COMPRESSOR_RACK_OUTPUT = SEND_CMD + byteArrayOf(0x17)
+        val COMPRESSOR_RACK_RATIO = SEND_CMD + byteArrayOf(0x15) // 0 - 5
+        val COMPRESSOR_RACK_KNEE = SEND_CMD + byteArrayOf(0x16)  // 0 - 2
 
         val EFFECTS_SW = SEND_CMD + byteArrayOf(0x2f, 0x00)
         val EFFECTS_MODE = SEND_CMD + byteArrayOf(0x20, 0x00) // chorus flanger tremolo phaser
-        val EFFECT_KNOB1 = SEND_CMD + byteArrayOf(0x21, 0x00)
-        val EFFECT_KNOB2 = SEND_CMD + byteArrayOf(0x22, 0x00)
-        val EFFECT_KNOB3 = SEND_CMD + byteArrayOf(0x23, 0x00)
-        val EFFECT_KNOB4 = SEND_CMD + byteArrayOf(0x24, 0x00)
-        val EFFECT_KNOB5 = SEND_CMD + byteArrayOf(0x25, 0x00)
+        val EFFECT_KNOB1 = SEND_CMD + byteArrayOf(0x21)
+        val EFFECT_KNOB2 = SEND_CMD + byteArrayOf(0x22)
+        val EFFECT_KNOB3 = SEND_CMD + byteArrayOf(0x23)
+        val EFFECT_KNOB4 = SEND_CMD + byteArrayOf(0x24)
+        val EFFECT_KNOB5 = SEND_CMD + byteArrayOf(0x25)
 
         val DELAY_SW = SEND_CMD + byteArrayOf(0x3f, 0x00)
 
         val GATE_SW = SEND_CMD + byteArrayOf(0x5f, 0x00)
-        val GATE_RELEASE = SEND_CMD + byteArrayOf(0x52, 0x00)
-        val GATE_THRESHOLD = SEND_CMD + byteArrayOf(0x51, 0x00)
+        val GATE_RELEASE = SEND_CMD + byteArrayOf(0x52)
+        val GATE_THRESHOLD = SEND_CMD + byteArrayOf(0x51)
 
         val REVERB_SW = SEND_CMD + byteArrayOf(0x4f, 0x00)
-        val REVERB_MODE = SEND_CMD + byteArrayOf(0x40, 0x00)
+        val REVERB_MODE = SEND_CMD + byteArrayOf(0x40)
         // light
         val LIGHT_ON = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x01) + END
         val LIGHT_OFF = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x00) + END
+
 
     }
 }

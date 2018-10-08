@@ -4,6 +4,7 @@ import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.support.v4.view.ViewPager
+import android.util.ArraySet
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -13,13 +14,23 @@ import it.beppi.knoblibrary.Knob
 @SuppressLint("Registered")
 class AmpKnobWrapper(val knob: Knob) : Activity(), AmpComponent<Int> {
 
+    private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
+    var factor: Int? = null
+
+    init {
+        knob.setOnStateChanged{ value ->
+            onSelectFunction.forEach {
+                f -> f.invoke(factor?.let { it * value} ?: value)}
+        }
+    }
+
     override fun setOnStateChanged(function: (value: Int) -> Unit) {
-        knob.setOnStateChanged(function)
+        onSelectFunction.add(function)
     }
 
     override var state: Int
-        get() = knob.state
-        set(value) { runOnUiThread { knob.state = value } }
+        get() = factor?.let { knob.state * it } ?: knob.state
+        set(value) { runOnUiThread { knob.state = factor?.let { value / it } ?: value } }
 }
 
 @SuppressLint("Registered")
@@ -59,7 +70,7 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
         carousel.addOnPageChangeListener(this)
     }
 
-    private var onSelectFunction: ArrayList<(pos: Int) -> Unit> = ArrayList()
+    private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
 
     override fun setOnStateChanged(function: (pos: Int) -> Unit) {
         onSelectFunction.add(function)
@@ -79,7 +90,7 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
 @SuppressLint("Registered")
 class AmpSwitchWrapper(private val sw: Switch) : Activity(), AmpComponent<Boolean> {
 
-    private var onStateChangeFunctions: ArrayList<(state: Boolean) -> Unit> = ArrayList()
+    private var onStateChangeFunctions: ArraySet<(state: Boolean) -> Unit> = ArraySet()
 
     init {
         sw.setOnCheckedChangeListener { _, isChecked ->

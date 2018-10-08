@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
+import kotlinx.android.synthetic.main.amp.view.*
 import xyz.lazysoft.a3amp.components.*
 
 
@@ -30,6 +31,20 @@ class MainActivity : AppCompatActivity() {
         val s = findViewById<Spinner>(spiner)
         s.adapter = adapter
         return AmpSpinnerWrapper(s)
+    }
+
+    private fun initKnob(knob: Int, text: Int): AmpComponent<Int> {
+        return initKnob(knob, text, null)
+    }
+
+    private fun initKnob(knob: Int, text: Int, factor: Int?): AmpComponent<Int> {
+        val ampKnobWrapper = AmpKnobWrapper(findViewById(knob))
+        val knobText = findViewById<TextView>(text)
+        ampKnobWrapper.factor = factor
+        ampKnobWrapper.setOnStateChanged {
+            knobText.text = it.toString()
+        }
+        return ampKnobWrapper
     }
 
     private fun blockActivator(vararg ids: Int): (value: Int) -> Unit {
@@ -68,12 +83,11 @@ class MainActivity : AppCompatActivity() {
                         R.id.tab_reverb,
                         R.id.tab_gate))
 
-        thr.addKnob(AmpKnobWrapper(findViewById(R.id.gain_knob)), Amp.K_GAIN)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.master_knob)), Amp.K_MASTER)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.bass_knob)), Amp.K_BASS)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.treble_knob)), Amp.K_TREB)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.middle_knob)), Amp.K_MID)
-
+        thr.addKnob(initKnob(R.id.gain_knob, R.id.gain_text), Amp.K_GAIN)
+                .addKnob(initKnob(R.id.master_knob, R.id.master_text), Amp.K_MASTER)
+                .addKnob(initKnob(R.id.bass_knob, R.id.bass_text), Amp.K_BASS)
+                .addKnob(initKnob(R.id.treble_knob, R.id.treble_text), Amp.K_TREB)
+                .addKnob(initKnob(R.id.middle_knob, R.id.middle_text), Amp.K_MID)
 
         // amp model detect
         val ampNameText = findViewById<TextView>(R.id.amp_name)
@@ -84,16 +98,29 @@ class MainActivity : AppCompatActivity() {
 
         // compressor
         thr.addKnob(
-                AmpKnobWrapper(findViewById(R.id.compressor_output_knob)),
+                initKnob(R.id.compressor_output_knob, R.id.c_output_text),
                 Amp.COMPRESSOR_STOMP_OUTPUT)
-                .addKnob(
-                        AmpKnobWrapper(findViewById(R.id.compressor_sustain_knob)),
+                .addKnob(initKnob(R.id.compressor_sustain_knob, R.id.c_sustain_text),
                         Amp.COMPRESSOR_STOMP_SUSTAIN)
                 .addOffSpinner(initCarousel(R.id.compressor_mode_carousel,
                         R.array.compressor_modes
                         , blockActivator(R.id.compressor_empty_block,
                         R.id.compressor_stomp, R.id.compressor_rack))
                         , Amp.COMPRESSOR_MODE, Amp.COMPRESSOR_SW)
+                // rack
+                .addKnob(initKnob(R.id.c_threshold_knob, R.id.c_rack_threshold_text, 6),
+                        Amp.COMPRESSOR_RACK_THRESHOLD)
+                .addKnob(initKnob(R.id.c_attack_knob, R.id.c_rack_attack_text),
+                        Amp.COMPRESSOR_RACK_ATTACK)
+                .addKnob(initKnob(R.id.c_release_knob, R.id.c_release_text),
+                        Amp.COMPRESSOR_RACK_RELEASE)
+                .addKnob(initKnob(R.id.c_rack_output_knob, R.id.c_rack_output_text, 6),
+                        Amp.COMPRESSOR_RACK_OUTPUT)
+                .addSpinner(initCarousel(R.id.compressor_knee_carousel, R.array.knee),
+                        Amp.COMPRESSOR_RACK_KNEE)
+                .addSpinner(initCarousel(R.id.compressor_ratio_carousel, R.array.ratio),
+                        Amp.COMPRESSOR_RACK_RATIO)
+
 
         // effects
         thr.addOffSpinner(initCarousel(R.id.effect_mode_carousel, R.array.effects,
@@ -104,23 +131,23 @@ class MainActivity : AppCompatActivity() {
                         R.id.effect_tremolo_block,
                         R.id.effect_phaser_block)), Amp.EFFECTS_MODE, Amp.EFFECTS_SW)
                 // chorus
-                .addKnob(AmpKnobWrapper(findViewById(R.id.chorus_speed_knob)), Amp.EFFECT_KNOB1)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.chorus_depth_knob)), Amp.EFFECT_KNOB2)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.chorus_mix_knob)), Amp.EFFECT_KNOB3)
+                .addKnob(initKnob(R.id.chorus_speed_knob, R.id.chorus_speed_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.chorus_depth_knob, R.id.chorus_depth_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.chorus_mix_knob, R.id.chorus_mix_text), Amp.EFFECT_KNOB3)
                 // flanger
-                .addKnob(AmpKnobWrapper(findViewById(R.id.flanger_speed_knob)), Amp.EFFECT_KNOB1)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.flanger_manual_knob)), Amp.EFFECT_KNOB2)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.flanger_depth_knob)), Amp.EFFECT_KNOB3)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.flanger_feedback_knob)), Amp.EFFECT_KNOB4)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.flanger_spread_knob)), Amp.EFFECT_KNOB5)
+                .addKnob(initKnob(R.id.flanger_speed_knob, R.id.flanger_speed_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.flanger_manual_knob, R.id.flanger_manual_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.flanger_depth_knob, R.id.flanger_depth_text), Amp.EFFECT_KNOB3)
+                .addKnob(initKnob(R.id.flanger_feedback_knob, R.id.flanger_feedback_text), Amp.EFFECT_KNOB4)
+                .addKnob(initKnob(R.id.flanger_spread_knob, R.id.flanger_spread_text), Amp.EFFECT_KNOB5)
                 // tremolo
-                .addKnob(AmpKnobWrapper(findViewById(R.id.tremolo_freq_knob)), Amp.EFFECT_KNOB1)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.tremolo_depth_knob)), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.tremolo_freq_knob, R.id.tremolo_freq_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.tremolo_depth_knob, R.id.tremolo_depth_text), Amp.EFFECT_KNOB2)
                 // phaser
-                .addKnob(AmpKnobWrapper(findViewById(R.id.phaser_speed_knob)), Amp.EFFECT_KNOB1)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.phaser_manual_knob)), Amp.EFFECT_KNOB2)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.phaser_depth_knob)), Amp.EFFECT_KNOB3)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.phaser_feedback_knob)), Amp.EFFECT_KNOB4)
+                .addKnob(initKnob(R.id.phaser_speed_knob, R.id.phaser_speed_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.phaser_manual_knob, R.id.phaser_manual_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.phaser_depth_knob, R.id.phaser_depth_text), Amp.EFFECT_KNOB3)
+                .addKnob(initKnob(R.id.phaser_feedback_knob, R.id.phaser_feedback_text), Amp.EFFECT_KNOB4)
 
         // delay
         thr.addSwSpinner(initCarousel(R.id.delay_sw_carousel, R.array.sw_modes,

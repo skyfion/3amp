@@ -73,7 +73,20 @@
         <item>Disable</item>
         <item>Enable</item>
     </string-array>
-
+    <string-array name="knee">
+        <item>1:1</item>
+        <item>1:4</item>
+        <item>1:8</item>
+        <item>1:12</item>
+        <item>1:20</item>
+        <item>1:20</item>
+        <item>∞</item>
+    </string-array>
+    <string-array name="ratio">
+        <item>Soft</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
     <string name="speed">speed</string>
     <string name="depth">depth</string>
     <string name="mix">mix</string>

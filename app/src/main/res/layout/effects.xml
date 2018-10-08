@@ -47,12 +47,19 @@
                     android:id="@+id/chorus_speed_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/speed" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/speed" />
+
+                    <TextView
+                        android:id="@+id/chorus_speed_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -66,12 +73,19 @@
                     android:id="@+id/chorus_depth_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/depth" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/depth" />
+
+                    <TextView
+                        android:id="@+id/chorus_depth_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -84,13 +98,19 @@
                     android:id="@+id/chorus_mix_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/mix" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/mix" />
+
+                    <TextView
+                        android:id="@+id/chorus_mix_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
         </com.google.android.flexbox.FlexboxLayout>
@@ -122,6 +142,19 @@
                     android:lines="1"
                     android:text="@string/speed" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/speed" />
+
+                    <TextView
+                        android:id="@+id/flanger_speed_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -134,12 +167,19 @@
                     android:id="@+id/flanger_manual_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/manual" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/manual" />
+
+                    <TextView
+                        android:id="@+id/flanger_manual_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -152,13 +192,19 @@
                     android:id="@+id/flanger_depth_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/depth" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/depth" />
+
+                    <TextView
+                        android:id="@+id/flanger_depth_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -171,13 +217,19 @@
                     android:id="@+id/flanger_feedback_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/feedback" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/feedback" />
+
+                    <TextView
+                        android:id="@+id/flanger_feedback_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -190,13 +242,19 @@
                     android:id="@+id/flanger_spread_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/spread" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/spread" />
+
+                    <TextView
+                        android:id="@+id/flanger_spread_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
         </com.google.android.flexbox.FlexboxLayout>
@@ -221,13 +279,19 @@
                     android:id="@+id/tremolo_freq_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/freq" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/freq" />
+
+                    <TextView
+                        android:id="@+id/tremolo_freq_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -240,12 +304,19 @@
                     android:id="@+id/tremolo_depth_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/depth" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/depth" />
+
+                    <TextView
+                        android:id="@+id/tremolo_depth_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
 
@@ -271,13 +342,19 @@
                     android:id="@+id/phaser_speed_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/speed" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/speed" />
+
+                    <TextView
+                        android:id="@+id/phaser_speed_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -290,12 +367,19 @@
                     android:id="@+id/phaser_manual_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/manual" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/manual" />
+
+                    <TextView
+                        android:id="@+id/phaser_manual_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -308,13 +392,19 @@
                     android:id="@+id/phaser_depth_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/depth" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/depth" />
+
+                    <TextView
+                        android:id="@+id/phaser_depth_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -327,13 +417,19 @@
                     android:id="@+id/phaser_feedback_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/feedback" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/feedback" />
+
+                    <TextView
+                        android:id="@+id/phaser_feedback_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>

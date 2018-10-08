@@ -14,23 +14,27 @@ class YdlDataConverter {
 
         fun binDataToCmdList(settings: ByteArray): List<ByteArray> {
             val result = ArrayList<ByteArray>()
-            val add = {cmd: ByteArray -> result.add(cmd + Amp.END)}
+            val add = { cmd: ByteArray -> result.add(cmd + Amp.END) }
             if (settings.size == THR_DUMP_SIZE) {
                 val dump = settings.slice(IntRange(THR_DUMP_OFFSET, THR_DUMP_SIZE - 3))
                 add(Amp.AMP + dump[128])
-                add(Amp.K_GAIN + dump[129])
-                add(Amp.K_MASTER + dump[130])
-                add(Amp.K_BASS + dump[131])
-                add(Amp.K_MID + dump[132])
-                add(Amp.K_TREB + dump[133])
+                add(Amp.K_GAIN + 0x00 + dump[129])
+                add(Amp.K_MASTER + 0x00 + dump[130])
+                add(Amp.K_BASS + 0x00 + dump[131])
+                add(Amp.K_MID + 0x00 + dump[132])
+                add(Amp.K_TREB + 0x00 + dump[133])
                 // cab
                 add(Amp.CAB + dump[134])
                 // compressor
                 add(Amp.COMPRESSOR_SW + dump[159])
-                add(Amp.COMPRESSOR_STOMP_SUSTAIN + dump[145])
-                add(Amp.COMPRESSOR_STOMP_OUTPUT + dump[146])
-                // todo
-
+                add(Amp.COMPRESSOR_STOMP_SUSTAIN + 0x00 + dump[145])
+                add(Amp.COMPRESSOR_STOMP_OUTPUT + 0x00 + dump[146])
+                add(Amp.COMPRESSOR_RACK_THRESHOLD + dump[145] + dump[146])
+                add(Amp.COMPRESSOR_RACK_ATTACK + 0x00 + dump[147])
+                add(Amp.COMPRESSOR_RACK_RELEASE + 0x00 + dump[148])
+                add(Amp.COMPRESSOR_RACK_RATIO + 0x00 + dump[149])
+                add(Amp.COMPRESSOR_RACK_KNEE + 0x00 + dump[150])
+                add(Amp.COMPRESSOR_RACK_OUTPUT + dump[151] + dump[152])
                 // effects
                 add(Amp.EFFECTS_SW + dump[175])
                 add(Amp.EFFECTS_MODE + dump[160])
