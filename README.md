@@ -93,11 +93,11 @@ Modulation
 Delay
 	On	3f 00 00
 	Off	3f 00 7f
-	Time	31 xx xx	0001-4e0f
+	Time	31 xx xx	0001-4e0f  or 1 - 19983
 	Feedback	33 00 xx	00-64
-	High Cut	34 xx xx	0768-7d01
+	High Cut	34 xx xx	0768-7d01  1896 32001
 	Low Cut 	36 xx xx	0015-3e40
-	Level	38 00 xx
+	Level	    38 00 xx
 
 
 

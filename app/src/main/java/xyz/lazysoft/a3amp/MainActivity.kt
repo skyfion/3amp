@@ -7,8 +7,12 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
-import kotlinx.android.synthetic.main.amp.view.*
+import it.beppi.knoblibrary.Knob
 import xyz.lazysoft.a3amp.components.*
+import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
+import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
+import xyz.lazysoft.a3amp.components.wrappers.AmpSpinnerWrapper
+import xyz.lazysoft.a3amp.components.wrappers.AmpSwitchWrapper
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +20,8 @@ class MainActivity : AppCompatActivity() {
     private var midiManager = UsbMidiManager(this)
     private var thr = Amp(midiManager)
 
-    private fun initSwitchBlock(switch: Int, changeListener: ((value: Boolean) -> Unit)?): AmpComponent<Boolean> {
+    private fun initSwitchBlock(switch: Int,
+                                changeListener: ((value: Boolean) -> Unit)?): AmpComponent<Boolean> {
         val s = findViewById<Switch>(switch)
         val ampSwitchWrapper = AmpSwitchWrapper(s)
         if (changeListener != null)
@@ -37,10 +42,10 @@ class MainActivity : AppCompatActivity() {
         return initKnob(knob, text, null)
     }
 
-    private fun initKnob(knob: Int, text: Int, factor: Int?): AmpComponent<Int> {
-        val ampKnobWrapper = AmpKnobWrapper(findViewById(knob))
+    private fun initKnob(knob: Int, text: Int, range: Pair<Int, Int>?): AmpComponent<Int> {
+        val ampKnobWrapper = AmpKnobWrapper(findViewById(knob), range)
         val knobText = findViewById<TextView>(text)
-        ampKnobWrapper.factor = factor
+
         ampKnobWrapper.setOnStateChanged {
             knobText.text = it.toString()
         }
@@ -88,13 +93,12 @@ class MainActivity : AppCompatActivity() {
                 .addKnob(initKnob(R.id.bass_knob, R.id.bass_text), Amp.K_BASS)
                 .addKnob(initKnob(R.id.treble_knob, R.id.treble_text), Amp.K_TREB)
                 .addKnob(initKnob(R.id.middle_knob, R.id.middle_text), Amp.K_MID)
+                .addSpinner(initCarousel(R.id.amp_carousel, R.array.thr10_amps), Amp.AMP)
+                .addSpinner(initCarousel(R.id.cab_carousel, R.array.thr10_cabs), Amp.CAB)
 
         // amp model detect
         val ampNameText = findViewById<TextView>(R.id.amp_name)
         thr.modelAmpDetect = { s -> runOnUiThread { ampNameText.text = s } }
-
-        thr.addSpinner(initCarousel(R.id.amp_carousel, R.array.thr10_amps), Amp.AMP)
-        thr.addSpinner(initCarousel(R.id.cab_carousel, R.array.thr10_cabs), Amp.CAB)
 
         // compressor
         thr.addKnob(
@@ -108,13 +112,13 @@ class MainActivity : AppCompatActivity() {
                         R.id.compressor_stomp, R.id.compressor_rack))
                         , Amp.COMPRESSOR_MODE, Amp.COMPRESSOR_SW)
                 // rack
-                .addKnob(initKnob(R.id.c_threshold_knob, R.id.c_rack_threshold_text, 6),
+                .addKnob(initKnob(R.id.c_threshold_knob, R.id.c_rack_threshold_text, Pair(0, 600)),
                         Amp.COMPRESSOR_RACK_THRESHOLD)
                 .addKnob(initKnob(R.id.c_attack_knob, R.id.c_rack_attack_text),
                         Amp.COMPRESSOR_RACK_ATTACK)
                 .addKnob(initKnob(R.id.c_release_knob, R.id.c_release_text),
                         Amp.COMPRESSOR_RACK_RELEASE)
-                .addKnob(initKnob(R.id.c_rack_output_knob, R.id.c_rack_output_text, 6),
+                .addKnob(initKnob(R.id.c_rack_output_knob, R.id.c_rack_output_text, Pair(0, 600)),
                         Amp.COMPRESSOR_RACK_OUTPUT)
                 .addSpinner(initCarousel(R.id.compressor_knee_carousel, R.array.knee),
                         Amp.COMPRESSOR_RACK_KNEE)
@@ -152,20 +156,26 @@ class MainActivity : AppCompatActivity() {
         // delay
         thr.addSwSpinner(initCarousel(R.id.delay_sw_carousel, R.array.sw_modes,
                 blockActivator(R.id.delay_empty_block, R.id.delay_block)), Amp.DELAY_SW)
+                .addKnob(initKnob(R.id.delay_feedback_knob, R.id.delay_feedback_text), Amp.DELAY_FEEDBACK)
+                .addKnob(initKnob(R.id.delay_level_knob, R.id.delay_level_text), Amp.DELAY_LEVEL)
+                .addKnob(initKnob(R.id.delay_time_knob, R.id.delay_time_text, Pair(1, 9999)), Amp.DELAY_TIME)
+                .addKnob(initKnob(R.id.delay_high_cut_knob,
+                        R.id.delay_high_cut_text, Pair(1000, 16001)), Amp.DELAY_HIGH_CUT)
+                .addKnob(initKnob(R.id.delay_low_cut_knob,
+                        R.id.delay_low_cut_text, Pair(21, 8000)), Amp.DELAY_LOW_CUT)
 
         // reverb
         thr.addOffSpinner(initCarousel(R.id.reverb_mode_carousel, R.array.reverbs),
                 Amp.REVERB_MODE, Amp.REVERB_SW)
         // gate
-        thr.addSwSpinner(initCarousel(R.id.gate_carousel, R.array.sw_modes,
-                blockActivator(R.id.gate_empty_block, R.id.gate_block)), Amp.GATE_SW)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.gate_release_knob)), Amp.GATE_RELEASE)
-                .addKnob(AmpKnobWrapper(findViewById(R.id.gate_threshold_knob)), Amp.GATE_THRESHOLD)
+//        thr.addSwSpinner(initCarousel(R.id.gate_carousel, R.array.sw_modes,
+//                blockActivator(R.id.gate_empty_block, R.id.gate_block)), Amp.GATE_SW)
+//                .addKnob(initKnob(R.id.gate_release_knob), Amp.GATE_RELEASE)
+//                .addKnob(AmpKnobWrapper(findViewById(R.id.gate_threshold_knob)), Amp.GATE_THRESHOLD)
 
 
 
         midiManager.open()
-
     }
 }
 

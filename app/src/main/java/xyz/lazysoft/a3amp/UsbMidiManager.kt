@@ -7,12 +7,14 @@ import jp.kshoji.driver.midi.device.MidiInputDevice
 import jp.kshoji.driver.midi.device.MidiOutputDevice
 import jp.kshoji.driver.midi.util.UsbMidiDriver
 import java.util.*
+import java.util.logging.Logger
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class UsbMidiManager(private val context: Context) : UsbMidiDriver(context) {
 
-    val usbDevices = HashSet<UsbDevice>()
+    private val usbDevices = HashSet<UsbDevice>()
+    private val logger = Logger.getLogger(this.javaClass.name)
 
     override fun onMidiActiveSensing(p0: MidiInputDevice, p1: Int) {
     }
@@ -57,6 +59,7 @@ class UsbMidiManager(private val context: Context) : UsbMidiDriver(context) {
     var sysExtListeners: ArrayList<(ByteArray?) -> Unit> = ArrayList()
 
     fun onMidiSystemExclusive(cmd: ByteArray?) {
+        logger.info("recive midi -> " + cmd?.joinToString())
         sysExtListeners.forEach { t: ((ByteArray?) -> Unit)? -> t?.invoke(cmd) }
     }
 
@@ -106,7 +109,7 @@ class UsbMidiManager(private val context: Context) : UsbMidiDriver(context) {
             usbDevices.add(p0.usbDevice)
         }
         midiAttached = true
-        Toast.makeText(context, "midi attached!", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "midi attached!", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDeviceDetached(p0: UsbDevice) {
@@ -125,15 +128,15 @@ class UsbMidiManager(private val context: Context) : UsbMidiDriver(context) {
     }
 
     fun sendSysExCmd(cmd: ByteArray) {
-        val usbDeviceIterator = usbDevices.iterator()
-
-        if (usbDeviceIterator.hasNext()) {
-            val devices = getMidiOutputDevices(usbDeviceIterator.next())
-            devices.map { midiOutputDevice ->
-                midiOutputDevice.sendMidiSystemExclusive(0, cmd)
-            }
-        } else {
-            // todo show message
-        }
+//        val usbDeviceIterator = usbDevices.iterator()
+//        logger.info("send midi " + cmd.joinToString())
+//        if (usbDeviceIterator.hasNext()) {
+//            val devices = getMidiOutputDevices(usbDeviceIterator.next())
+//            devices.map { midiOutputDevice ->
+//                midiOutputDevice.sendMidiSystemExclusive(0, cmd)
+//            }
+//        } else {
+//            // todo show message
+//        }
     }
 }

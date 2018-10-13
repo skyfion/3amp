@@ -1,4 +1,4 @@
-package xyz.lazysoft.a3amp.components
+package xyz.lazysoft.a3amp.components.wrappers
 
 import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.annotation.SuppressLint
@@ -10,32 +10,12 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.Switch
 import it.beppi.knoblibrary.Knob
+import xyz.lazysoft.a3amp.components.AmpComponent
 
-@SuppressLint("Registered")
-class AmpKnobWrapper(val knob: Knob) : Activity(), AmpComponent<Int> {
 
-    private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
-    var factor: Int? = null
-
-    init {
-        knob.setOnStateChanged{ value ->
-            onSelectFunction.forEach {
-                f -> f.invoke(factor?.let { it * value} ?: value)}
-        }
-    }
-
-    override fun setOnStateChanged(function: (value: Int) -> Unit) {
-        onSelectFunction.add(function)
-    }
-
-    override var state: Int
-        get() = factor?.let { knob.state * it } ?: knob.state
-        set(value) { runOnUiThread { knob.state = factor?.let { value / it } ?: value } }
-}
 
 @SuppressLint("Registered")
 class AmpSpinnerWrapper(val s: Spinner) : Activity(), AdapterView.OnItemSelectedListener, AmpComponent<Int> {
-
     private var onSelectFunction: ((pos: Int) -> Unit)? = null
 
     override fun setOnStateChanged(function: (pos: Int) -> Unit) {
@@ -45,7 +25,9 @@ class AmpSpinnerWrapper(val s: Spinner) : Activity(), AdapterView.OnItemSelected
     override var state: Int
         get() = s.selectedItemPosition
         set(value) {
-            runOnUiThread { s.setSelection(value) }
+            runOnUiThread {
+                s.setSelection(value)
+            }
         }
 
     init {
@@ -62,7 +44,9 @@ class AmpSpinnerWrapper(val s: Spinner) : Activity(), AdapterView.OnItemSelected
 @SuppressLint("Registered")
 class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
         AmpComponent<Int>, ViewPager.OnPageChangeListener {
-    override fun onPageScrollStateChanged(state: Int) {}
+    override fun onPageScrollStateChanged(state: Int) {
+
+    }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
@@ -79,11 +63,13 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
     override var state: Int
         get() = carousel.currentItem
         set(value) {
-            runOnUiThread { carousel.currentItem = value }
+            runOnUiThread {
+                carousel.currentItem = value
+            }
         }
 
     override fun onPageSelected(position: Int) {
-        onSelectFunction.forEach{ it.invoke(position)}
+        onSelectFunction.forEach { it.invoke(state) }
     }
 }
 
@@ -94,17 +80,20 @@ class AmpSwitchWrapper(private val sw: Switch) : Activity(), AmpComponent<Boolea
 
     init {
         sw.setOnCheckedChangeListener { _, isChecked ->
-            onStateChangeFunctions.forEach{
+            onStateChangeFunctions.forEach {
                 it.invoke(isChecked)
             }
         }
     }
+
     override fun setOnStateChanged(function: (isChecked: Boolean) -> Unit) {
         onStateChangeFunctions.add(function)
     }
 
     override var state: Boolean
         get() = sw.isChecked
-        set(value) { runOnUiThread { sw.isChecked = value } }
+        set(value) {
+            runOnUiThread { sw.isChecked = value }
+        }
 
 }

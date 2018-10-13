@@ -16,13 +16,12 @@ enum class AmpModel(val model: Byte) {
 class Amp(private val midiManager: UsbMidiManager) {
     private val logger = Logger.getLogger(this.javaClass.name)
     private val knobs: MutableList<AmpComponent<Int>> = mutableListOf()
+    private val spinners: MutableList<AmpComponent<Int>> = mutableListOf()
     private val switchers: MutableList<AmpComponent<Boolean>> = mutableListOf()
-    private var ampModel: AmpModel? by Delegates.observable<AmpModel?>(null) {
-        _, old, new->
-                if (old != new) midiManager.sendSysExCmd(REQ_SETTINGS)
+    private var ampModel: AmpModel? by Delegates.observable<AmpModel?>(null) { _, old, new ->
+        if (old != new) midiManager.sendSysExCmd(REQ_SETTINGS)
     }
     var modelAmpDetect: ((String) -> Unit)? = null
-
 
     init {
         midiManager.sysExtListeners.add { data: ByteArray? ->
@@ -37,7 +36,7 @@ class Amp(private val midiManager: UsbMidiManager) {
                     // chkeck header
                     // todo chk checksum
                     YdlDataConverter.binDataToCmdList(data)
-                            .forEach{ midiManager.onMidiSystemExclusive(it) }
+                            .forEach { midiManager.onMidiSystemExclusive(it) }
                 }
             }
         }
@@ -53,6 +52,7 @@ class Amp(private val midiManager: UsbMidiManager) {
                 .putInt(value)
                 .array().drop(2).toByteArray()
     }
+
     /**
      * Add common knob
      * @param knob interface AmpComponent
@@ -60,11 +60,9 @@ class Amp(private val midiManager: UsbMidiManager) {
      */
     fun addKnob(knob: AmpComponent<Int>, id: ByteArray): Amp {
         knobs.add(knob)
-        logger.info("add id "+ id.joinToString())
+        logger.info("add id " + id.joinToString())
         midiManager.sysExtListeners.add {
             if (it != null && it.size > 9) {
-                logger.info("it " + it.joinToString())
-
                 val cmd = it.slice(IntRange(0, 7)).toByteArray()
                 if (cmd.contentEquals(id)) {
                     knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
@@ -72,7 +70,8 @@ class Amp(private val midiManager: UsbMidiManager) {
             }
         }
         knob.setOnStateChanged {
-            midiManager.sendSysExCmd( id + intToParam(it) + END)
+            logger.info("send from knob -> " + intToParam(it).joinToString())
+            midiManager.sendSysExCmd(id + intToParam(it) + END)
         }
         return this
     }
@@ -86,10 +85,10 @@ class Amp(private val midiManager: UsbMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 8)).toByteArray()
                 if (cmd.contentEquals(id)) {
-                     when (it[9].toInt()) {
-                         ON -> sw.state = true
-                         OFF -> sw.state = false
-                     }
+                    when (it[9].toInt()) {
+                        ON -> sw.state = true
+                        OFF -> sw.state = false
+                    }
                 }
             }
         }
@@ -100,11 +99,14 @@ class Amp(private val midiManager: UsbMidiManager) {
         return this
     }
 
+
     fun addSpinner(spinner: AmpComponent<Int>, id: ByteArray): Amp {
+        spinners.add(spinner)
         midiManager.sysExtListeners.add {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 8)).toByteArray()
                 if (cmd.contentEquals(id)) {
+                    logger.info("---> " + cmd.joinToString())
                     spinner.state = it[9].toInt()
                 }
             }
@@ -120,7 +122,7 @@ class Amp(private val midiManager: UsbMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 8)).toByteArray()
                 if (cmd.contentEquals(swId) && it[9] == OFF.toByte()) {
-                     spinner.state = 0
+                    spinner.state = 0
                 } else if (cmd.contentEquals(id)) {
                     spinner.state = it[9].toInt() + 1
                 }
@@ -162,6 +164,7 @@ class Amp(private val midiManager: UsbMidiManager) {
             else
                 ByteArray(0)
         }
+
         val ON = 0x00
         val OFF = 0x7F
         val THR_DATA_SIZE = 276
@@ -200,16 +203,23 @@ class Amp(private val midiManager: UsbMidiManager) {
         val EFFECT_KNOB5 = SEND_CMD + byteArrayOf(0x25)
 
         val DELAY_SW = SEND_CMD + byteArrayOf(0x3f, 0x00)
+        val DELAY_FEEDBACK = SEND_CMD + byteArrayOf(0x33)
+        val DELAY_LEVEL = SEND_CMD + byteArrayOf(0x38)
+        val DELAY_TIME = SEND_CMD + byteArrayOf(0x31)
+        val DELAY_HIGH_CUT = SEND_CMD + 0x34
+        val DELAY_LOW_CUT = SEND_CMD + 0x36
 
         val GATE_SW = SEND_CMD + byteArrayOf(0x5f, 0x00)
         val GATE_RELEASE = SEND_CMD + byteArrayOf(0x52)
-        val GATE_THRESHOLD = SEND_CMD + byteArrayOf(0x51)
 
+        val GATE_THRESHOLD = SEND_CMD + byteArrayOf(0x51)
         val REVERB_SW = SEND_CMD + byteArrayOf(0x4f, 0x00)
-        val REVERB_MODE = SEND_CMD + byteArrayOf(0x40)
+
+        val REVERB_MODE = SEND_CMD + 0x40
         // light
         val LIGHT_ON = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x01) + END
         val LIGHT_OFF = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x00) + END
+
 
 
     }

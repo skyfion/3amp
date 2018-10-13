@@ -35,22 +35,27 @@ class YdlDataConverter {
                 add(Amp.COMPRESSOR_RACK_RATIO + 0x00 + dump[149])
                 add(Amp.COMPRESSOR_RACK_KNEE + 0x00 + dump[150])
                 add(Amp.COMPRESSOR_RACK_OUTPUT + dump[151] + dump[152])
+
                 // effects
                 add(Amp.EFFECTS_SW + dump[175])
                 add(Amp.EFFECTS_MODE + dump[160])
-                add(Amp.EFFECT_KNOB1 + dump[161])
-                add(Amp.EFFECT_KNOB2 + dump[162])
-                add(Amp.EFFECT_KNOB3 + dump[163])
-                add(Amp.EFFECT_KNOB4 + dump[164])
-                add(Amp.EFFECT_KNOB5 + dump[165])
+                add(Amp.EFFECT_KNOB1 + 0x00 + dump[161])
+                add(Amp.EFFECT_KNOB2 + 0x00 + dump[162])
+                add(Amp.EFFECT_KNOB3 + 0x00 + dump[163])
+                add(Amp.EFFECT_KNOB4 + 0x00 + dump[164])
+                add(Amp.EFFECT_KNOB5 + 0x00 + dump[165])
 
                 // delay
                 add(Amp.DELAY_SW + dump[191])
+                add(Amp.DELAY_FEEDBACK + 0x00 + dump[179])
+                add(Amp.DELAY_HIGH_CUT + dump[180] + dump[181])
+                add(Amp.DELAY_LOW_CUT + dump[182] + dump[183])
+                add(Amp.DELAY_LEVEL + 0x00 + dump[184])
 
                 // gate
                 add(Amp.GATE_SW + dump[223])
-                add(Amp.GATE_THRESHOLD + dump[209])
-                add(Amp.GATE_RELEASE + dump[210])
+                add(Amp.GATE_THRESHOLD + 0x00 + dump[209])
+                add(Amp.GATE_RELEASE + 0x00 + dump[210])
             }
             return result
         }

@@ -44,15 +44,22 @@
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
-                    android:id="@+id/time_knob"
+                    android:id="@+id/delay_time_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/time" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/time" />
+
+                    <TextView
+                        android:id="@+id/delay_time_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -63,16 +70,22 @@
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
-                    android:id="@+id/feedback_knob"
+                    android:id="@+id/delay_feedback_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/feedback" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/feedback" />
+
+                    <TextView
+                        android:id="@+id/delay_feedback_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -82,16 +95,22 @@
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
-                    android:id="@+id/hicut_knob"
+                    android:id="@+id/delay_high_cut_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/high_cut" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/high_cut" />
+
+                    <TextView
+                        android:id="@+id/delay_high_cut_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -101,16 +120,22 @@
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
-                    android:id="@+id/lowcut_knob"
+                    android:id="@+id/delay_low_cut_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/low_cut" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/low_cut" />
+
+                    <TextView
+                        android:id="@+id/delay_low_cut_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -120,16 +145,22 @@
                 android:orientation="vertical">
 
                 <it.beppi.knoblibrary.Knob
-                    android:id="@+id/level_knob"
+                    android:id="@+id/delay_level_knob"
                     style="@style/AppTheme.knobs" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/level" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/level" />
+
+                    <TextView
+                        android:id="@+id/delay_level_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
 
         </com.google.android.flexbox.FlexboxLayout>
