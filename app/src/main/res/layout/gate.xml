@@ -50,13 +50,19 @@
                     style="@style/AppTheme.knobs"
                     android:id="@+id/gate_threshold_knob"/>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/threshold" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/threshold" />
+
+                    <TextView
+                        android:id="@+id/gate_threshold_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -68,13 +74,19 @@
                  style="@style/AppTheme.knobs"
                     android:id="@+id/gate_release_knob"/>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/release" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/AppTheme.textKnob"
+                        android:text="@string/release" />
+
+                    <TextView
+                        android:id="@+id/gate_release_text"
+                        style="@style/AppTheme.valueTextKnob" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.flexbox.FlexboxLayout>
     </LinearLayout>

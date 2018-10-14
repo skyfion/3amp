@@ -1,4 +1,4 @@
-package xyz.lazysoft.a3amp
+package xyz.lazysoft.a3amp.midi
 
 import android.content.Context
 import android.hardware.usb.UsbDevice
@@ -128,15 +128,12 @@ class UsbMidiManager(private val context: Context) : UsbMidiDriver(context) {
     }
 
     fun sendSysExCmd(cmd: ByteArray) {
-//        val usbDeviceIterator = usbDevices.iterator()
-//        logger.info("send midi " + cmd.joinToString())
-//        if (usbDeviceIterator.hasNext()) {
-//            val devices = getMidiOutputDevices(usbDeviceIterator.next())
-//            devices.map { midiOutputDevice ->
-//                midiOutputDevice.sendMidiSystemExclusive(0, cmd)
-//            }
-//        } else {
-//            // todo show message
-//        }
+        val usbDeviceIterator = usbDevices.iterator()
+        if (usbDeviceIterator.hasNext()) {
+            val devices = getMidiOutputDevices(usbDeviceIterator.next())
+            devices.map { midiOutputDevice ->
+                midiOutputDevice.sendMidiSystemExclusive(0, cmd)
+            }
+        }
     }
 }

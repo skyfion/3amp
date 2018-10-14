@@ -1,6 +1,7 @@
-package xyz.lazysoft.a3amp.components
+package xyz.lazysoft.a3amp.amp
 
-import xyz.lazysoft.a3amp.UsbMidiManager
+import xyz.lazysoft.a3amp.midi.UsbMidiManager
+import xyz.lazysoft.a3amp.components.AmpComponent
 import java.nio.ByteBuffer
 import java.util.logging.Logger
 import kotlin.properties.Delegates
@@ -165,9 +166,9 @@ class Amp(private val midiManager: UsbMidiManager) {
                 ByteArray(0)
         }
 
-        val ON = 0x00
-        val OFF = 0x7F
-        val THR_DATA_SIZE = 276
+        const val ON = 0x00
+        const val OFF = 0x7F
+        const val THR_DATA_SIZE = 276
 
         val HEAD = byteArrayOf(0xF0, 0x43, 0x7D)
         val END = byteArrayOf(0xF7)
@@ -176,46 +177,55 @@ class Amp(private val midiManager: UsbMidiManager) {
         val HEART_BEAT = HEAD + byteArrayOf(0x60, 0x44, 0x54, 0x41)
         // CMD ID
         // knobs id
-        val K_GAIN = SEND_CMD + byteArrayOf(0x01)
-        val K_MASTER = SEND_CMD + byteArrayOf(0x02)
-        val K_BASS = SEND_CMD + byteArrayOf(0x03)
-        val K_MID = SEND_CMD + byteArrayOf(0x04)
-        val K_TREB = SEND_CMD + byteArrayOf(0x05)
+        val K_GAIN = SEND_CMD + 0x01
+        val K_MASTER = SEND_CMD + 0x02
+        val K_BASS = SEND_CMD + 0x03
+        val K_MID = SEND_CMD + 0x04
+        val K_TREB = SEND_CMD + 0x05
         val CAB = SEND_CMD + byteArrayOf(0x06, 0x00) // range 0x00 - 0x05
         val AMP = SEND_CMD + byteArrayOf(0x00, 0x00)
         val COMPRESSOR_SW = SEND_CMD + byteArrayOf(0x1F, 0x00) // 00 - on, 7f - off
         val COMPRESSOR_MODE = SEND_CMD + byteArrayOf(0x10, 0x00)
-        val COMPRESSOR_STOMP_SUSTAIN = SEND_CMD + byteArrayOf(0x11)
-        val COMPRESSOR_STOMP_OUTPUT = SEND_CMD + byteArrayOf(0x12)
-        val COMPRESSOR_RACK_THRESHOLD = SEND_CMD + byteArrayOf(0x11)
-        val COMPRESSOR_RACK_ATTACK = SEND_CMD + byteArrayOf(0x13)
-        val COMPRESSOR_RACK_RELEASE = SEND_CMD + byteArrayOf(0x14)
-        val COMPRESSOR_RACK_OUTPUT = SEND_CMD + byteArrayOf(0x17)
-        val COMPRESSOR_RACK_RATIO = SEND_CMD + byteArrayOf(0x15) // 0 - 5
-        val COMPRESSOR_RACK_KNEE = SEND_CMD + byteArrayOf(0x16)  // 0 - 2
+        val COMPRESSOR_STOMP_SUSTAIN = SEND_CMD + 0x11
+        val COMPRESSOR_STOMP_OUTPUT = SEND_CMD + 0x12
+        val COMPRESSOR_RACK_THRESHOLD = SEND_CMD + 0x11
+        val COMPRESSOR_RACK_ATTACK = SEND_CMD + 0x13
+        val COMPRESSOR_RACK_RELEASE = SEND_CMD + 0x14
+        val COMPRESSOR_RACK_OUTPUT = SEND_CMD + 0x17
+        val COMPRESSOR_RACK_RATIO = SEND_CMD + 0x15 + 0x00 // 0 - 5
+        val COMPRESSOR_RACK_KNEE = SEND_CMD + 0x16 + 0x00  // 0 - 2
 
         val EFFECTS_SW = SEND_CMD + byteArrayOf(0x2f, 0x00)
         val EFFECTS_MODE = SEND_CMD + byteArrayOf(0x20, 0x00) // chorus flanger tremolo phaser
-        val EFFECT_KNOB1 = SEND_CMD + byteArrayOf(0x21)
-        val EFFECT_KNOB2 = SEND_CMD + byteArrayOf(0x22)
-        val EFFECT_KNOB3 = SEND_CMD + byteArrayOf(0x23)
-        val EFFECT_KNOB4 = SEND_CMD + byteArrayOf(0x24)
-        val EFFECT_KNOB5 = SEND_CMD + byteArrayOf(0x25)
+        val EFFECT_KNOB1 = SEND_CMD + 0x21
+        val EFFECT_KNOB2 = SEND_CMD + 0x22
+        val EFFECT_KNOB3 = SEND_CMD + 0x23
+        val EFFECT_KNOB4 = SEND_CMD + 0x24
+        val EFFECT_KNOB5 = SEND_CMD + 0x25
 
         val DELAY_SW = SEND_CMD + byteArrayOf(0x3f, 0x00)
-        val DELAY_FEEDBACK = SEND_CMD + byteArrayOf(0x33)
-        val DELAY_LEVEL = SEND_CMD + byteArrayOf(0x38)
-        val DELAY_TIME = SEND_CMD + byteArrayOf(0x31)
+        val DELAY_FEEDBACK = SEND_CMD + 0x33
+        val DELAY_LEVEL = SEND_CMD + 0x38
+        val DELAY_TIME = SEND_CMD + 0x31
         val DELAY_HIGH_CUT = SEND_CMD + 0x34
         val DELAY_LOW_CUT = SEND_CMD + 0x36
 
         val GATE_SW = SEND_CMD + byteArrayOf(0x5f, 0x00)
-        val GATE_RELEASE = SEND_CMD + byteArrayOf(0x52)
+        val GATE_RELEASE = SEND_CMD + 0x52
 
-        val GATE_THRESHOLD = SEND_CMD + byteArrayOf(0x51)
+        val GATE_THRESHOLD = SEND_CMD + 0x51
         val REVERB_SW = SEND_CMD + byteArrayOf(0x4f, 0x00)
 
-        val REVERB_MODE = SEND_CMD + 0x40
+        val REVERB_MODE = SEND_CMD + 0x40 + 0x00
+        val REVERB_TIME = SEND_CMD + 0x41
+        val REVERB_FILTER = SEND_CMD + 0x42
+        val REVERB_PRE_DELAY = SEND_CMD + 0x43
+        val REVERB_LOW_CUT = SEND_CMD + 0x45
+        val REVERB_HIGH_CUT = SEND_CMD + 0x47
+        val REVERB_HIGH_RATIO = SEND_CMD + 0x49
+        val REVERB_LOW_RATIO = SEND_CMD + 0x4a
+        val REVERB_LEVEL = SEND_CMD + 0x4b
+
         // light
         val LIGHT_ON = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x01) + END
         val LIGHT_OFF = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x00) + END

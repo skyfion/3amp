@@ -1,4 +1,4 @@
-package xyz.lazysoft.a3amp.components
+package xyz.lazysoft.a3amp.amp
 
 /**
  * Yamaha thr ydl file reader/converter
@@ -51,6 +51,21 @@ class YdlDataConverter {
                 add(Amp.DELAY_HIGH_CUT + dump[180] + dump[181])
                 add(Amp.DELAY_LOW_CUT + dump[182] + dump[183])
                 add(Amp.DELAY_LEVEL + 0x00 + dump[184])
+
+                //reverb
+                add(Amp.REVERB_SW + dump[207])
+                add(Amp.REVERB_MODE + dump[192])
+                add(Amp.REVERB_TIME + dump[193] + dump[194])
+                add(Amp.REVERB_PRE_DELAY + dump[195] + dump[196])
+                add(Amp.REVERB_LOW_CUT + dump[197] + dump[198])
+                add(Amp.REVERB_HIGH_CUT + dump[199] + dump[200])
+                add(Amp.REVERB_HIGH_RATIO + 0x00 + dump[201])
+                add(Amp.REVERB_LOW_RATIO + 0x00 + dump[202])
+                add(Amp.REVERB_LEVEL + 0x00 + dump[203])
+                if (dump[192].toInt() == 3) {
+                    add(Amp.REVERB_TIME + 0x00 + dump[193])
+                    add(Amp.REVERB_FILTER + 0x00 + dump[194])
+                }
 
                 // gate
                 add(Amp.GATE_SW + dump[223])

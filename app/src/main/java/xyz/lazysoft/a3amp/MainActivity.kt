@@ -1,42 +1,23 @@
 package xyz.lazysoft.a3amp
 
+import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.*
-import it.beppi.knoblibrary.Knob
-import xyz.lazysoft.a3amp.components.*
+import android.widget.TextView
+import xyz.lazysoft.a3amp.amp.Amp
+import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
-import xyz.lazysoft.a3amp.components.wrappers.AmpSpinnerWrapper
-import xyz.lazysoft.a3amp.components.wrappers.AmpSwitchWrapper
+import xyz.lazysoft.a3amp.midi.UsbMidiManager
 
 
 class MainActivity : AppCompatActivity() {
 
     private var midiManager = UsbMidiManager(this)
     private var thr = Amp(midiManager)
-
-    private fun initSwitchBlock(switch: Int,
-                                changeListener: ((value: Boolean) -> Unit)?): AmpComponent<Boolean> {
-        val s = findViewById<Switch>(switch)
-        val ampSwitchWrapper = AmpSwitchWrapper(s)
-        if (changeListener != null)
-            ampSwitchWrapper.setOnStateChanged(changeListener)
-        return ampSwitchWrapper
-    }
-
-    private fun initSpinner(spiner: Int, content: Int): AmpComponent<Int> {
-        val adapter = ArrayAdapter.createFromResource(this,
-                content, android.R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val s = findViewById<Spinner>(spiner)
-        s.adapter = adapter
-        return AmpSpinnerWrapper(s)
-    }
 
     private fun initKnob(knob: Int, text: Int): AmpComponent<Int> {
         return initKnob(knob, text, null)
@@ -135,45 +116,94 @@ class MainActivity : AppCompatActivity() {
                         R.id.effect_tremolo_block,
                         R.id.effect_phaser_block)), Amp.EFFECTS_MODE, Amp.EFFECTS_SW)
                 // chorus
-                .addKnob(initKnob(R.id.chorus_speed_knob, R.id.chorus_speed_text), Amp.EFFECT_KNOB1)
-                .addKnob(initKnob(R.id.chorus_depth_knob, R.id.chorus_depth_text), Amp.EFFECT_KNOB2)
-                .addKnob(initKnob(R.id.chorus_mix_knob, R.id.chorus_mix_text), Amp.EFFECT_KNOB3)
+                .addKnob(initKnob(R.id.chorus_speed_knob,
+                        R.id.chorus_speed_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.chorus_depth_knob,
+                        R.id.chorus_depth_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.chorus_mix_knob,
+                        R.id.chorus_mix_text), Amp.EFFECT_KNOB3)
                 // flanger
-                .addKnob(initKnob(R.id.flanger_speed_knob, R.id.flanger_speed_text), Amp.EFFECT_KNOB1)
-                .addKnob(initKnob(R.id.flanger_manual_knob, R.id.flanger_manual_text), Amp.EFFECT_KNOB2)
-                .addKnob(initKnob(R.id.flanger_depth_knob, R.id.flanger_depth_text), Amp.EFFECT_KNOB3)
-                .addKnob(initKnob(R.id.flanger_feedback_knob, R.id.flanger_feedback_text), Amp.EFFECT_KNOB4)
-                .addKnob(initKnob(R.id.flanger_spread_knob, R.id.flanger_spread_text), Amp.EFFECT_KNOB5)
+                .addKnob(initKnob(R.id.flanger_speed_knob,
+                        R.id.flanger_speed_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.flanger_manual_knob,
+                        R.id.flanger_manual_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.flanger_depth_knob,
+                        R.id.flanger_depth_text), Amp.EFFECT_KNOB3)
+                .addKnob(initKnob(R.id.flanger_feedback_knob,
+                        R.id.flanger_feedback_text), Amp.EFFECT_KNOB4)
+                .addKnob(initKnob(R.id.flanger_spread_knob,
+                        R.id.flanger_spread_text), Amp.EFFECT_KNOB5)
                 // tremolo
-                .addKnob(initKnob(R.id.tremolo_freq_knob, R.id.tremolo_freq_text), Amp.EFFECT_KNOB1)
-                .addKnob(initKnob(R.id.tremolo_depth_knob, R.id.tremolo_depth_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.tremolo_freq_knob,
+                        R.id.tremolo_freq_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.tremolo_depth_knob,
+                        R.id.tremolo_depth_text), Amp.EFFECT_KNOB2)
                 // phaser
-                .addKnob(initKnob(R.id.phaser_speed_knob, R.id.phaser_speed_text), Amp.EFFECT_KNOB1)
-                .addKnob(initKnob(R.id.phaser_manual_knob, R.id.phaser_manual_text), Amp.EFFECT_KNOB2)
-                .addKnob(initKnob(R.id.phaser_depth_knob, R.id.phaser_depth_text), Amp.EFFECT_KNOB3)
-                .addKnob(initKnob(R.id.phaser_feedback_knob, R.id.phaser_feedback_text), Amp.EFFECT_KNOB4)
+                .addKnob(initKnob(R.id.phaser_speed_knob,
+                        R.id.phaser_speed_text), Amp.EFFECT_KNOB1)
+                .addKnob(initKnob(R.id.phaser_manual_knob,
+                        R.id.phaser_manual_text), Amp.EFFECT_KNOB2)
+                .addKnob(initKnob(R.id.phaser_depth_knob,
+                        R.id.phaser_depth_text), Amp.EFFECT_KNOB3)
+                .addKnob(initKnob(R.id.phaser_feedback_knob,
+                        R.id.phaser_feedback_text), Amp.EFFECT_KNOB4)
 
         // delay
         thr.addSwSpinner(initCarousel(R.id.delay_sw_carousel, R.array.sw_modes,
-                blockActivator(R.id.delay_empty_block, R.id.delay_block)), Amp.DELAY_SW)
-                .addKnob(initKnob(R.id.delay_feedback_knob, R.id.delay_feedback_text), Amp.DELAY_FEEDBACK)
-                .addKnob(initKnob(R.id.delay_level_knob, R.id.delay_level_text), Amp.DELAY_LEVEL)
-                .addKnob(initKnob(R.id.delay_time_knob, R.id.delay_time_text, Pair(1, 9999)), Amp.DELAY_TIME)
+                blockActivator(R.id.delay_empty_block,
+                        R.id.delay_block)), Amp.DELAY_SW)
+                .addKnob(initKnob(R.id.delay_feedback_knob,
+                        R.id.delay_feedback_text), Amp.DELAY_FEEDBACK)
+                .addKnob(initKnob(R.id.delay_level_knob,
+                        R.id.delay_level_text), Amp.DELAY_LEVEL)
+                .addKnob(initKnob(R.id.delay_time_knob,
+                        R.id.delay_time_text, Pair(1, 9999)), Amp.DELAY_TIME)
                 .addKnob(initKnob(R.id.delay_high_cut_knob,
                         R.id.delay_high_cut_text, Pair(1000, 16001)), Amp.DELAY_HIGH_CUT)
                 .addKnob(initKnob(R.id.delay_low_cut_knob,
                         R.id.delay_low_cut_text, Pair(21, 8000)), Amp.DELAY_LOW_CUT)
 
         // reverb
-        thr.addOffSpinner(initCarousel(R.id.reverb_mode_carousel, R.array.reverbs),
+        thr.addOffSpinner(initCarousel(R.id.reverb_mode_carousel, R.array.reverbs
+        ) { value ->
+            sequenceOf(R.id.reverb_empty_block,
+                    R.id.common_reverb_block, R.id.spring_reverb_block)
+                    .map { findViewById<View>(it) }
+                    .withIndex().forEach { it ->
+                        val index = when (value) {
+                            in 1..3 -> 1
+                            4 -> 2
+                            else -> 0
+                        }
+                        it.value.visibility = if (index == it.index) VISIBLE else GONE
+                    }
+        },
                 Amp.REVERB_MODE, Amp.REVERB_SW)
+                .addKnob(initKnob(R.id.reverb_time_knob,
+                        R.id.reverb_time_text, Pair(3, 200)), Amp.REVERB_TIME)
+                .addKnob(initKnob(R.id.reverb_pre_delay_knob,
+                        R.id.reverb_pre_dalay_text, Pair(1, 2000)), Amp.REVERB_PRE_DELAY)
+                .addKnob(initKnob(R.id.reverb_low_cut,
+                        R.id.reverb_low_cut_text, Pair(21, 8000)), Amp.REVERB_LOW_CUT)
+                .addKnob(initKnob(R.id.reverb_hi_cut_knob,
+                        R.id.reverb_high_cut_text, Pair(1000, 16001)), Amp.REVERB_HIGH_CUT)
+                .addKnob(initKnob(R.id.reverb_hi_ratio_knob,
+                        R.id.reverb_high_ratio_text, Pair(1, 10)), Amp.REVERB_HIGH_RATIO)
+                .addKnob(initKnob(R.id.reverb_low_ratio_knob,
+                        R.id.reverb_low_ratio_text, Pair(1, 14)), Amp.REVERB_LOW_RATIO)
+                .addKnob(initKnob(R.id.reverb_level_knob,
+                        R.id.reverb_level_text), Amp.REVERB_LEVEL)
+                .addKnob(initKnob(R.id.reverb_spring_reverb,
+                        R.id.reverb_spring_reverb_text), Amp.REVERB_TIME)
+                .addKnob(initKnob(R.id.reverb_spring_filter_knob,
+                        R.id.reverb_spring_filter_text), Amp.REVERB_FILTER)
         // gate
-//        thr.addSwSpinner(initCarousel(R.id.gate_carousel, R.array.sw_modes,
-//                blockActivator(R.id.gate_empty_block, R.id.gate_block)), Amp.GATE_SW)
-//                .addKnob(initKnob(R.id.gate_release_knob), Amp.GATE_RELEASE)
-//                .addKnob(AmpKnobWrapper(findViewById(R.id.gate_threshold_knob)), Amp.GATE_THRESHOLD)
-
-
+        thr.addSwSpinner(initCarousel(R.id.gate_carousel, R.array.sw_modes,
+                blockActivator(R.id.gate_empty_block, R.id.gate_block)), Amp.GATE_SW)
+                .addKnob(initKnob(R.id.gate_release_knob,
+                        R.id.gate_release_text), Amp.GATE_RELEASE)
+                .addKnob(initKnob(R.id.gate_threshold_knob,
+                        R.id.gate_threshold_text), Amp.GATE_THRESHOLD)
 
         midiManager.open()
     }

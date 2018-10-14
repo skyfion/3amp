@@ -103,4 +103,5 @@
     <string name="manual">manual</string>
     <string name="spread">spread</string>
     <string name="freq">freq</string>
+    <string name="filter">filter</string>
 </resources>
