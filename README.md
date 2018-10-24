@@ -1,131 +1,85 @@
+# 3amp 
 
-model thr 
-F0 43 7d 60 44 54 41 xx F7
-THR5	0x30   = 48
-THR10	0x31
-THR10X	0x32
-THR10C	0x33
-THR5A	0x34
+[](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP9G2HvdcWw-aHyn7jiJsuyHgvZas6ULwF33Sim92gU6uXF7cy)
 
-SETTINGS REQUEST
-                 F0 43 7D 20 44 54 41 31 41 6C 6C 50 F7
-                 
-                 response example 
-                 -16, 67, 125, 0, 2, 12, 68, 84, 65, 49, 65, 108, 108, 80, 0, 0, 127, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 48, 34, 31, 74, 65, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 1, 14, 48, 36, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 70, 10, 31, 32, 0, 21, 19, 0, 0, 0, 0, 0, 0, 0, 2, 0, 16, 0, 70, 0, 95, 21, 112, 8, 13, 61, 0, 0, 0, 0, 0, 50, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, -9
+Project for amps yamaha thr    
 
-https://github.com/harjot-oberai/Croller
-http://mathis-wip.blogspot.com/
+### Prerequisites
 
-SysEx Format is: F0 43 7D 10 41 30 01 xx xx xx F7
+What things you need to install the software and how to install them
 
+```
+Give examples
+```
 
-Category	Setting	Value	Range
-Amps	
-    Clean	00 00 00
-	Crunch	00 00 01
-	Lead	00 00 02
-	BritHi	00 00 03
-	Modern	00 00 04
-	Bass	00 00 05
-	Aco	    00 00 06
-	Flat	00 00 07
+### Installing
 
-Cabs	US4x12	06 00 00
-	US2x12	06 00 01
-	Brit4x12	06 00 02
-	Brit2x12	06 00 03
-	1x12	06 00 04
-	4x10	06 00 05
+A step by step series of examples that tell you how to get a development env running
 
-Controls	
-    Gain	01 00 xx	00-64
-	Master	02 00 xx	00-64
-	Bass	03 00 xx	00-64
-	Middle	04 00 xx	00-64
-	Treble	05 00 xx	00-64
+Say what the step will be
 
-Gate	On	5f 00 00
-	Off	5f 00 7f
-	Threshold	51 00 xx	00-64
-	Release	52 00 xx	00-64
+```
+Give the example
+```
 
-Compressor	
-    On	1f 00 00
-	Off	1f 00 7f
+And repeat
 
-	Stomp	10 00 00
-	Sustain	11 00 xx	00-64
-	Output	12 00 xx	00-64
+```
+until finished
+```
 
-	Rack	10 00 01
-	Threshold	11 xx xx	0000-0458	-60dB : 0
-	Attack	13 00 xx	00-64
-	Release	14 00 xx	00-64
-	Ratio	15 00 xx	00-05	1:1, 1:4, 1:8, 1:12, 1:20, 1:inf
-	Knee	16 00 xx	00-02	soft, medium, hard
-	Output	17 xx xx	0000-0458	-20dB : 40dB
+End with an example of getting some data out of the system or using it for a little demo
 
-Modulation
-	On	2f 00 00
-	Off	2f 00 7f
+## Running the tests
 
-	Chorus	20 00 00
-	Speed	21 00 xx	00-64
-	Depth	22 00 xx	00-64
-	Mix	    23 00 xx	00-64
+Explain how to run the automated tests for this system
 
-	Flanger	20 00 01
-	Speed 	21 00 xx	00-64
-	Manual	22 00 xx	00-64
-	Depth	23 00 xx	00-64
-	Feedback	24 00 xx	00-64
-	Spread	25 00 xx	00-64
+### Break down into end to end tests
 
-	Tremolo	20 00 02
-	Freq	21 00 xx	00-64
-	Depth	22 00 xx	00-64
+Explain what these tests test and why
 
-	Phaser	20 00 03
-	Speed 	21 00 xx	00-64
-	Manual	22 00 xx	00-64
-	Depth	23 00 xx	00-64
-	Feedback	24 00 xx	00-64
-Delay
-	On	3f 00 00
-	Off	3f 00 7f
-	Time	31 xx xx	0001-4e0f  or 1 - 19983
-	Feedback	33 00 xx	00-64
-	High Cut	34 xx xx	0768-7d01  1896 32001
-	Low Cut 	36 xx xx	0015-3e40
-	Level	    38 00 xx
+```
+Give an example
+```
 
+### And coding style tests
 
+Explain what these tests test and why
 
-Reverb
-	On	4f 00 00
-	Off	4f 00 7f
+```
+Give an example
+```
 
-	Room	40 00 01
-	Plate	40 00 02
-	Hall	40 00 00
-	Time	41 xx xx	0003-0148
-	Pre	43 xx xx	0001-0f50
-	LowCUt	45 xx xx	0015-3e40
-	HighCut	47 xx xx	0768-7d01
-	High ratio	49 00 xx	01-0a
-	Low Ratio	4a 00 xx	01-0e
-	Level	4b 00 xx	00-64
+## Deployment
 
-	Spring	40 00 03
-	Reverb	41 00 xx	0-64
-	Filter	42 00 xx	0-64
+Add additional notes about how to deploy this on a live system
 
-lamp on
-F0 43 7D 30 41 30 01 00 F7
-lamp off
-F0 43 7D 30 41 30 01 01 F7
+## Built With
 
-wide on
-F0 43 7D 30 41 30 00 01 F7
-wide off
-F0 43 7D 30 41 30 00 00 F7
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
