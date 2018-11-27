@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
 
         <item name="colorAccent">@color/colorAccent</item>
@@ -24,7 +24,7 @@
         <item name="kKnobDrawableRotates">true</item>
         <item name="kMaxAngle">150</item>
         <item name="kMinAngle">-150</item>
-        <item name="kNumberOfStates">101</item>
+        <item name="kNumberOfStates">100</item>
         <item name="kSelectedStateMarkerColor">@color/green_a200</item>
         <item name="kSelectedStateMarkerContinuous">true</item>
         <item name="kStateMarkersAccentColor">@color/grey_800</item>

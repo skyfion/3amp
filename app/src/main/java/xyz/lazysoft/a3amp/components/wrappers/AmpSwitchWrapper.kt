@@ -2,14 +2,13 @@ package xyz.lazysoft.a3amp.components.wrappers
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.ArraySet
 import android.widget.Switch
 import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
 class AmpSwitchWrapper(private val sw: Switch) : Activity(), AmpComponent<Boolean> {
 
-    private var onStateChangeFunctions: ArraySet<(state: Boolean) -> Unit> = ArraySet()
+    private var onStateChangeFunctions: ArrayList<(state: Boolean) -> Unit> = ArrayList()
 
     init {
         sw.setOnCheckedChangeListener { _, isChecked ->
@@ -19,8 +18,9 @@ class AmpSwitchWrapper(private val sw: Switch) : Activity(), AmpComponent<Boolea
         }
     }
 
-    override fun setOnStateChanged(function: (isChecked: Boolean) -> Unit) {
+    override fun setOnStateChanged(function: (isChecked: Boolean) -> Unit): AmpComponent<Boolean> {
         onStateChangeFunctions.add(function)
+        return this
     }
 
     override var state: Boolean

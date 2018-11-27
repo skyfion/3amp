@@ -20,7 +20,11 @@
             <in.goodiebag.carouselpicker.CarouselPicker
                 android:id="@+id/amp_carousel"
                 style="@style/AppTheme.carouselPicker" />
-
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <in.goodiebag.carouselpicker.CarouselPicker
                 android:id="@+id/cab_carousel"
                 style="@style/AppTheme.carouselPicker" />
@@ -28,9 +32,8 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="wrap_content"

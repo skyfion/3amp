@@ -9,7 +9,7 @@ import xyz.lazysoft.a3amp.components.AmpComponent
 @SuppressLint("Registered")
 class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
 
-    private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
+    private var onSelectFunction: ArrayList<(pos: Int) -> Unit> = ArrayList()
     private var interpolator: LinearInterpolator? = null
 
     init {
@@ -21,8 +21,9 @@ class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), Amp
         }
     }
 
-    override fun setOnStateChanged(function: (value: Int) -> Unit) {
+    override fun setOnStateChanged(function: (value: Int) -> Unit): AmpComponent<Int> {
         onSelectFunction.add(function)
+        return this
     }
 
     override var state: Int
@@ -32,17 +33,15 @@ class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), Amp
         }
 
     class LinearInterpolator(val to: Pair<Int, Int>) {
-        val x1 = 0
-        val x2 = 100
-        val y1 = to.first
-        val y2 = to.second
+        private val y1 = to.first
+        private val y2 = to.second
 
         fun valueInterpolated(x: Int): Int {
-            return y1 + (y2 - y1) * (x - x1) / (x2 - x1)
+            return y1 + (y2 - y1) * x / 100
         }
 
         fun valueToRange(d: Int): Int {
-            return x1 + (x2 - x1) * (d - y1) / (y2 - y1)
+            return 100 * (d - y1) / (y2 - y1)
         }
     }
 }

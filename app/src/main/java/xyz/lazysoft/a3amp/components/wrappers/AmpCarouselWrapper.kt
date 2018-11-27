@@ -10,6 +10,7 @@ import xyz.lazysoft.a3amp.components.AmpComponent
 @SuppressLint("Registered")
 class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
         AmpComponent<Int>, ViewPager.OnPageChangeListener {
+
     override fun onPageScrollStateChanged(state: Int) {
 
     }
@@ -22,16 +23,15 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
 
     private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
 
-    override fun setOnStateChanged(function: (pos: Int) -> Unit) {
+    override fun setOnStateChanged(function: (pos: Int) -> Unit): AmpComponent<Int> {
         onSelectFunction.add(function)
+        return this
     }
 
     override var state: Int
         get() = carousel.currentItem
         set(value) {
-            runOnUiThread {
-                carousel.currentItem = value
-            }
+            runOnUiThread { carousel.currentItem = value }
         }
 
     override fun onPageSelected(position: Int) {
