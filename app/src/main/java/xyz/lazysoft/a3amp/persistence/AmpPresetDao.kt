@@ -22,5 +22,5 @@ interface AmpPresetDao {
 
 @Database(entities = [AmpPreset::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun userDao(): AmpPresetDao
+    abstract fun presetDao(): AmpPresetDao
 }

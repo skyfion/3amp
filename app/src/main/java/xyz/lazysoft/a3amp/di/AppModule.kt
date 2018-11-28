@@ -1,18 +1,23 @@
 package xyz.lazysoft.a3amp.di
 
-import dagger.Binds
+import android.app.Activity
+import android.app.Application
 import dagger.Module
-import xyz.lazysoft.a3amp.persistence.Repository
-import xyz.lazysoft.a3amp.persistence.RepositoryImpl
+import dagger.Provides
 import javax.inject.Singleton
 
-
 @Module
-interface AppModule {
+class AppModule(private val activity: Activity) {
 
+    @Provides
     @Singleton
-    @Binds
-    fun repository(repository: RepositoryImpl): Repository
+    fun providesActivity(): Activity {
+        return activity
+    }
 
-
+    @Provides
+    @Singleton
+    fun providesApplication(): Application {
+        return activity.application
+    }
 }

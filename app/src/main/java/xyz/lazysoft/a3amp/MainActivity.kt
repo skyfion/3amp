@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -12,23 +13,24 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
-import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
+import xyz.lazysoft.a3amp.di.AppModule
+import xyz.lazysoft.a3amp.di.DaggerAppComponent
+import xyz.lazysoft.a3amp.di.RoomModule
 import xyz.lazysoft.a3amp.midi.AmpMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
-import xyz.lazysoft.a3amp.persistence.Repository
+import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private val midiManager = AmpMidiManager(this)
     private val thr = Amp(midiManager)
-    @Inject
-    lateinit var repository: Repository
+    @Inject lateinit var repository: AppDatabase
 
     private fun initKnob(knob: Int, text: Int): AmpComponent<Int> {
         return initKnob(knob, text, null)
@@ -220,6 +222,13 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
       //  AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        val component = DaggerAppComponent
+                .builder()
+                .appModule(AppModule(this))
+                .roomModule(RoomModule(this.application))
+                .build()
+        component.inject(this)
+
         setContentView(R.layout.activity_main)
 
         initAmp()
@@ -279,13 +288,13 @@ class MainActivity : DaggerAppCompatActivity() {
             R.id.save_preset -> {
                 //   AmpPreset("test", )
                 thr.getCurrrentDump {
-                    repository.dataBase().userDao().insertAll(
+                    repository.presetDao().insertAll(
                             AmpPreset("test", it))
                 }
                 true
             }
             R.id.load_first_preset -> {
-                repository.dataBase().userDao()
+                repository.presetDao()
                         .findByTitle("test").dump?.let {
                     midiManager.sendSysExCmd(it)
                 }
@@ -294,6 +303,7 @@ class MainActivity : DaggerAppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
 
 }
