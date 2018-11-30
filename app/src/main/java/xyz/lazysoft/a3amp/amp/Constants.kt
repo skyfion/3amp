@@ -71,6 +71,7 @@ class Constants {
         // light
         val LIGHT_ON = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x01) + END
         val LIGHT_OFF = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x00) + END
+        val TAG = "3amp"
 
 
     }

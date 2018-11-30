@@ -7,27 +7,32 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.util.Log.i
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
-import dagger.android.support.DaggerAppCompatActivity
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
 import xyz.lazysoft.a3amp.di.AppModule
 import xyz.lazysoft.a3amp.di.DaggerAppComponent
-import xyz.lazysoft.a3amp.di.RoomModule
+import xyz.lazysoft.a3amp.persistence.RoomModule
 import xyz.lazysoft.a3amp.midi.AmpMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
+import java.util.logging.Logger
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
 class MainActivity : AppCompatActivity() {
+    private val log = AnkoLogger(Const.TAG)
     private val midiManager = AmpMidiManager(this)
     private val thr = Amp(midiManager)
     @Inject lateinit var repository: AppDatabase
@@ -287,17 +292,23 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.save_preset -> {
                 //   AmpPreset("test", )
-                thr.getCurrrentDump {
-                    repository.presetDao().insertAll(
-                            AmpPreset("test", it))
-                }
+               // get dump todo
+                    i("3amp", "bd OK")
+                    doAsync {
+                        repository.presetDao().insertAll(
+                                AmpPreset("test", ByteArray(0)))
+                        i("3amp", "bd OK")
+                    }
+
                 true
             }
             R.id.load_first_preset -> {
-                repository.presetDao()
-                        .findByTitle("test").dump?.let {
-                    midiManager.sendSysExCmd(it)
-                }
+                i("3amp","select ")
+                doAsync { repository.presetDao()
+                        .findByTitle("test")?.let {
+                            //midiManager.sendSysExCmd(it.dump())
+                            i("3amp","select "+ it[0].title)
+                        } }
                 true
             }
             else -> super.onOptionsItemSelected(item)
