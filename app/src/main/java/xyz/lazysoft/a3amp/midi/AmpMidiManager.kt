@@ -4,6 +4,7 @@ import android.content.Context
 import android.hardware.usb.UsbDevice
 import android.widget.Toast
 import jp.kshoji.driver.midi.device.MidiInputDevice
+import xyz.lazysoft.a3amp.amp.Constants.Companion.TAG
 import java.util.HashSet
 import java.util.logging.Logger
 import kotlin.properties.Delegates
@@ -12,10 +13,11 @@ import kotlin.properties.Delegates
  * https://github.com/kshoji/USB-MIDI-Driver
  */
 class AmpMidiManager(private val context: Context) : UsbMidiManager(context) {
+    private val logger = Logger.getLogger(TAG)
     private val usbDevices = HashSet<UsbDevice>()
-    private val logger = Logger.getLogger(this.javaClass.name)
-
     var onMidiAttachedEvent: ((enable: Boolean) -> Unit)? = null
+
+    override var sendSysExtListeners: ArrayList<(ByteArray?) -> Unit> = ArrayList()
     override var sysExtListeners: ArrayList<(ByteArray?) -> Unit> = ArrayList()
 
     var midiAttached: Boolean by Delegates.observable(false) { _, _, newValue ->
@@ -28,10 +30,6 @@ class AmpMidiManager(private val context: Context) : UsbMidiManager(context) {
         }
         midiAttached = false
     }
-
-//    override fun onMidiSystemExclusive(cmd: ByteArray?) {
-//        logger.info("recive midi -> " + cmd?.joinToString())
-//    }
 
     override fun onMidiSystemExclusive(p0: MidiInputDevice, p1: Int, p2: ByteArray?) {
         onMidiSystemExclusive(p2)
@@ -46,6 +44,7 @@ class AmpMidiManager(private val context: Context) : UsbMidiManager(context) {
     }
 
     override fun sendSysExCmd(cmd: ByteArray) {
+        super.sendSysExCmd(cmd)
         val usbDeviceIterator = usbDevices.iterator()
         if (usbDeviceIterator.hasNext()) {
             val devices = getMidiOutputDevices(usbDeviceIterator.next())

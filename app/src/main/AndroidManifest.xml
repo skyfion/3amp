@@ -4,44 +4,58 @@
     package="xyz.lazysoft.a3amp">
 
     <uses-feature android:name="android.hardware.usb.host" />
-    <uses-feature android:name="android.software.midi" android:required="true"/>
+    <uses-feature
+        android:name="android.software.midi"
+        android:required="true" />
 
     <!-- To access Google+ APIs: -->
-    <!--<uses-permission android:name="android.permission.INTERNET" />-->
-    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"
+    <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+    <uses-permission
+        android:name="android.permission.MANAGE_DOCUMENTS"
         tools:ignore="ProtectedPermissions" />
 
     <application
+        android:name=".AmpApplication"
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:fullBackupContent="@xml/backup_descriptor">
-        <!--<provider-->
-            <!--android:name="xyz.lazysoft.a3amp.components.FileService"-->
-            <!--android:authorities="xyz.lazysoft.a3amp.components.fileservice"-->
-            <!--android:exported="true"-->
-            <!--android:grantUriPermissions="true"-->
-            <!--android:permission="android.permission.MANAGE_DOCUMENTS">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.content.action.DOCUMENTS_PROVIDER" />-->
-            <!--</intent-filter>-->
-        <!--</provider>-->
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <!-- <provider -->
+        <!-- android:name="xyz.lazysoft.a3amp.components.FileService" -->
+        <!-- android:authorities="xyz.lazysoft.a3amp.components.fileservice" -->
+        <!-- android:exported="true" -->
+        <!-- android:grantUriPermissions="true" -->
+        <!-- android:permission="android.permission.MANAGE_DOCUMENTS"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.content.action.DOCUMENTS_PROVIDER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </provider> -->
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
-            tools:replace="android:value"
             android:name="android.support.VERSION"
-            android:value="26.1.0" />
+            android:value="26.1.0"
+            tools:replace="android:value" />
+
+        <activity android:name=".PresetsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>

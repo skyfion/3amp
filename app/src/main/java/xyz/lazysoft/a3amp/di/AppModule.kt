@@ -1,23 +1,32 @@
 package xyz.lazysoft.a3amp.di
 
-import android.app.Activity
 import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
+import xyz.lazysoft.a3amp.AmpApplication
 import javax.inject.Singleton
 
+
 @Module
-class AppModule(private val activity: Activity) {
+class AppModule(private val app: AmpApplication) {
 
     @Provides
     @Singleton
-    fun providesActivity(): Activity {
-        return activity
+    fun context(): Context {
+        return app.applicationContext
     }
 
+
+//    @Provides
+//    @Singleton
+//    fun providesActivity(): Activity {
+//        return activity
+//    }
+//
     @Provides
     @Singleton
     fun providesApplication(): Application {
-        return activity.application
+        return app
     }
 }

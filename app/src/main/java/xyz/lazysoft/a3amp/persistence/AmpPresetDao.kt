@@ -10,6 +10,9 @@ interface AmpPresetDao {
     @Query("SELECT * FROM presets WHERE uid IN (:ids)")
     fun loadAllByIds(ids: IntArray): List<AmpPreset>
 
+    @Query("SELECT * FROM presets WHERE uid = (:id)")
+    fun loadById(id: Int): AmpPreset?
+
     @Query("SELECT * FROM presets WHERE title LIKE :title")
     fun findByTitle(title: String): List<AmpPreset>
 
@@ -21,6 +24,9 @@ interface AmpPresetDao {
 
     @Insert
     fun insert(preset: AmpPreset)
+
+    @Update
+    fun update(preset: AmpPreset)
 }
 
 //class AmpPresetRepositrory(dao: AmpPresetDao) {

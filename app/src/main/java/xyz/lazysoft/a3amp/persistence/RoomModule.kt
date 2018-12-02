@@ -1,14 +1,13 @@
 package xyz.lazysoft.a3amp.persistence
 
-import android.app.Application
 import android.arch.persistence.room.Room
+import android.content.Context
 import dagger.Module
 import dagger.Provides
-import xyz.lazysoft.a3amp.components.utils.WorkerThread
 import javax.inject.Singleton
 
 @Module
-class RoomModule(application: Application) {
+class RoomModule(application: Context) {
 
     private val dataBase = Room
             .databaseBuilder(application, AppDatabase::class.java, "3amp-db")

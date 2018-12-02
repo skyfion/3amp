@@ -6,16 +6,14 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion.OFF
 import xyz.lazysoft.a3amp.amp.Constants.Companion.ON
 import xyz.lazysoft.a3amp.amp.Constants.Companion.REQ_SETTINGS
 import xyz.lazysoft.a3amp.amp.Constants.Companion.SEND_CMD
+import xyz.lazysoft.a3amp.amp.Constants.Companion.TAG
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.midi.SysExMidiManager
+import xyz.lazysoft.a3amp.persistence.AmpPreset
 import java.nio.ByteBuffer
-import java.util.concurrent.Future
 import java.util.logging.Logger
 import kotlin.properties.Delegates
-import android.os.AsyncTask.execute
-import java.util.concurrent.Callable
-import java.util.concurrent.FutureTask
 
 
 enum class AmpModel(val model: Byte) {
@@ -26,14 +24,16 @@ enum class AmpModel(val model: Byte) {
     THR5A(0x34)
 }
 
-class Amp(private val midiManager: SysExMidiManager) {
-    private val logger = Logger.getLogger(this.javaClass.name)
+class Amp(val midiManager: SysExMidiManager) {
+    private val logger = Logger.getLogger(TAG)
     private var ampModel: AmpModel? by Delegates.observable<AmpModel?>(null)
     { _, old, new ->
         if (old != new) midiManager.sendSysExCmd(REQ_SETTINGS)
     }
     var modelAmpDetect: ((String) -> Unit)? = null
     var requestCallBack: ((ByteArray) -> Unit)? = null
+    @Volatile
+    var dumpState = MutableList<Byte>(256) { 0 }
 
     init {
         midiManager.sysExtListeners.add { data: ByteArray? ->
@@ -49,12 +49,22 @@ class Amp(private val midiManager: SysExMidiManager) {
                     requestCallBack = null
                     // chkeck header
                     // todo chk checksum
+                    dumpState = YdlDataConverter.dumpToData(data).toMutableList()
                     YdlDataConverter.dumpTo(data)
                             .forEach { midiManager.onMidiSystemExclusive(it) }
                 }
             }
         }
+        midiManager.sendSysExtListeners.add {
+            if (it != null && it.size > 9) {
+                val cmd = it.slice(IntRange(0, 6)).toByteArray()
+                if (cmd.contentEquals(Constants.SEND_CMD)) {
+                    logger.info("write dump " + dumpState.joinToString())
+                    YdlDataConverter.writeDump(dumpState, it[7].toInt(), Pair(it[8], it[9]))
 
+                }
+            }
+        }
     }
 
     fun getCurrrentDump(f: (ByteArray) -> Unit) {
@@ -86,7 +96,7 @@ class Amp(private val midiManager: SysExMidiManager) {
             }
         }
         knob.setOnStateChanged {
-            midiManager.sendSysExCmd(sendCmd + intToParam(it) + END)
+            midiManager.sendSysExCmd(sendCmd + intToParam(it) + END.toByte())
         }
         return this
     }
@@ -109,7 +119,7 @@ class Amp(private val midiManager: SysExMidiManager) {
         }
         sw.setOnStateChanged {
             val mode = if (it) ON else OFF
-            midiManager.sendSysExCmd(cmdId + mode.toByte() + END)
+            midiManager.sendSysExCmd(cmdId + mode.toByte() + END.toByte())
         }
         return this
     }
@@ -126,7 +136,7 @@ class Amp(private val midiManager: SysExMidiManager) {
             }
         }
         spinner.setOnStateChanged {
-            midiManager.sendSysExCmd(cmdId + it.toByte() + END)
+            midiManager.sendSysExCmd(cmdId + it.toByte() + END.toByte())
         }
         return this
     }
@@ -145,8 +155,12 @@ class Amp(private val midiManager: SysExMidiManager) {
             }
         }
         spinner.setOnStateChanged {
-            val value = if (it == 0) OFF else it - 1
-            midiManager.sendSysExCmd(cmdId + value.toByte() + END)
+            if (it == 0)
+                midiManager.sendSysExCmd(SEND_CMD + Constants.byteArrayOf(swId, 0x00, OFF, END))
+            else {
+                midiManager.sendSysExCmd(SEND_CMD + Constants.byteArrayOf(swId, 0x00, ON, END))
+                midiManager.sendSysExCmd(SEND_CMD + Constants.byteArrayOf(id, 0x00, (it - 1), END))
+            }
         }
         return this
     }
@@ -163,9 +177,26 @@ class Amp(private val midiManager: SysExMidiManager) {
         }
         carousel.setOnStateChanged {
             val value = if (it == 0) OFF else ON
-            midiManager.sendSysExCmd(cmdId + value.toByte() + END)
+            midiManager.sendSysExCmd(cmdId + value.toByte() + END.toByte())
         }
         return this
+    }
+
+    var selectPreset: AmpPreset? = null
+        set(value) {
+            value?.let { loadPreset(it) }
+            field = value
+        }
+
+    private fun loadPreset(preset: AmpPreset) {
+        preset.dump?.let {
+            //  val cmd = Constants.HEAD + Constants.DUMP_PREFIX + 0x31 + it + Constants.DUMP_POSTFIX + 0x1F + Constants.END
+            //todo need unit test
+            // logger.info("load dump -> " + it.joinToString())
+            YdlDataConverter.thr5and10(it.toList()).forEach { cmd ->
+                midiManager.onMidiSystemExclusive(cmd)
+            }
+        }
     }
 }
 

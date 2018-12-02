@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "presets")
 data class AmpPreset(
-        @ColumnInfo(name = "title") var title: String?,
+        @ColumnInfo(name = "title") var title: String,
         @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray?
 ){
     @PrimaryKey(autoGenerate = true) var uid: Int? = null
@@ -27,9 +27,13 @@ data class AmpPreset(
     }
 
     override fun hashCode(): Int {
-        var result = title?.hashCode() ?: 0
+        var result = title.hashCode()
         result = 31 * result + (dump?.contentHashCode() ?: 0)
         result = 31 * result + (uid ?: 0)
         return result
+    }
+
+    override fun toString(): String {
+        return title
     }
 }

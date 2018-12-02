@@ -104,4 +104,9 @@
     <string name="spread">spread</string>
     <string name="freq">freq</string>
     <string name="filter">filter</string>
+    <string name="presets">presets</string>
+    <string name="save_preset">save preset</string>
+    <string name="save_preset_as">save preset as..</string>
+    <string name="delete">delete</string>
+    <string name="rename">rename</string>
 </resources>

@@ -3,39 +3,44 @@ package xyz.lazysoft.a3amp
 import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.app.Activity
 import android.content.ContentValues
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.util.Log
-import android.util.Log.i
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.EditText
 import android.widget.TextView
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
+import dagger.android.AndroidInjection
+import dagger.android.DaggerApplication
+import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import xyz.lazysoft.a3amp.amp.Amp
+import xyz.lazysoft.a3amp.amp.AmpModule
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
 import xyz.lazysoft.a3amp.di.AppModule
 import xyz.lazysoft.a3amp.di.DaggerAppComponent
-import xyz.lazysoft.a3amp.persistence.RoomModule
-import xyz.lazysoft.a3amp.midi.AmpMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
-import java.util.logging.Logger
+import xyz.lazysoft.a3amp.persistence.RoomModule
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
 class MainActivity : AppCompatActivity() {
     private val log = AnkoLogger(Const.TAG)
-    private val midiManager = AmpMidiManager(this)
-    private val thr = Amp(midiManager)
-    @Inject lateinit var repository: AppDatabase
+
+    @Inject
+    lateinit var thr: Amp
+
+    @Inject
+    lateinit var repository: AppDatabase
 
     private fun initKnob(knob: Int, text: Int): AmpComponent<Int> {
         return initKnob(knob, text, null)
@@ -69,7 +74,8 @@ class MainActivity : AppCompatActivity() {
         return initCarousel(carousel, content, null)
     }
 
-    private fun initCarousel(carousel: Int, content: Int, changeListener: ((mode: Int) -> Unit)?): AmpComponent<Int> {
+    private fun initCarousel(carousel: Int, content: Int,
+                             changeListener: ((mode: Int) -> Unit)?): AmpComponent<Int> {
         val carouselPicker = findViewById<CarouselPicker>(carousel)
         val textItems = resources.getStringArray(content)
                 .map { CarouselPicker.TextItem(it, 10) }
@@ -225,24 +231,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-      //  AndroidInjection.inject(this)
-        super.onCreate(savedInstanceState)
-        val component = DaggerAppComponent
-                .builder()
-                .appModule(AppModule(this))
-                .roomModule(RoomModule(this.application))
-                .build()
-        component.inject(this)
 
+        super.onCreate(savedInstanceState)
+        (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_main)
 
         initAmp()
         setSupportActionBar(findViewById(R.id.amp_toolbar))
-//        db = Room.databaseBuilder(
-//                applicationContext,
-//                AppDatabase::class.java, "3amp"
-//        ).build()
-        midiManager.open()
+
     }
 
     private val READ_REQUEST_CODE: Int = 42
@@ -283,38 +279,73 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun savePresetAsDialog(): Boolean {
+        lateinit var dialog: DialogInterface
+        lateinit var presetName: EditText
+        dialog = alert {
+            title = "Save as .."
+            isCancelable = true
+            customView {
+                verticalLayout() {
+                    linearLayout() {
+                       presetName = editText {
+                            hint = "enter name"
+                        }.lparams(width = matchParent)
+                    }.lparams(width = matchParent)
+                    linearLayout() {
+                        button("Cancel") {
+                            onClick {
+                                dialog.dismiss()
+                            }
+                        }
+                        button("OK") {
+                            onClick {
+                                val presetTitle = presetName.text.toString()
+                                if (TextUtils.isEmpty(presetTitle)) {
+                                    presetName.error = "Enter name!"
+                                } else {
+                                    val preset = AmpPreset(
+                                            presetTitle,
+                                            thr.dumpState.toByteArray())
+                                    doAsync {
+                                        repository.presetDao().insert(preset)
+                                    }
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+                    }.lparams(width = matchParent)
+                }
+            }
+
+        }.show()
+        return true
+    }
+
+    private fun savePreset(): Boolean {
+        thr.selectPreset?.let {preset ->
+            doAsync {
+                preset.dump = thr.dumpState.toByteArray()
+                repository.presetDao().update(preset)
+            }
+        }?: run {
+            savePresetAsDialog()
+        }
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
-            R.id.create_new -> {
-                performFileSearch()
-                true
-            }
-            R.id.save_preset -> {
-                //   AmpPreset("test", )
-               // get dump todo
-                    i("3amp", "bd OK")
-                    doAsync {
-                        repository.presetDao().insertAll(
-                                AmpPreset("test", ByteArray(0)))
-                        i("3amp", "bd OK")
-                    }
-
-                true
-            }
-            R.id.load_first_preset -> {
-                i("3amp","select ")
-                doAsync { repository.presetDao()
-                        .findByTitle("test")?.let {
-                            //midiManager.sendSysExCmd(it.dump())
-                            i("3amp","select "+ it[0].title)
-                        } }
+            R.id.save_preset_as -> savePresetAsDialog()
+            R.id.save_preset -> savePreset()
+            R.id.list_presets -> {
+                startActivity(Intent(this, PresetsActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
 
 }

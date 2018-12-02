@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_file"
-        android:title="file">
-        <!-- "file" submenu -->
-        <menu>
-            <item android:id="@+id/create_new"
-                android:title="new" />
-            <item android:id="@+id/open"
-                android:title="open" />
-            <item android:id="@+id/save_preset"
-                android:title="save preset" />
-            <item android:id="@+id/load_first_preset"
-                android:title="load first preset" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/list_presets"
+        android:title="@string/presets" />
+    <item
+        android:id="@+id/save_preset"
+        android:title="@string/save_preset" />
+    <item
+        android:id="@+id/save_preset_as"
+        android:title="@string/save_preset_as" />
 </menu>
