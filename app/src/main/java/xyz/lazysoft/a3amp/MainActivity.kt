@@ -305,8 +305,8 @@ class MainActivity : AppCompatActivity() {
                                     presetName.error = "Enter name!"
                                 } else {
                                     val preset = AmpPreset(
-                                            presetTitle,
-                                            thr.dumpState.toByteArray())
+                                            title = presetTitle,
+                                            dump = thr.dumpState.toByteArray())
                                     doAsync {
                                         repository.presetDao().insert(preset)
                                     }

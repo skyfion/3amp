@@ -6,10 +6,11 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "presets")
 data class AmpPreset(
+        @PrimaryKey(autoGenerate = true) var uid: Int? = null,
         @ColumnInfo(name = "title") var title: String,
         @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray?
 ){
-    @PrimaryKey(autoGenerate = true) var uid: Int? = null
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -36,4 +37,5 @@ data class AmpPreset(
     override fun toString(): String {
         return title
     }
+
 }
