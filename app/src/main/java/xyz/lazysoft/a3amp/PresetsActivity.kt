@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.Menu
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.PresetAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
@@ -44,10 +43,10 @@ class PresetsActivity : AppCompatActivity() {
                 PresetAdapter(this, repository.presetDao(), amp)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.presets_menu, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        val inflater = menuInflater
+//        inflater.inflate(R.menu.presets_menu, menu)
+//        return true
+//    }
 
 }

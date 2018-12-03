@@ -2,6 +2,7 @@ package xyz.lazysoft.a3amp.components
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -21,10 +22,10 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
     var loadedPosition: Int = -1
 
     init {
-       refresh()
+        refresh()
     }
 
-    fun refresh() {
+    private fun refresh() {
         doAsync {
             val result = dao.getAll() as ArrayList<AmpPreset>
             uiThread {
@@ -38,7 +39,9 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresetViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.preset_item, parent, false)
-
+        thr.selectPreset?.let {
+            loadedPosition = presets.indexOf(it)
+        }
         return PresetViewHolder(view)
     }
 
@@ -48,11 +51,21 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
 
     override fun onBindViewHolder(holder: PresetViewHolder, position: Int) {
         holder.view.name.text = presets[position].title
-        if (position == loadedPosition)
-            holder.view.btnLoadPreset.linkTextColor = R.color.white
         holder.view.btnDelete.setOnClickListener { showDeleteDialog(holder, presets[position], position) }
         holder.view.btnEdit.setOnClickListener { showUpdateDialog(holder, presets[position]) }
-        holder.view.btnLoadPreset.setOnClickListener { loadPreset(presets[position], position) }
+        holder.onClickFn = {
+            loadedPosition = it
+            loadPreset(presets[it])
+            notifyDataSetChanged()
+        }
+
+        if (loadedPosition == position) {
+            holder.view.card_view.backgroundColor = Color.parseColor("#CCCCCC")
+            holder.view.name.textColor = Color.parseColor("#000000")
+        } else {
+            holder.view.card_view.backgroundColor = Color.parseColor("#75757575")
+            holder.view.name.textColor = Color.parseColor("#FFFFFF")
+        }
     }
 
 
@@ -73,7 +86,7 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
         }
     }
 
-    private  fun updatePreset(preset: AmpPreset) {
+    private fun updatePreset(preset: AmpPreset) {
         doAsync {
             dao.update(preset)
             onComplete {
@@ -84,13 +97,11 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
         }
     }
 
-    fun loadPreset(preset: AmpPreset, position: Int) {
-        loadedPosition = position
+    private fun loadPreset(preset: AmpPreset) {
         thr.selectPreset = preset
-        notifyDataSetChanged()
     }
 
-    fun showUpdateDialog(holder: PresetViewHolder, preset: AmpPreset) {
+    private fun showUpdateDialog(holder: PresetViewHolder, preset: AmpPreset) {
         val dialogBuilder = AlertDialog.Builder(holder.view.context)
 
         val input = EditText(holder.view.context)
@@ -129,5 +140,16 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
     }
 
 
-    class PresetViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class PresetViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+
+        init {
+            view.setOnClickListener(this)
+        }
+
+        var onClickFn: ((position: Int) -> Unit)? = null
+        override fun onClick(v: View?) {
+            onClickFn?.invoke(adapterPosition)
+        }
+
+    }
 }

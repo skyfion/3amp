@@ -33,6 +33,40 @@
         <item>Aco</item>
         <item>Flat</item>
     </string-array>
+    <string-array name="thr5_amps">
+        <item>Clean</item>
+        <item>Crunch</item>
+        <item>Lead</item>
+        <item>BritHi</item>
+        <item>Modern</item>
+    </string-array>
+    <string-array name="thr10c_amps">
+        <item>Delux</item>
+        <item>Class A</item>
+        <item>US Blues</item>
+        <item>Brit blues</item>
+        <item>mini</item>
+        <item>Bass</item>
+        <item>Aco</item>
+        <item>Flat</item>
+    </string-array>
+    <string-array name="thr10x_amps">
+        <item>Power I</item>
+        <item>Power II</item>
+        <item>Brown I</item>
+        <item>Brown II</item>
+        <item>Southern HI</item>
+        <item>Clean</item>
+        <item>Bass</item>
+        <item>Flat</item>
+    </string-array>
+    <string-array name="thr5a_amps">
+        <item>EG CLN</item>
+        <item>Nylon</item>
+        <item>TUBE</item>
+        <item>DYNAMIC</item>
+        <item>CONDENSER</item>
+    </string-array>
     <string-array name="thr10_cabs">
         <item>US4x12</item>
         <item>US2x12</item>
@@ -78,7 +112,6 @@
         <item>1:4</item>
         <item>1:8</item>
         <item>1:12</item>
-        <item>1:20</item>
         <item>1:20</item>
         <item>∞</item>
     </string-array>
