@@ -1,6 +1,5 @@
 package xyz.lazysoft.a3amp.amp
 
-import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides

@@ -8,10 +8,11 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion.REQ_SETTINGS
 import xyz.lazysoft.a3amp.amp.Constants.Companion.SEND_CMD
 import xyz.lazysoft.a3amp.amp.Constants.Companion.TAG
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
+import xyz.lazysoft.a3amp.amp.Utils.intToParam
+import xyz.lazysoft.a3amp.amp.Utils.paramToInt
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.midi.SysExMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
-import java.nio.ByteBuffer
 import java.util.logging.Logger
 import kotlin.properties.Delegates
 
@@ -49,7 +50,6 @@ class Amp(val midiManager: SysExMidiManager) {
                     requestCallBack = null
                     // chkeck header
                     // todo chk checksum
-                    dumpState = YdlDataConverter.dumpToData(data).toMutableList()
                     YdlDataConverter.dumpTo(data)
                             .forEach { midiManager.onMidiSystemExclusive(it) }
                 }
@@ -60,6 +60,7 @@ class Amp(val midiManager: SysExMidiManager) {
                 val cmd = it.slice(IntRange(0, 6)).toByteArray()
                 if (cmd.contentEquals(Constants.SEND_CMD)) {
                     logger.info("write dump " + dumpState.joinToString())
+                    logger.info("data is ${it[7]} ${it[8]} ${it[9]}")
                     YdlDataConverter.writeDump(dumpState, it[7].toInt(), Pair(it[8], it[9]))
 
                 }
@@ -72,15 +73,7 @@ class Amp(val midiManager: SysExMidiManager) {
         midiManager.sendSysExCmd(REQ_SETTINGS)
     }
 
-    private fun paramToInt(param: ByteArray): Int {
-        return ByteBuffer.wrap(param).short.toInt()
-    }
 
-    private fun intToParam(value: Int): ByteArray {
-        return ByteBuffer.wrap(ByteArray(4))
-                .putInt(value)
-                .array().drop(2).toByteArray()
-    }
 
     /**
      * Add common knob
@@ -96,6 +89,7 @@ class Amp(val midiManager: SysExMidiManager) {
             }
         }
         knob.setOnStateChanged {
+            logger.info("recive ${it} -> ${intToParam(it).joinToString()}")
             midiManager.sendSysExCmd(sendCmd + intToParam(it) + END.toByte())
         }
         return this

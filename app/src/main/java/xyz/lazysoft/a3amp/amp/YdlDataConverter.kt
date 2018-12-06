@@ -170,14 +170,3 @@ class YdlDataConverter {
 
     }
 }
-
-/**
- * data dump
- */
-class YdlPreset(val data: List<Byte>) {
-    var name: String = ""
-
-    init {
-
-    }
-}

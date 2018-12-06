@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
         },
                 Const.REVERB_MODE, Const.REVERB_SW)
                 .addKnob(initKnob(R.id.reverb_time_knob,
-                        R.id.reverb_time_text, Pair(3, 200)), Const.REVERB_TIME)
+                        R.id.reverb_time_text, Pair(3, 328)), Const.REVERB_TIME)
                 .addKnob(initKnob(R.id.reverb_pre_delay_knob,
                         R.id.reverb_pre_dalay_text, Pair(1, 2000)), Const.REVERB_PRE_DELAY)
                 .addKnob(initKnob(R.id.reverb_low_cut,
