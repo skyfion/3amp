@@ -4,9 +4,6 @@
     package="xyz.lazysoft.a3amp">
 
     <uses-feature android:name="android.hardware.usb.host" />
-    <uses-feature
-        android:name="android.software.midi"
-        android:required="true" />
 
     <!-- To access Google+ APIs: -->
     <!-- <uses-permission android:name="android.permission.INTERNET" /> -->

@@ -1,5 +1,6 @@
 package xyz.lazysoft.a3amp.amp
 
+import xyz.lazysoft.a3amp.amp.Constants.Companion.DUMP_MAP
 import xyz.lazysoft.a3amp.amp.Constants.Companion.END
 import xyz.lazysoft.a3amp.amp.Constants.Companion.HEART_BEAT
 import xyz.lazysoft.a3amp.amp.Constants.Companion.OFF
@@ -84,7 +85,11 @@ class Amp(val midiManager: SysExMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 7)).toByteArray()
                 if (cmd.contentEquals(sendCmd)) {
-                    knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
+                    if (DUMP_MAP[id] is List<*>) {
+                        knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
+                    } else {
+                        knob.state = it[9].toInt()
+                    }
                 }
             }
         }

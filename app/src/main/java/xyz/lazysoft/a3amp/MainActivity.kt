@@ -16,20 +16,14 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.TextView
-import dagger.android.AndroidInjection
-import dagger.android.DaggerApplication
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import xyz.lazysoft.a3amp.amp.Amp
-import xyz.lazysoft.a3amp.amp.AmpModule
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
-import xyz.lazysoft.a3amp.di.AppModule
-import xyz.lazysoft.a3amp.di.DaggerAppComponent
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
-import xyz.lazysoft.a3amp.persistence.RoomModule
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
@@ -203,7 +197,7 @@ class MainActivity : AppCompatActivity() {
         },
                 Const.REVERB_MODE, Const.REVERB_SW)
                 .addKnob(initKnob(R.id.reverb_time_knob,
-                        R.id.reverb_time_text, Pair(3, 328)), Const.REVERB_TIME)
+                        R.id.reverb_time_text, Pair(3, 200)), Const.REVERB_TIME)
                 .addKnob(initKnob(R.id.reverb_pre_delay_knob,
                         R.id.reverb_pre_dalay_text, Pair(1, 2000)), Const.REVERB_PRE_DELAY)
                 .addKnob(initKnob(R.id.reverb_low_cut,
@@ -219,7 +213,7 @@ class MainActivity : AppCompatActivity() {
                 .addKnob(initKnob(R.id.reverb_spring_reverb,
                         R.id.reverb_spring_reverb_text), Const.REVERB_TIME)
                 .addKnob(initKnob(R.id.reverb_spring_filter_knob,
-                        R.id.reverb_spring_filter_text), Const.REVERB_FILTER)
+                        R.id.reverb_spring_filter_text), Const.REVERB_SPRING_FILTER)
         // gate
         thr.addSwSpinner(initCarousel(R.id.gate_carousel, R.array.sw_modes,
                 blockActivator(R.id.gate_empty_block, R.id.gate_block)), Const.GATE_SW)

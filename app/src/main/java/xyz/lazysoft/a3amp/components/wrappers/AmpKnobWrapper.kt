@@ -10,10 +10,9 @@ import xyz.lazysoft.a3amp.components.AmpComponent
 class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
 
     private var onSelectFunction: ArrayList<(pos: Int) -> Unit> = ArrayList()
-    private var interpolator: LinearInterpolator? = null
+    private val interpolator: LinearInterpolator? = toRange?.let { LinearInterpolator(it) }
 
     init {
-        toRange?.let { interpolator = LinearInterpolator(it) }
         knob.setOnStateChanged { value ->
             onSelectFunction.forEach { f ->
                 f.invoke(interpolator?.valueInterpolated(value) ?: value)
