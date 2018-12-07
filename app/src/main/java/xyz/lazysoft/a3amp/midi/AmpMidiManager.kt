@@ -15,12 +15,12 @@ import kotlin.properties.Delegates
 class AmpMidiManager(private val context: Context) : UsbMidiManager(context) {
     private val logger = Logger.getLogger(TAG)
     private val usbDevices = HashSet<UsbDevice>()
-    var onMidiAttachedEvent: ((enable: Boolean) -> Unit)? = null
+    private var onMidiAttachedEvent: ((enable: Boolean) -> Unit)? = null
 
     override var sendSysExtListeners: ArrayList<(ByteArray?) -> Unit> = ArrayList()
     override var sysExtListeners: ArrayList<(ByteArray?) -> Unit> = ArrayList()
 
-    var midiAttached: Boolean by Delegates.observable(false) { _, _, newValue ->
+    private var midiAttached: Boolean by Delegates.observable(false) { _, _, newValue ->
         onMidiAttachedEvent?.invoke(newValue)
     }
 

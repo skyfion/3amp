@@ -2,6 +2,7 @@ package xyz.lazysoft.a3amp
 
 import org.junit.Assert
 import org.junit.Test
+import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.YdlDataConverter
 
 class YdlTest {
@@ -10,8 +11,15 @@ class YdlTest {
     @Test
     fun parseDumpTest() {
        val cmds = YdlDataConverter.dumpTo(dump.toByteArray())
-
         Assert.assertEquals(cmds.isNotEmpty(), true)
+    }
+
+    @Test
+    fun writeDumpState() {
+        val initDump = Constants.initPresetDump.toMutableList()
+        YdlDataConverter.writeDump(initDump, 65, Pair(0, 99))
+        val index = Constants.DUMP_MAP[65] as Int
+        Assert.assertEquals(initDump[index], 99.toByte())
     }
 
 }

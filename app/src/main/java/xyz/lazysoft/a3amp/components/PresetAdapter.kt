@@ -19,7 +19,7 @@ import xyz.lazysoft.a3amp.persistence.AmpPresetDao
 class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private val thr: Amp) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>() {
 
     var presets: ArrayList<AmpPreset> = ArrayList()
-    var loadedPosition: Int = -1
+    private var loadedPosition: Int = -1
 
     init {
         refresh()

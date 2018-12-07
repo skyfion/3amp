@@ -222,6 +222,7 @@ class MainActivity : AppCompatActivity() {
                 .addKnob(initKnob(R.id.gate_threshold_knob,
                         R.id.gate_threshold_text), Const.GATE_THRESHOLD)
 
+        thr.open()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -300,7 +301,7 @@ class MainActivity : AppCompatActivity() {
                                 } else {
                                     val preset = AmpPreset(
                                             title = presetTitle,
-                                            dump = thr.dumpState.toByteArray())
+                                            dump = thr.dumpState.dump)
                                     doAsync {
                                         repository.presetDao().insert(preset)
                                     }
@@ -319,7 +320,7 @@ class MainActivity : AppCompatActivity() {
     private fun savePreset(): Boolean {
         thr.selectPreset?.let {preset ->
             doAsync {
-                preset.dump = thr.dumpState.toByteArray()
+                preset.dump = thr.dumpState.dump
                 repository.presetDao().update(preset)
             }
         }?: run {

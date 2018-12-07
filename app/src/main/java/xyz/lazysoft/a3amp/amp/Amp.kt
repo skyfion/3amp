@@ -1,6 +1,5 @@
 package xyz.lazysoft.a3amp.amp
 
-import xyz.lazysoft.a3amp.amp.Constants.Companion.DUMP_MAP
 import xyz.lazysoft.a3amp.amp.Constants.Companion.END
 import xyz.lazysoft.a3amp.amp.Constants.Companion.HEART_BEAT
 import xyz.lazysoft.a3amp.amp.Constants.Companion.OFF
@@ -33,9 +32,9 @@ class Amp(val midiManager: SysExMidiManager) {
         if (old != new) midiManager.sendSysExCmd(REQ_SETTINGS)
     }
     var modelAmpDetect: ((String) -> Unit)? = null
-    var requestCallBack: ((ByteArray) -> Unit)? = null
-    @Volatile
-    var dumpState = MutableList<Byte>(256) { 0 }
+    private var requestCallBack: ((ByteArray) -> Unit)? = null
+    val dumpState: AmpState = AmpState(Constants.initPresetDump.toByteArray())
+
 
     init {
         midiManager.sysExtListeners.add { data: ByteArray? ->
@@ -51,22 +50,21 @@ class Amp(val midiManager: SysExMidiManager) {
                     requestCallBack = null
                     // chkeck header
                     // todo chk checksum
-                    YdlDataConverter.dumpTo(data)
-                            .forEach { midiManager.onMidiSystemExclusive(it) }
+                    applyDump(data)
                 }
             }
         }
+
+
         midiManager.sendSysExtListeners.add {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 6)).toByteArray()
                 if (cmd.contentEquals(Constants.SEND_CMD)) {
-                    logger.info("write dump " + dumpState.joinToString())
-                    logger.info("data is ${it[7]} ${it[8]} ${it[9]}")
-                    YdlDataConverter.writeDump(dumpState, it[7].toInt(), Pair(it[8], it[9]))
-
+                    writeDump(dumpState, it[7].toInt(), Pair(it[8], it[9]))
                 }
             }
         }
+
     }
 
     fun getCurrrentDump(f: (ByteArray) -> Unit) {
@@ -74,7 +72,44 @@ class Amp(val midiManager: SysExMidiManager) {
         midiManager.sendSysExCmd(REQ_SETTINGS)
     }
 
+    fun open() {
+        // init empty dump
+        YdlDataConverter.thr5and10(dumpState.dump.toList()).forEach { cmd ->
+            midiManager.onMidiSystemExclusive(cmd)
+        }
 
+    }
+
+    private fun applyDump(dump: ByteArray) {
+        YdlDataConverter.dumpTo(dump)
+                .forEach { midiManager.onMidiSystemExclusive(it) }
+    }
+
+    fun writeDump(state: AmpState, id: Int, value: Pair<Byte, Byte>) {
+
+        // this is conflict reverb time and spring reverb, they have one ID
+        // may by bag inside YDL format
+        val cell = if (Constants.REVERB_TIME == id) {
+            val mode = Constants.DUMP_MAP[Constants.REVERB_MODE] as Int
+            if (dumpState.get(mode) == 3.toByte()) {
+                193
+            } else {
+                194
+            }
+        } else {
+            Constants.DUMP_MAP[id]
+        }
+
+        when (cell) {
+            is List<*> -> {
+                val listCell = cell as List<Int>
+                state.set(listCell[0], value.first)
+                state.set(listCell[1], value.second)
+            }
+            is Int -> state.set(cell, value.second)
+
+        }
+    }
 
     /**
      * Add common knob
@@ -85,11 +120,7 @@ class Amp(val midiManager: SysExMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 7)).toByteArray()
                 if (cmd.contentEquals(sendCmd)) {
-                    if (DUMP_MAP[id] is List<*>) {
                         knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
-                    } else {
-                        knob.state = it[9].toInt()
-                    }
                 }
             }
         }

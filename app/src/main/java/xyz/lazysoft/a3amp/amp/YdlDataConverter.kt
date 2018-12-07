@@ -10,18 +10,6 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion as C
 class YdlDataConverter {
     companion object {
 
-        fun writeDump(dump: MutableList<Byte>, id: Int, value: Pair<Byte, Byte>) {
-            val cell = C.DUMP_MAP[id]
-            when (cell) {
-                is List<*> -> {
-                    val listCell = cell as List<Int>
-                    dump[listCell[0]] = value.first
-                    dump[listCell[1]] = value.second
-                }
-                is Int -> dump[cell] = value.second
-            }
-        }
-
         fun thr5and10(dump: List<Byte>): List<ByteArray> {
             val result = ArrayList<ByteArray>()
 
@@ -102,10 +90,6 @@ class YdlDataConverter {
                 add(C.GATE_RELEASE, dump[210])
             }
             return result
-        }
-
-        fun dumpToData(settings: ByteArray): List<Byte> {
-            return settings.slice(IntRange(THR_DUMP_OFFSET, THR_DATA_SIZE - 3))
         }
 
         fun dumpTo(settings: ByteArray): List<ByteArray> {
