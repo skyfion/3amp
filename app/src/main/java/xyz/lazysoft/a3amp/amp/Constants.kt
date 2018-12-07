@@ -11,6 +11,11 @@ class Constants {
 
 
         const val THR_DATA_SIZE = 276
+        const val THR_DUMP_OFFSET = 18
+        const val THR_FILE_SIZE = 265
+        const val THR_FILE_OFFSET = 9
+        const val THR_SYSEX_SIZE = 256
+        const val THR_SETTINGS_NAME_SIZE = 64
 
         const val ON = 0x00
         const val OFF = 0x7F
@@ -18,7 +23,7 @@ class Constants {
         val HEAD = byteArrayOf(0xF0, 0x43, 0x7D)
         val DUMP_PREFIX = byteArrayOf(0x00, 0x02, 0x0c, 0x44, 0x54, 0x41)
         val DUMP_POSTFIX = byteArrayOf(0x41, 0x6c, 0x6c, 0x50, 0x00, 0x00, 0x7f, 0x7f)
-        val END = 0xF7
+        const val END = 0xF7
         val SEND_CMD = HEAD + byteArrayOf(0x10, 0x41, 0x30, 0x01)
         val REQ_SETTINGS = HEAD + byteArrayOf(0x20, 0x44, 0x54, 0x41, 0x31, 0x41, 0x6c, 0x6c, 0x50, END)
         val HEART_BEAT = HEAD + byteArrayOf(0x60, 0x44, 0x54, 0x41)

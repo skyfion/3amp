@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private val READ_REQUEST_CODE: Int = 42
+    private val  READ_REQUEST_CODE: Int = 42
 
     fun performFileSearch() {
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file

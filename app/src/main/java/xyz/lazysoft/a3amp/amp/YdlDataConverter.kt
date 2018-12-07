@@ -1,5 +1,7 @@
 package xyz.lazysoft.a3amp.amp
 
+import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
+import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DUMP_OFFSET
 import xyz.lazysoft.a3amp.amp.Constants.Companion as C
 
 /**
@@ -7,12 +9,6 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion as C
  * */
 class YdlDataConverter {
     companion object {
-        val THR_DUMP_SIZE = 276
-        val THR_DUMP_OFFSET = 18
-        val THR_FILE_SIZE = 265
-        val THR_FILE_OFFSET = 9
-        val THR_SYSEX_SIZE = 256
-        val THR_SETTINGS_NAME_SIZE = 64
 
         fun writeDump(dump: MutableList<Byte>, id: Int, value: Pair<Byte, Byte>) {
             val cell = C.DUMP_MAP[id]
@@ -109,14 +105,14 @@ class YdlDataConverter {
         }
 
         fun dumpToData(settings: ByteArray): List<Byte> {
-            return settings.slice(IntRange(THR_DUMP_OFFSET, THR_DUMP_SIZE - 3))
+            return settings.slice(IntRange(THR_DUMP_OFFSET, THR_DATA_SIZE - 3))
         }
 
         fun dumpTo(settings: ByteArray): List<ByteArray> {
             val result = ArrayList<ByteArray>()
 
-            if (settings.size == THR_DUMP_SIZE) {
-                val dump = settings.slice(IntRange(THR_DUMP_OFFSET, THR_DUMP_SIZE - 3))
+            if (settings.size == THR_DATA_SIZE) {
+                val dump = settings.slice(IntRange(THR_DUMP_OFFSET, THR_DATA_SIZE - 3))
                 result.addAll(thr5and10(dump))
             }
             return result

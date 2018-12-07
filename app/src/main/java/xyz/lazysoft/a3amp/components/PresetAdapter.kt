@@ -72,7 +72,7 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
     private fun deletePreset(preset: AmpPreset) {
         doAsync {
             dao.delete(preset)
-            onComplete {
+            onComplete { _ ->
                 uiThread {
                     it.refresh()
                     thr.selectPreset?.let { selectPreset ->
@@ -89,7 +89,7 @@ class PresetAdapter(val context: Context, private val dao: AmpPresetDao, private
     private fun updatePreset(preset: AmpPreset) {
         doAsync {
             dao.update(preset)
-            onComplete {
+            onComplete { _ ->
                 uiThread {
                     it.refresh()
                 }
