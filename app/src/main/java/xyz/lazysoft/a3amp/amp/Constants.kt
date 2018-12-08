@@ -70,6 +70,7 @@ class Constants {
         const val REVERB_TIME = 0x41
         const val REVERB_SPRING_FILTER = 0x42
         const val REVERB_PRE_DELAY = 0x43
+        // may by spring reverb mast be 0x44
         const val REVERB_LOW_CUT = 0x45
         const val REVERB_HIGH_CUT = 0x47
         const val REVERB_HIGH_RATIO = 0x49
@@ -82,49 +83,50 @@ class Constants {
         val TAG = "3amp"
 
         val DUMP_MAP = hashMapOf(
-                this.AMP to 128,
-                this.K_GAIN to 129,
-                this.K_MASTER to 130,
-                this.K_BASS to 131,
-                this.K_MID to 132,
-                this.K_TREB to 133,
-                this.CAB to 134,
-                this.COMPRESSOR_SW to 159,
-                this.COMPRESSOR_STOMP_SUSTAIN to 145,
-                this.COMPRESSOR_STOMP_OUTPUT to 146,
-                this.COMPRESSOR_RACK_THRESHOLD to listOf(145, 146),
-                this.COMPRESSOR_RACK_ATTACK to 147,
-                this.COMPRESSOR_RACK_RELEASE to 148,
-                this.COMPRESSOR_RACK_RATIO to 149,
-                this.COMPRESSOR_RACK_KNEE to 150,
-                this.COMPRESSOR_RACK_OUTPUT to listOf(151, 152),
-                this.EFFECTS_SW to 175,
-                this.EFFECTS_MODE to 160,
-                this.EFFECT_KNOB1 to 161,
-                this.EFFECT_KNOB2 to 162,
-                this.EFFECT_KNOB3 to 163,
-                this.EFFECT_KNOB4 to 164,
-                this.EFFECT_KNOB5 to 165,
-                this.DELAY_TIME to listOf(177, 178),
-                this.DELAY_FEEDBACK to 179,
-                this.DELAY_HIGH_CUT to listOf(180, 181),
-                this.DELAY_LOW_CUT to listOf(182, 183),
-                this.DELAY_LEVEL to 184,
-                this.DELAY_SW to 191,
-                this.REVERB_SW to 207,
-                this.REVERB_MODE to 192,
-                this.REVERB_TIME to 194,
-                this.REVERB_PRE_DELAY to listOf(195, 196),
-                this.REVERB_LOW_CUT to listOf(197, 198),
-                this.REVERB_HIGH_CUT to listOf(199, 200),
-                this.REVERB_HIGH_RATIO to 201,
-                this.REVERB_LOW_RATIO to 202,
-                this.REVERB_LEVEL to 203,
+                AMP to 128,
+                K_GAIN to 129,
+                K_MASTER to 130,
+                K_BASS to 131,
+                K_MID to 132,
+                K_TREB to 133,
+                CAB to 134,
+                COMPRESSOR_SW to 159,
+                COMPRESSOR_MODE to 144,
+                COMPRESSOR_STOMP_SUSTAIN to 145,
+                COMPRESSOR_STOMP_OUTPUT to 146,
+                COMPRESSOR_RACK_THRESHOLD to listOf(145, 146),
+                COMPRESSOR_RACK_ATTACK to 147,
+                COMPRESSOR_RACK_RELEASE to 148,
+                COMPRESSOR_RACK_RATIO to 149,
+                COMPRESSOR_RACK_KNEE to 150,
+                COMPRESSOR_RACK_OUTPUT to listOf(151, 152),
+                EFFECTS_SW to 175,
+                EFFECTS_MODE to 160,
+                EFFECT_KNOB1 to 161,
+                EFFECT_KNOB2 to 162,
+                EFFECT_KNOB3 to 163,
+                EFFECT_KNOB4 to 164,
+                EFFECT_KNOB5 to 165,
+                DELAY_TIME to listOf(177, 178),
+                DELAY_FEEDBACK to 179,
+                DELAY_HIGH_CUT to listOf(180, 181),
+                DELAY_LOW_CUT to listOf(182, 183),
+                DELAY_LEVEL to 184,
+                DELAY_SW to 191,
+                REVERB_SW to 207,
+                REVERB_MODE to 192,
+                REVERB_TIME to 194,
+                REVERB_PRE_DELAY to listOf(195, 196),
+                REVERB_LOW_CUT to listOf(197, 198),
+                REVERB_HIGH_CUT to listOf(199, 200),
+                REVERB_HIGH_RATIO to 201,
+                REVERB_LOW_RATIO to 202,
+                REVERB_LEVEL to 203,
               //  this.REVERB_SPRING_REVERB to 193,
-                this.REVERB_SPRING_FILTER to 194,
-                this.GATE_SW to 223,
-                this.GATE_THRESHOLD to 209,
-                this.GATE_RELEASE to 210
+                REVERB_SPRING_FILTER to 194,
+                GATE_SW to 223,
+                GATE_THRESHOLD to 209,
+                GATE_RELEASE to 210
         )
 
         // 256
@@ -145,6 +147,8 @@ class Constants {
                 0x00, 0x32, 0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7F,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00).map { it.toByte() }
+
+        const val CAROUSEL_TEXT_SIZE: Int = 10
 
     }
 }

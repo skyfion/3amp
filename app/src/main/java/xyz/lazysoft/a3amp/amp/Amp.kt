@@ -31,20 +31,26 @@ class Amp(val midiManager: SysExMidiManager) {
     { _, old, new ->
         if (old != new) midiManager.sendSysExCmd(REQ_SETTINGS)
     }
-    var modelAmpDetect: ((String) -> Unit)? = null
+    var modelAmpDetect: ((AmpModel) -> Unit)? = null
     private var requestCallBack: ((ByteArray) -> Unit)? = null
     val dumpState: AmpState = AmpState(Constants.initPresetDump.toByteArray())
+    private var heartBeat: ByteArray? by Delegates.observable<ByteArray?>(null)
+    { _, oldValue, newValue ->
 
+        if ((oldValue == null && newValue != null) || (newValue != null && oldValue != null && !newValue.contentEquals(oldValue))) {
+            val model = AmpModel.values().firstOrNull { it.model == newValue[7] }
+            if (model != null)
+                modelAmpDetect?.invoke(model)
+            ampModel = model
+        }
+    }
 
     init {
         midiManager.sysExtListeners.add { data: ByteArray? ->
             if (data != null) {
                 val sig = data.slice(IntRange(0, 6)).toByteArray()
                 if (sig.contentEquals(HEART_BEAT)) {
-                    val model = AmpModel.values().firstOrNull { it.model == data[7] }
-                    if (model != null)
-                        modelAmpDetect?.invoke(model.name)
-                    ampModel = model
+                    heartBeat = data
                 } else if (data.size == THR_DATA_SIZE) { // config from amp
                     requestCallBack?.invoke(data)
                     requestCallBack = null
@@ -120,12 +126,12 @@ class Amp(val midiManager: SysExMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 7)).toByteArray()
                 if (cmd.contentEquals(sendCmd)) {
-                        knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
+                    knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
                 }
             }
         }
         knob.setOnStateChanged {
-            logger.info("recive ${it} -> ${intToParam(it).joinToString()}")
+            //   logger.info("recive ${it} -> ${intToParam(it).joinToString()}")
             midiManager.sendSysExCmd(sendCmd + intToParam(it) + END.toByte())
         }
         return this

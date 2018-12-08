@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">3AMP</string>
+    <string name="app_name">3amp</string>
     <string name="amplifier">Amplifier:</string>
     <string name="gain">gain</string>
     <string name="master">master</string>

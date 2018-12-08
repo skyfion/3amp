@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
@@ -19,16 +20,19 @@ import android.widget.TextView
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import xyz.lazysoft.a3amp.amp.Amp
+import xyz.lazysoft.a3amp.amp.AmpModel
+import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
+import xyz.lazysoft.a3amp.midi.AmpMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
 class MainActivity : AppCompatActivity() {
-    private val log = AnkoLogger(Const.TAG)
+    private val logger = AnkoLogger(Const.TAG)
 
     @Inject
     lateinit var thr: Amp
@@ -71,10 +75,8 @@ class MainActivity : AppCompatActivity() {
     private fun initCarousel(carousel: Int, content: Int,
                              changeListener: ((mode: Int) -> Unit)?): AmpComponent<Int> {
         val carouselPicker = findViewById<CarouselPicker>(carousel)
-        val textItems = resources.getStringArray(content)
-                .map { CarouselPicker.TextItem(it, 10) }
-        carouselPicker.adapter = CarouselPicker.CarouselViewAdapter(this, textItems, 0)
         val ampCarouselWrapper = AmpCarouselWrapper(carouselPicker)
+        ampCarouselWrapper.setContent(content, this)
         if (changeListener != null)
             ampCarouselWrapper.setOnStateChanged(changeListener)
         return ampCarouselWrapper
@@ -86,17 +88,37 @@ class MainActivity : AppCompatActivity() {
                         R.id.tab_effects, R.id.tab_delay,
                         R.id.tab_reverb, R.id.tab_gate))
 
+        val ampMode = initCarousel(R.id.amp_carousel, R.array.thr10_amps)
+        val cabMode = initCarousel(R.id.cab_carousel, R.array.thr10_cabs)
+
         thr.addKnob(initKnob(R.id.gain_knob, R.id.gain_text), Const.K_GAIN)
                 .addKnob(initKnob(R.id.master_knob, R.id.master_text), Const.K_MASTER)
                 .addKnob(initKnob(R.id.bass_knob, R.id.bass_text), Const.K_BASS)
                 .addKnob(initKnob(R.id.treble_knob, R.id.treble_text), Const.K_TREB)
                 .addKnob(initKnob(R.id.middle_knob, R.id.middle_text), Const.K_MID)
-                .addSpinner(initCarousel(R.id.amp_carousel, R.array.thr10_amps), Const.AMP)
-                .addSpinner(initCarousel(R.id.cab_carousel, R.array.thr10_cabs), Const.CAB)
+                .addSpinner(ampMode, Const.AMP)
+                .addSpinner(cabMode, Const.CAB)
 
         // amp model detect
-        val ampNameText = findViewById<TextView>(R.id.amp_name)
-        thr.modelAmpDetect = { s -> runOnUiThread { ampNameText.text = s } }
+        thr.modelAmpDetect = { model -> runOnUiThread {
+
+            val thrMode: Int? = when (model) {
+                AmpModel.THR10X -> R.array.thr10x_amps
+                AmpModel.THR10 -> R.array.thr10_amps
+                AmpModel.THR10C -> R.array.thr10c_amps
+                AmpModel.THR5 -> R.array.thr5_amps
+                AmpModel.THR5A -> R.array.thr5_amps
+            }
+
+            thrMode?.let {
+                (ampMode as AmpCarouselWrapper).setContent(it, this)
+            }
+
+            val toolbar = findViewById<Toolbar>(R.id.amp_toolbar)
+            if (toolbar != null) {
+                toolbar.title = "${resources.getString(R.string.app_name)} - ${model.name}"
+            }
+        } }
 
         // compressor
         thr.addKnob(
@@ -338,6 +360,13 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, PresetsActivity::class.java))
                 true
             }
+//            R.id.test_menu -> {
+//                (thr.midiManager as AmpMidiManager)
+//                        .onMidiSystemExclusive(Constants.HEART_BEAT +
+//                                AmpModel.THR10C.model +
+//                                Constants.END.toByte())
+//                true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }

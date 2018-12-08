@@ -38,6 +38,7 @@ class YdlDataConverter {
             // compressor
             add(C.COMPRESSOR_SW, dump[159])
             if (dump[159].toInt() == 0) {
+                add(C.COMPRESSOR_MODE, dump[144])
                 add(C.COMPRESSOR_STOMP_SUSTAIN, dump[145])
                 add(C.COMPRESSOR_STOMP_OUTPUT, dump[146])
                 add(C.COMPRESSOR_RACK_THRESHOLD, dump[145], dump[146])
