@@ -39,14 +39,17 @@ class YdlDataConverter {
             add(C.COMPRESSOR_SW, dump[159])
             if (dump[159].toInt() == 0) {
                 add(C.COMPRESSOR_MODE, dump[144])
-                add(C.COMPRESSOR_STOMP_SUSTAIN, dump[145])
-                add(C.COMPRESSOR_STOMP_OUTPUT, dump[146])
-                add(C.COMPRESSOR_RACK_THRESHOLD, dump[145], dump[146])
-                add(C.COMPRESSOR_RACK_ATTACK, dump[147])
-                add(C.COMPRESSOR_RACK_RELEASE, dump[148])
-                add(C.COMPRESSOR_RACK_RATIO, dump[149])
-                add(C.COMPRESSOR_RACK_KNEE, dump[150])
-                add(C.COMPRESSOR_RACK_OUTPUT, dump[151], dump[152])
+                if (dump[144].toInt() == 0) {
+                    add(C.COMPRESSOR_STOMP_SUSTAIN, dump[145])
+                    add(C.COMPRESSOR_STOMP_OUTPUT, dump[146])
+                } else {
+                    add(C.COMPRESSOR_RACK_THRESHOLD, dump[145], dump[146])
+                    add(C.COMPRESSOR_RACK_ATTACK, dump[147])
+                    add(C.COMPRESSOR_RACK_RELEASE, dump[148])
+                    add(C.COMPRESSOR_RACK_RATIO, dump[149])
+                    add(C.COMPRESSOR_RACK_KNEE, dump[150])
+                    add(C.COMPRESSOR_RACK_OUTPUT, dump[151], dump[152])
+                }
             }
             // effects
             add(C.EFFECTS_SW, dump[175])

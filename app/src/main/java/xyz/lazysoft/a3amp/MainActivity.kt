@@ -21,11 +21,9 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.AmpModel
-import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
-import xyz.lazysoft.a3amp.midi.AmpMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
@@ -370,7 +368,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
 }
 

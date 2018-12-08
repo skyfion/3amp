@@ -95,16 +95,27 @@ class Amp(val midiManager: SysExMidiManager) {
 
         // this is conflict reverb time and spring reverb, they have one ID
         // may by bag inside YDL format
-        val cell = if (Constants.REVERB_TIME == id) {
-            val mode = Constants.DUMP_MAP[Constants.REVERB_MODE] as Int
-            if (dumpState.get(mode) == 3.toByte()) {
-                193
-            } else {
-                194
-            }
-        } else {
-            Constants.DUMP_MAP[id]
-        }
+        val cell =
+                when (id) {
+                    Constants.REVERB_TIME -> {
+                        val mode = Constants.DUMP_MAP[Constants.REVERB_MODE] as Int
+                        if (dumpState.get(mode) == 3.toByte()) {
+                            193
+                        } else {
+                            194
+                        }
+                    }
+                    Constants.COMPRESSOR_STOMP_SUSTAIN -> {
+                        val mode = Constants.DUMP_MAP[Constants.COMPRESSOR_MODE] as Int
+                        if (dumpState.get(mode) == 0.toByte()) {
+                            145
+                        } else {
+                            listOf(145, 146)
+                        }
+                    }
+                    else -> Constants.DUMP_MAP[id]
+                }
+
 
         when (cell) {
             is List<*> -> {
