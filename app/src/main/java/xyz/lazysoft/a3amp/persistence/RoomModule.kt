@@ -13,6 +13,7 @@ class RoomModule(application: Context) {
     private val dataBase = Room
             .databaseBuilder(application, AppDatabase::class.java, "3amp-db")
             .addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
             .build()
 
     @Singleton

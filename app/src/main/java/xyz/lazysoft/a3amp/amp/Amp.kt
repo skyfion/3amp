@@ -8,6 +8,7 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion.REQ_SETTINGS
 import xyz.lazysoft.a3amp.amp.Constants.Companion.SEND_CMD
 import xyz.lazysoft.a3amp.amp.Constants.Companion.TAG
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
+import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
 import xyz.lazysoft.a3amp.amp.Utils.intToParam
 import xyz.lazysoft.a3amp.amp.Utils.paramToInt
 import xyz.lazysoft.a3amp.components.AmpComponent
@@ -27,13 +28,18 @@ enum class AmpModel(val model: Byte) {
 
 class Amp(val midiManager: SysExMidiManager) {
     private val logger = Logger.getLogger(TAG)
+
     private var ampModel: AmpModel? by Delegates.observable<AmpModel?>(null)
     { _, old, new ->
         if (old != new) midiManager.sendSysExCmd(REQ_SETTINGS)
     }
+
     var modelAmpDetect: ((AmpModel) -> Unit)? = null
+
     private var requestCallBack: ((ByteArray) -> Unit)? = null
-    val dumpState: AmpState = AmpState(Constants.initPresetDump.toByteArray())
+
+    val dumpState: PresetDumpState = PresetDumpState(Constants.initPresetDump.toByteArray())
+
     private var heartBeat: ByteArray? by Delegates.observable<ByteArray?>(null)
     { _, oldValue, newValue ->
 
@@ -66,7 +72,7 @@ class Amp(val midiManager: SysExMidiManager) {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 6)).toByteArray()
                 if (cmd.contentEquals(Constants.SEND_CMD)) {
-                    writeDump(dumpState, it[7].toInt(), Pair(it[8], it[9]))
+                    dumpState.writeDump(it[7].toInt(), Pair(it[8], it[9]))
                 }
             }
         }
@@ -91,42 +97,6 @@ class Amp(val midiManager: SysExMidiManager) {
                 .forEach { midiManager.onMidiSystemExclusive(it) }
     }
 
-    fun writeDump(state: AmpState, id: Int, value: Pair<Byte, Byte>) {
-
-        // this is conflict reverb time and spring reverb, they have one ID
-        // may by bag inside YDL format
-        val cell =
-                when (id) {
-                    Constants.REVERB_TIME -> {
-                        val mode = Constants.DUMP_MAP[Constants.REVERB_MODE] as Int
-                        if (dumpState.get(mode) == 3.toByte()) {
-                            193
-                        } else {
-                            194
-                        }
-                    }
-                    Constants.COMPRESSOR_STOMP_SUSTAIN -> {
-                        val mode = Constants.DUMP_MAP[Constants.COMPRESSOR_MODE] as Int
-                        if (dumpState.get(mode) == 0.toByte()) {
-                            145
-                        } else {
-                            listOf(145, 146)
-                        }
-                    }
-                    else -> Constants.DUMP_MAP[id]
-                }
-
-
-        when (cell) {
-            is List<*> -> {
-                val listCell = cell as List<Int>
-                state.set(listCell[0], value.first)
-                state.set(listCell[1], value.second)
-            }
-            is Int -> state.set(cell, value.second)
-
-        }
-    }
 
     /**
      * Add common knob
@@ -203,10 +173,10 @@ class Amp(val midiManager: SysExMidiManager) {
         }
         spinner.setOnStateChanged {
             if (it == 0)
-                midiManager.sendSysExCmd(SEND_CMD + Constants.byteArrayOf(swId, 0x00, OFF, END))
+                midiManager.sendSysExCmd(SEND_CMD + byteArrayOf(swId, 0x00, OFF, END))
             else {
-                midiManager.sendSysExCmd(SEND_CMD + Constants.byteArrayOf(swId, 0x00, ON, END))
-                midiManager.sendSysExCmd(SEND_CMD + Constants.byteArrayOf(id, 0x00, (it - 1), END))
+                midiManager.sendSysExCmd(SEND_CMD + byteArrayOf(swId, 0x00, ON, END))
+                midiManager.sendSysExCmd(SEND_CMD + byteArrayOf(id, 0x00, (it - 1), END))
             }
         }
         return this
@@ -236,7 +206,7 @@ class Amp(val midiManager: SysExMidiManager) {
         }
 
     private fun loadPreset(preset: AmpPreset) {
-        preset.dump?.let {
+        preset.dump.let {
             //  val cmd = Constants.HEAD + Constants.DUMP_PREFIX + 0x31 + it + Constants.DUMP_POSTFIX + 0x1F + Constants.END
             //todo need unit test
             // logger.info("load dump -> " + it.joinToString())

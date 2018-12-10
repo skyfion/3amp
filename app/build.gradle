@@ -43,6 +43,9 @@ android {
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources = true
     }
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
     kapt { generateStubs = true }
     sourceSets {
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
@@ -54,6 +57,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
 
+    // room db
     implementation "android.arch.persistence.room:runtime:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
     androidTestImplementation "android.arch.persistence.room:testing:1.1.1"

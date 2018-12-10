@@ -1,14 +1,9 @@
 package xyz.lazysoft.a3amp.amp
 
+import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
+
 class Constants {
     companion object {
-        fun byteArrayOf(vararg a: Int): ByteArray {
-            return if (a.isNotEmpty())
-                a.map { i -> i.toByte() }.toByteArray()
-            else
-                ByteArray(0)
-        }
-
 
         const val THR_DATA_SIZE = 276
         const val THR_DUMP_OFFSET = 18

@@ -3,6 +3,7 @@ package xyz.lazysoft.a3amp.amp
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DUMP_OFFSET
 import xyz.lazysoft.a3amp.amp.Constants.Companion as C
+import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
 
 /**
  * Yamaha thr ydl file reader/converter
@@ -18,11 +19,11 @@ class YdlDataConverter {
             }
 
             fun add(idCmd: Int, param: Byte) {
-                add(C.byteArrayOf(idCmd, 0x00) + param)
+                add(byteArrayOf(idCmd, 0x00) + param)
             }
 
             fun add(id: Int, param: Byte, param2: Byte) {
-                add(C.byteArrayOf(id) + param + param2)
+                add(byteArrayOf(id) + param + param2)
             }
 
             if (dump.size != 256) return result
