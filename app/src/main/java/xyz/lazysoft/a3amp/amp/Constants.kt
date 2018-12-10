@@ -95,7 +95,7 @@ class Constants {
                 COMPRESSOR_MODE to 144,
                 COMPRESSOR_STOMP_SUSTAIN to 145,
                 COMPRESSOR_STOMP_OUTPUT to 146,
-             //   COMPRESSOR_RACK_THRESHOLD to listOf(145, 146),
+                //   COMPRESSOR_RACK_THRESHOLD to listOf(145, 146),
                 COMPRESSOR_RACK_ATTACK to 147,
                 COMPRESSOR_RACK_RELEASE to 148,
                 COMPRESSOR_RACK_RATIO to 149,
@@ -123,7 +123,7 @@ class Constants {
                 REVERB_HIGH_RATIO to 201,
                 REVERB_LOW_RATIO to 202,
                 REVERB_LEVEL to 203,
-              //  this.REVERB_SPRING_REVERB to 193,
+                //  this.REVERB_SPRING_REVERB to 193,
                 REVERB_SPRING_FILTER to 194,
                 GATE_SW to 223,
                 GATE_THRESHOLD to 209,
@@ -150,7 +150,7 @@ class Constants {
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00).map { it.toByte() }
 
         const val CAROUSEL_TEXT_SIZE: Int = 10
-
+        const val READ_REQUEST_CODE: Int = 42
     }
 }
 

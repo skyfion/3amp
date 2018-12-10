@@ -142,4 +142,5 @@
     <string name="save_preset_as">save preset as..</string>
     <string name="delete">delete</string>
     <string name="rename">rename</string>
+    <string name="import_ydl">Import YDL</string>
 </resources>
