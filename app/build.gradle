@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+//apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 repositories {
     maven {
         url 'https://github.com/kshoji/USB-MIDI-Driver/raw/master/MIDIDriver/snapshots'
@@ -20,9 +22,14 @@ android {
         applicationId "xyz.lazysoft.a3amp"
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 10
-        versionName "1.6"
+        versionCode 11
+        versionName "1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -37,6 +44,9 @@ android {
         unitTests.includeAndroidResources = true
     }
     kapt { generateStubs = true }
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
@@ -46,6 +56,7 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
+    androidTestImplementation "android.arch.persistence.room:testing:1.1.1"
     // inject Dagger-Android
     implementation 'com.google.dagger:dagger:2.15'
     implementation 'com.google.dagger:dagger-android:2.15'

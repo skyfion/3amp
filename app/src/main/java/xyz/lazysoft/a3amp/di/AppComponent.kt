@@ -7,7 +7,7 @@ import xyz.lazysoft.a3amp.MainActivity
 import xyz.lazysoft.a3amp.PresetsActivity
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.AmpModule
-import xyz.lazysoft.a3amp.persistence.AmpPresetDao
+import xyz.lazysoft.a3amp.persistence.PresetDao
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import xyz.lazysoft.a3amp.persistence.RoomModule
 import javax.inject.Singleton
@@ -20,7 +20,7 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(presetsActivity: PresetsActivity)
 
-    fun ampPresetDao(): AmpPresetDao
+    fun ampPresetDao(): PresetDao
     fun dataBase(): AppDatabase
     fun amp(): Amp
     fun context(): Context

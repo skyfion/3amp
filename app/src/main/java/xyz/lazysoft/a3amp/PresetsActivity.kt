@@ -1,8 +1,8 @@
 package xyz.lazysoft.a3amp
 
 import android.app.Activity
-import android.content.ContentValues
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -12,12 +12,14 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import xyz.lazysoft.a3amp.amp.Amp
+import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
+import xyz.lazysoft.a3amp.amp.YdlDataConverter
 import xyz.lazysoft.a3amp.components.PresetAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
-import java.io.File
 import javax.inject.Inject
+import java.io.*
 
 
 class PresetsActivity : AppCompatActivity() {
@@ -86,7 +88,6 @@ class PresetsActivity : AppCompatActivity() {
     }
 
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
 
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
@@ -99,10 +100,11 @@ class PresetsActivity : AppCompatActivity() {
             // provided to this method as a parameter.
             // Pull that URI using resultData.getData().
             resultData?.data?.also { uri ->
-                Log.i(ContentValues.TAG, "Uri: ${getPath(uri)}")
-                val file = File(getPath(uri)).inputStream()
-
-                Log.i(ContentValues.TAG, file.readBytes().size.toString())
+                val inputStream = contentResolver.openInputStream(uri)
+                val bufferedInputStream = BufferedInputStream(inputStream)
+                val bytes = bufferedInputStream.readBytes()
+                Log.d(Constants.TAG, "ydl size is " + bytes.size.toString())
+              //  YdlDataConverter.
             }
 
 

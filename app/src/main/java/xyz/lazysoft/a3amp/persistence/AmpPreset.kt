@@ -2,14 +2,19 @@ package xyz.lazysoft.a3amp.persistence
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
 
-@Entity(tableName = "presets")
+@Entity(tableName = "presets",
+        foreignKeys = [ForeignKey(entity = AmpPresetGroup::class,
+                parentColumns = ["uid"], childColumns = ["group_id"])])
 data class AmpPreset(
         @PrimaryKey(autoGenerate = true) var uid: Int? = null,
         @ColumnInfo(name = "title") var title: String,
+        @ColumnInfo(name = "group_id") var group: Int? = null,
+        @ColumnInfo(name = "type_id") var type: Int? = null,
         @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray?
-){
+) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

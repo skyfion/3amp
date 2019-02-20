@@ -3,7 +3,7 @@ package xyz.lazysoft.a3amp.persistence
 import android.arch.persistence.room.*
 
 @Dao
-interface AmpPresetDao {
+interface PresetDao {
     @Query("SELECT * FROM presets")
     fun getAll(): List<AmpPreset>
 
@@ -27,16 +27,16 @@ interface AmpPresetDao {
 
     @Update
     fun update(preset: AmpPreset)
+
+    @Insert
+    fun insertGroup(group: AmpPresetGroup)
+
+    @Query("SELECT * FROM groups")
+    fun getAllGroups(): List<AmpPresetGroup>
 }
 
-//class AmpPresetRepositrory(dao: AmpPresetDao) {
-//
-//    fun geAll() {
-//
-//    }
-//}
 
-@Database(entities = [AmpPreset::class], version = 1)
+@Database(entities = [AmpPreset::class, AmpPresetGroup::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun presetDao(): AmpPresetDao
+    abstract fun presetDao(): PresetDao
 }

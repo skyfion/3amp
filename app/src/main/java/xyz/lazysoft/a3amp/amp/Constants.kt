@@ -16,6 +16,7 @@ class Constants {
         const val THR_FILE_OFFSET = 9
         const val THR_SYSEX_SIZE = 256
         const val THR_SETTINGS_NAME_SIZE = 64
+        const val YDL_FILE_SIZE = 26108
 
         const val ON = 0x00
         const val OFF = 0x7F
