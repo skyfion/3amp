@@ -1,15 +1,13 @@
 package xyz.lazysoft.a3amp
 
-import android.arch.persistence.room.Room
-import android.support.test.InstrumentationRegistry.getContext
-import android.support.test.filters.LargeTest
-import android.support.test.runner.AndroidJUnit4
+import androidx.room.Room
+import androidx.test.InstrumentationRegistry.getContext
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
 import org.junit.After
-import org.junit.Assert.assertArrayEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.persistence.*
 import java.io.IOException
 

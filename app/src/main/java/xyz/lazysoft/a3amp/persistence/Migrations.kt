@@ -1,7 +1,7 @@
 package xyz.lazysoft.a3amp.persistence
 
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.migration.Migration
 
 // https://www.techonthenet.com/sqlite/foreign_keys/foreign_keys.php
 object Migrations {

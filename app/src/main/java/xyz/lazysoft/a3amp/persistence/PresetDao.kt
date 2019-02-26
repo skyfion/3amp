@@ -1,6 +1,6 @@
 package xyz.lazysoft.a3amp.persistence
 
-import android.arch.persistence.room.*
+import androidx.room.*
 
 @Dao
 interface PresetDao {

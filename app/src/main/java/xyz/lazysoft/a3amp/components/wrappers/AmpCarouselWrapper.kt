@@ -4,9 +4,8 @@ import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.provider.SyncStateContract
-import android.support.v4.view.ViewPager
 import android.util.ArraySet
+import androidx.viewpager.widget.ViewPager
 import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.components.AmpComponent
 

@@ -3,12 +3,12 @@ package xyz.lazysoft.a3amp.components
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.preset_item.view.*
 import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.R
@@ -16,7 +16,8 @@ import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.PresetDao
 
-class PresetAdapter(val context: Context, private val dao: PresetDao, private val thr: Amp) : RecyclerView.Adapter<PresetAdapter.PresetViewHolder>() {
+class PresetAdapter(val context: Context, private val dao: PresetDao, private val thr: Amp) :
+        RecyclerView.Adapter<PresetAdapter.PresetViewHolder>() {
 
     var presets: ArrayList<AmpPreset> = ArrayList()
     private var loadedPosition: Int = -1

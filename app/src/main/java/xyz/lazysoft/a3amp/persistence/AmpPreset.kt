@@ -1,9 +1,9 @@
 package xyz.lazysoft.a3amp.persistence
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.ForeignKey
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "presets",
         foreignKeys = [ForeignKey(entity = AmpPresetGroup::class,
@@ -13,10 +13,8 @@ data class AmpPreset(
         @ColumnInfo(name = "title") var title: String,
         @ColumnInfo(name = "group_id") var group: Int? = null,
         @ColumnInfo(name = "type_id") var type: Int? = null,
-        @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray?
+        @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray
 ) {
-
-
 
     override fun hashCode(): Int {
         var result = title.hashCode()
@@ -38,10 +36,7 @@ data class AmpPreset(
         if (title != other.title) return false
         if (group != other.group) return false
         if (type != other.type) return false
-        if (dump != null) {
-            if (other.dump == null) return false
-            if (!dump!!.contentEquals(other.dump!!)) return false
-        } else if (other.dump != null) return false
+        if (!dump.contentEquals(other.dump)) return false
 
         return true
     }

@@ -1,16 +1,14 @@
 package xyz.lazysoft.a3amp
 
-import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory
-import android.arch.persistence.room.testing.MigrationTestHelper
-import android.support.test.runner.AndroidJUnit4
+import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import androidx.test.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
-import org.junit.runner.RunWith
-import android.support.test.InstrumentationRegistry
-import android.system.Os.close
 import org.junit.Test
+import org.junit.runner.RunWith
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import xyz.lazysoft.a3amp.persistence.Migrations.MIGRATION_1_2
-import xyz.lazysoft.a3amp.persistence.RoomModule
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
