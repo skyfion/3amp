@@ -1,5 +1,6 @@
 package xyz.lazysoft.a3amp.persistence
 
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -13,7 +14,7 @@ data class AmpPreset(
         @ColumnInfo(name = "title") var title: String,
         @ColumnInfo(name = "group_id") var group: Int? = null,
         @ColumnInfo(name = "type_id") var type: Int? = null,
-        @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray
+        @NonNull @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray
 ) {
 
     override fun hashCode(): Int {

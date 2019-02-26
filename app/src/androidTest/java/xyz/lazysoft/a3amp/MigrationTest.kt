@@ -28,7 +28,7 @@ open class MigrationTest {
         var db = helper.createDatabase(TEST_DB, 1).apply {
             // db has schema version 1. insert some data using SQL queries.
             // You cannot use DAO classes because they expect the latest schema.
-            execSQL("INSERT INTO presets (title) VALUES ('test');")
+            execSQL("INSERT INTO presets (title, dump) VALUES ('test', X'0102030405060708090a0b0c0d0e0f');")
 
             // Prepare for the next version.
             close()
