@@ -107,6 +107,9 @@ class YdlDataConverter {
             return result
         }
 
+        fun getModel(data: ByteArray): AmpModel {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
 
     }

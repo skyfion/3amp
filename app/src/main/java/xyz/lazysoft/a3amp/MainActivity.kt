@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 .addSpinner(ampMode, Const.AMP)
                 .addSpinner(cabMode, Const.CAB)
 
-        // amp model detect
+        // amp id detect
         thr.modelAmpDetect = { model -> runOnUiThread {
 
             val thrMode: Int? = when (model) {
@@ -322,7 +322,7 @@ class MainActivity : AppCompatActivity() {
 //            R.id.test_menu -> {
 //                (thr.midiManager as AmpMidiManager)
 //                        .onMidiSystemExclusive(Constants.HEART_BEAT +
-//                                AmpModel.THR10C.model +
+//                                AmpModel.THR10C.id +
 //                                Constants.END.toByte())
 //                true
 //            }

@@ -41,5 +41,4 @@ data class AmpPreset(
 
         return true
     }
-
 }

@@ -29,7 +29,7 @@ interface PresetDao {
     fun update(preset: AmpPreset)
 
     @Insert
-    fun insertGroup(group: AmpPresetGroup)
+    fun insertGroup(group: AmpPresetGroup): Long
 
     @Query("SELECT * FROM groups")
     fun getAllGroups(): List<AmpPresetGroup>

@@ -2,7 +2,6 @@ package xyz.lazysoft.a3amp
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,12 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import xyz.lazysoft.a3amp.amp.Amp
-import xyz.lazysoft.a3amp.amp.Constants
+import xyz.lazysoft.a3amp.amp.*
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
-import xyz.lazysoft.a3amp.amp.YdlDataConverter
 import xyz.lazysoft.a3amp.components.PresetAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
+import xyz.lazysoft.a3amp.persistence.AmpPresetGroup
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
 import java.io.*
@@ -104,12 +102,30 @@ class PresetsActivity : AppCompatActivity() {
                 val bufferedInputStream = BufferedInputStream(inputStream)
                 val bytes = bufferedInputStream.readBytes()
                 Log.d(Constants.TAG, "ydl size is " + bytes.size.toString())
-              //  YdlDataConverter.
+
+                val ydl = YdlFile(bytes)
+                if (ydl.isValid()) {
+                    importYDlData("", ydl.model(), ydl.presetData())
+                } else {
+                    TODO("not implemented")
+                    // todo show message ydl invalid
+                }
             }
 
 
         }
 
+    }
+
+    private fun importYDlData(groupName: String, model: AmpModel, presets: List<Pair<String, ByteArray>>) {
+        val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
+        presets.forEach {
+            repository.presetDao().insert(
+                    AmpPreset(title = it.first,
+                            dump = it.second,
+                            model = model.id,
+                            group = groupId))
+        }
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.logging.Logger
 import kotlin.properties.Delegates
 
 
-enum class AmpModel(val model: Byte) {
+enum class AmpModel(val id: Int) {
     THR5(0x30),
     THR10(0x31),
     THR10X(0x32),
@@ -44,7 +44,7 @@ class Amp(val midiManager: SysExMidiManager) {
     { _, oldValue, newValue ->
 
         if ((oldValue == null && newValue != null) || (newValue != null && oldValue != null && !newValue.contentEquals(oldValue))) {
-            val model = AmpModel.values().firstOrNull { it.model == newValue[7] }
+            val model = AmpModel.values().firstOrNull { it.id == newValue[7].toInt() }
             if (model != null)
                 modelAmpDetect?.invoke(model)
             ampModel = model
