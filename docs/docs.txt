@@ -1,3 +1,20 @@
+YDL format
+
+file size 26108
+head 8
+block preset 261 (count 100)
+   |- preset name 64
+   |- preset body 192
+   |- amp model 5
+
+models:
+   5A  - 01 00 00 00 00
+   10C - 00 00 00 03 00
+   10X - 00 00 00 02 00
+   5_10- 00 00 00 00 00
+
+
+
 model thr
 F0 43 7d 60 44 54 41 xx F7
 THR5	0x30   = 48
