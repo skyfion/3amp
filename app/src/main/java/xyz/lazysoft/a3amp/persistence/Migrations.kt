@@ -6,8 +6,9 @@ import androidx.room.migration.Migration
 object Migrations {
     val MIGRATION_1_2 = object : Migration(1, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("CREATE TABLE `groups` (`uid` INTEGER, `title` TEXT NOT NULL, PRIMARY KEY(`uid`));")
-            database.execSQL("PRAGMA foreign_keys=off;" +
+            database.execSQL(
+                    "CREATE TABLE `groups` (`uid` INTEGER, `title` TEXT NOT NULL, PRIMARY KEY(`uid`));" +
+                    "PRAGMA foreign_keys=off;" +
                     "BEGIN TRANSACTION;" +
                     "ALTER TABLE presets RENAME TO _presets_old;" +
                     "CREATE TABLE presets (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, " +
