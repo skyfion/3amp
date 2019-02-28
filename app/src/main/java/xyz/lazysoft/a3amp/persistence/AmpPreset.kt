@@ -13,7 +13,7 @@ data class AmpPreset(
         @PrimaryKey(autoGenerate = true) var uid: Int? = null,
         @ColumnInfo(name = "title") var title: String,
         @ColumnInfo(name = "group_id") var group: Int? = null,
-        @ColumnInfo(name = "type_id") var type: Int? = null,
+        @ColumnInfo(name = "amp_model") var model: Int? = null,
         @NonNull @ColumnInfo(typeAffinity = ColumnInfo.BLOB, name = "dump") var dump: ByteArray
 ) {
 
@@ -36,7 +36,7 @@ data class AmpPreset(
         if (uid != other.uid) return false
         if (title != other.title) return false
         if (group != other.group) return false
-        if (type != other.type) return false
+        if (model != other.model) return false
         if (!dump.contentEquals(other.dump)) return false
 
         return true

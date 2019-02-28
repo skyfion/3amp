@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a722b029a248f0f278c01ced9ea3c4c0",
+    "identityHash": "a743cdd5be2bece69cea0c8e71b8e3f5",
     "entities": [
       {
         "tableName": "presets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `dump` BLOB NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `dump` BLOB NOT NULL, `amp_model` INTEGER)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -25,6 +25,12 @@
             "columnName": "dump",
             "affinity": "BLOB",
             "notNull": true
+          },
+          {
+            "fieldPath": "model",
+            "columnName": "amp_model",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -39,7 +45,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a722b029a248f0f278c01ced9ea3c4c0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a743cdd5be2bece69cea0c8e71b8e3f5\")"
     ]
   }
 }

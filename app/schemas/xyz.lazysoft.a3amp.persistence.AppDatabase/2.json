@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "66534396b0675c683a8d2531385a9f24",
+    "identityHash": "a9226bf9ce657e242302891541ad019c",
     "entities": [
       {
         "tableName": "presets",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `group_id` INTEGER, `type_id` INTEGER, `dump` BLOB NOT NULL, FOREIGN KEY(`group_id`) REFERENCES `groups`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT NOT NULL, `group_id` INTEGER, `amp_model` INTEGER, `dump` BLOB NOT NULL, FOREIGN KEY(`group_id`) REFERENCES `groups`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -27,8 +27,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "type",
-            "columnName": "type_id",
+            "fieldPath": "model",
+            "columnName": "amp_model",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -90,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"66534396b0675c683a8d2531385a9f24\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a9226bf9ce657e242302891541ad019c\")"
     ]
   }
 }
