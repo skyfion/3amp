@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.onComplete
 import xyz.lazysoft.a3amp.amp.*
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
 import xyz.lazysoft.a3amp.components.PresetAdapter
@@ -98,34 +100,34 @@ class PresetsActivity : AppCompatActivity() {
             // provided to this method as a parameter.
             // Pull that URI using resultData.getData().
             resultData?.data?.also { uri ->
-                val inputStream = contentResolver.openInputStream(uri)
-                val bufferedInputStream = BufferedInputStream(inputStream)
-                val bytes = bufferedInputStream.readBytes()
-                Log.d(Constants.TAG, "ydl size is " + bytes.size.toString())
+                contentResolver.openInputStream(uri)?.let { inputStream ->
+                    val ydl = YdlFile(inputStream)
+                    ydl.presetData()
+                            ?.filter{ !it.isInit() }
+                            ?.let { presets ->
+                                doAsync {
+                                    val groupName = "test"
+                                    val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
 
-                val ydl = YdlFile(bytes)
-                if (ydl.isValid()) {
-                    importYDlData("", ydl.model(), ydl.presetData())
-                } else {
-                    TODO("not implemented")
-                    // todo show message ydl invalid
+                                    presets.forEach {
+                                        repository.presetDao().insert(
+                                                AmpPreset(title = it.name,
+                                                        dump = it.data,
+                                                        model = it.model?.id,
+                                                        group = groupId))
+                                    }
+                                    onComplete {
+                                        (it?.presetsList?.adapter as PresetAdapter).refresh()
+                                    }
+                                }
+
+                    }
                 }
             }
-
-
         }
 
     }
 
-    private fun importYDlData(groupName: String, model: AmpModel, presets: List<Pair<String, ByteArray>>) {
-        val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
-        presets.forEach {
-            repository.presetDao().insert(
-                    AmpPreset(title = it.first,
-                            dump = it.second,
-                            model = model.id,
-                            group = groupId))
-        }
-    }
+
 
 }

@@ -26,7 +26,7 @@ class PresetAdapter(val context: Context, private val dao: PresetDao, private va
         refresh()
     }
 
-    private fun refresh() {
+    fun refresh() {
         doAsync {
             val result = dao.getAll() as ArrayList<AmpPreset>
             uiThread {

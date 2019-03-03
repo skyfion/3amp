@@ -4,6 +4,7 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DUMP_OFFSET
 import xyz.lazysoft.a3amp.amp.Constants.Companion as C
 import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
+import java.util.*
 
 /**
  * Yamaha thr ydl file reader/converter
@@ -26,73 +27,81 @@ class YdlDataConverter {
                 add(byteArrayOf(id) + param + param2)
             }
 
-            if (dump.size != 256) return result
+            fun add(ids: List<Int>, data: List<Byte>) {
+                ids.forEach { id ->
+                    add(id, data[id])
+                }
+            }
 
-            add(C.AMP, dump[128])
-            add(C.K_GAIN, dump[129])
-            add(C.K_MASTER, dump[130])
-            add(C.K_BASS, dump[131])
-            add(C.K_MID, dump[132])
-            add(C.K_TREB, dump[133])
-            // cab
-            add(C.CAB, dump[134])
-            // compressor
-            add(C.COMPRESSOR_SW, dump[159])
-            if (dump[159].toInt() == 0) {
-                add(C.COMPRESSOR_MODE, dump[144])
-                if (dump[144].toInt() == 0) {
-                    add(C.COMPRESSOR_STOMP_SUSTAIN, dump[145])
-                    add(C.COMPRESSOR_STOMP_OUTPUT, dump[146])
+            val data = when (dump.size) {
+                Constants.THR_SYSEX_SIZE -> dump.drop(Constants.THR_SYSEX_SHIFT)
+                Constants.YDL_DATA -> dump.drop(Constants.YDL_DATA_SHIFT)
+                else -> return result
+            }
+
+            add(Arrays.asList(
+                    C.AMP, C.K_GAIN, C.K_MASTER, C.K_BASS,
+                    C.K_MID, C.K_TREB, C.CAB, C.COMPRESSOR_SW, C.EFFECTS_SW, C.DELAY_SW,
+                    C.REVERB_SW, C.GATE_SW), data)
+
+            if (data[C.COMPRESSOR_SW].toInt() == 0) {
+                add(C.COMPRESSOR_MODE, data[C.COMPRESSOR_MODE])
+                if (data[C.COMPRESSOR_MODE].toInt() == 0) {
+                    add(Arrays.asList(C.COMPRESSOR_STOMP_SUSTAIN, C.COMPRESSOR_STOMP_OUTPUT), data)
                 } else {
-                    add(C.COMPRESSOR_RACK_THRESHOLD, dump[145], dump[146])
-                    add(C.COMPRESSOR_RACK_ATTACK, dump[147])
-                    add(C.COMPRESSOR_RACK_RELEASE, dump[148])
-                    add(C.COMPRESSOR_RACK_RATIO, dump[149])
-                    add(C.COMPRESSOR_RACK_KNEE, dump[150])
-                    add(C.COMPRESSOR_RACK_OUTPUT, dump[151], dump[152])
+                    add(C.COMPRESSOR_RACK_THRESHOLD,
+                            data[C.COMPRESSOR_RACK_THRESHOLD],
+                            data[C.COMPRESSOR_RACK_THRESHOLD + 1])
+                    add(C.COMPRESSOR_RACK_OUTPUT,
+                            data[C.COMPRESSOR_RACK_OUTPUT],
+                            data[C.COMPRESSOR_RACK_OUTPUT + 1])
+                    add(Arrays.asList(
+                            C.COMPRESSOR_RACK_ATTACK,
+                            C.COMPRESSOR_RACK_RELEASE,
+                            C.COMPRESSOR_RACK_RATIO,
+                            C.COMPRESSOR_RACK_KNEE), data)
                 }
             }
             // effects
-            add(C.EFFECTS_SW, dump[175])
-            if (dump[175].toInt() == 0) {
-                add(C.EFFECTS_MODE, dump[160])
-                add(C.EFFECT_KNOB1, dump[161])
-                add(C.EFFECT_KNOB2, dump[162])
-                add(C.EFFECT_KNOB3, dump[163])
-                add(C.EFFECT_KNOB4, dump[164])
-                add(C.EFFECT_KNOB5, dump[165])
+            if (data[C.EFFECTS_SW].toInt() == 0) {
+                add(Arrays.asList(
+                        C.EFFECTS_MODE,
+                        C.EFFECT_KNOB1,
+                        C.EFFECT_KNOB2,
+                        C.EFFECT_KNOB3,
+                        C.EFFECT_KNOB4,
+                        C.EFFECT_KNOB5), data)
             }
             // delay
-            add(C.DELAY_SW, dump[191])
-            if (dump[191].toInt() == 0) {
-                add(C.DELAY_FEEDBACK, dump[179])
-                add(C.DELAY_HIGH_CUT, dump[180], dump[181])
-                add(C.DELAY_LOW_CUT, dump[182], dump[183])
-                add(C.DELAY_LEVEL, dump[184])
-                add(C.DELAY_TIME, dump[177], dump[178])
+            if (data[C.DELAY_SW].toInt() == 0) {
+                add(Arrays.asList(C.DELAY_FEEDBACK, C.DELAY_LEVEL), data)
+                add(C.DELAY_HIGH_CUT, data[C.DELAY_HIGH_CUT], data[C.DELAY_HIGH_CUT + 1])
+                add(C.DELAY_LOW_CUT, data[C.DELAY_LOW_CUT], data[C.DELAY_LOW_CUT + 1])
+                add(C.DELAY_TIME, data[C.DELAY_TIME], data[C.DELAY_TIME + 1])
             }
 
             //reverb
-            add(C.REVERB_SW, dump[207])
-            if (dump[207].toInt() == 0) {
-                add(C.REVERB_MODE, dump[192])
-                add(C.REVERB_TIME, dump[194])
-                add(C.REVERB_PRE_DELAY, dump[195], dump[196])
-                add(C.REVERB_LOW_CUT, dump[197], dump[198])
-                add(C.REVERB_HIGH_CUT, dump[199], dump[200])
-                add(C.REVERB_HIGH_RATIO, dump[201])
-                add(C.REVERB_LOW_RATIO, dump[202])
-                add(C.REVERB_LEVEL, dump[203])
-                if (dump[192].toInt() == 3) {
-                    add(C.REVERB_TIME, dump[193])
-                    add(C.REVERB_SPRING_FILTER, dump[194])
+            if (data[C.REVERB_SW].toInt() == 0) {
+                add(Arrays.asList(
+                        C.REVERB_MODE,
+                        C.REVERB_TIME,
+                        C.REVERB_HIGH_RATIO,
+                        C.REVERB_LOW_RATIO,
+                        C.REVERB_LEVEL), data)
+                add(C.REVERB_PRE_DELAY, data[C.REVERB_PRE_DELAY], data[C.REVERB_PRE_DELAY + 1])
+                add(C.REVERB_LOW_CUT, data[C.REVERB_LOW_CUT], data[C.REVERB_LOW_CUT + 1])
+                add(C.REVERB_HIGH_CUT, data[C.REVERB_HIGH_CUT], data[C.REVERB_HIGH_CUT + 1])
+                if (data[C.REVERB_MODE].toInt() == 3) {
+                    add(Arrays.asList(
+                            C.REVERB_TIME,
+                            C.REVERB_SPRING_FILTER), data)
                 }
             }
             // gate
-            add(C.GATE_SW, dump[223])
-            if (dump[223].toInt() == 0) {
-                add(C.GATE_THRESHOLD, dump[209])
-                add(C.GATE_RELEASE, dump[210])
+            if (data[C.GATE_SW].toInt() == 0) {
+                add(Arrays.asList(
+                        C.GATE_THRESHOLD,
+                        C.GATE_RELEASE), data)
             }
             return result
         }
@@ -106,11 +115,6 @@ class YdlDataConverter {
             }
             return result
         }
-
-        fun getModel(data: ByteArray): AmpModel {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        }
-
 
     }
 }

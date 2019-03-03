@@ -79,11 +79,6 @@ class Amp(val midiManager: SysExMidiManager) {
 
     }
 
-    fun getCurrrentDump(f: (ByteArray) -> Unit) {
-        requestCallBack = f
-        midiManager.sendSysExCmd(REQ_SETTINGS)
-    }
-
     fun open() {
         // init empty dump
         YdlDataConverter.thr5and10(dumpState.dump.toList()).forEach { cmd ->

@@ -5,21 +5,22 @@
     android:layout_height="wrap_content"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
+    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/block_margin_bottom"
+        app:alignContent="stretch"
+        app:alignItems="stretch"
+        app:flexWrap="wrap">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <in.goodiebag.carouselpicker.CarouselPicker
                 android:id="@+id/effect_mode_carousel"
                 style="@style/AppTheme.carouselPicker" />
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/effect_empty_block"
             android:layout_width="wrap_content"
@@ -31,7 +32,6 @@
             android:id="@+id/effect_chorus_block"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/block_margin_bottom"
             android:visibility="gone"
             app:alignContent="stretch"
             app:alignItems="stretch"
@@ -425,7 +425,7 @@
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.flexbox.FlexboxLayout>
-    </LinearLayout>
+    </com.google.android.flexbox.FlexboxLayout>
 
 
 </FrameLayout>
