@@ -42,7 +42,6 @@ class Amp(val midiManager: SysExMidiManager) {
 
     private var heartBeat: ByteArray? by Delegates.observable<ByteArray?>(null)
     { _, oldValue, newValue ->
-
         if ((oldValue == null && newValue != null) || (newValue != null && oldValue != null && !newValue.contentEquals(oldValue))) {
             val model = AmpModel.values().firstOrNull { it.id == newValue[7].toInt() }
             if (model != null)
@@ -205,8 +204,8 @@ class Amp(val midiManager: SysExMidiManager) {
             //  val cmd = Constants.HEAD + Constants.DUMP_PREFIX + 0x31 + it + Constants.DUMP_POSTFIX + 0x1F + Constants.END
             //todo need unit test
             // logger.info("load dump -> " + it.joinToString())
-            YdlDataConverter.thr5and10(it.toList()).forEach { cmd ->
-                midiManager.onMidiSystemExclusive(cmd)
+            YdlDataConverter.thr5and10(it.toList()).forEach {
+                cmd -> midiManager.onMidiSystemExclusive(cmd)
             }
         }
     }
