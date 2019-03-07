@@ -3,7 +3,6 @@ package xyz.lazysoft.a3amp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ExpandableListView
@@ -16,11 +15,11 @@ import org.jetbrains.anko.onComplete
 import xyz.lazysoft.a3amp.amp.*
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
 import xyz.lazysoft.a3amp.components.PresetAdapter
+import xyz.lazysoft.a3amp.components.presets.PresetExpandableListAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AmpPresetGroup
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
-import java.io.*
 
 
 class PresetsActivity : AppCompatActivity() {
@@ -51,7 +50,24 @@ class PresetsActivity : AppCompatActivity() {
 
     private fun initListPresets() {
         presetList = findViewById(R.id.presets_item_list)
-        //presetList.setAdapter()
+        val result = HashMap<String, List<String>>()
+        doAsync {
+            val groups = repository.presetDao().getAllGroups()
+            val presets = repository.presetDao().getAll()
+                    .groupBy { it.group }
+            presets.keys.forEach { key ->
+                val title = groups.find { g -> g.uid == key }?.title ?: "Custom"
+                result[title] = presets.getValue(key).map { p -> p.title }
+            }
+            onComplete {
+                presetList.setAdapter(
+                        PresetExpandableListAdapter(
+                                it!!,
+                                result.keys.toList(),
+                                result
+                        ))
+            }
+        }
 
 //        presetsList = findViewById(R.id.presets_item_list)
 //        presetsList.layoutManager = LinearLayoutManager(this)
@@ -109,7 +125,7 @@ class PresetsActivity : AppCompatActivity() {
                 contentResolver.openInputStream(uri)?.let { inputStream ->
                     val ydl = YdlFile(inputStream)
                     ydl.presetData()
-                            ?.filter{ !it.isInit() }
+                            ?.filter { !it.isInit() }
                             ?.let { presets ->
                                 doAsync {
                                     val groupName = "test"
@@ -127,7 +143,7 @@ class PresetsActivity : AppCompatActivity() {
                                     }
                                 }
 
-                    }
+                            }
                 }
             }
         }

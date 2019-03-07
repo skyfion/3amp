@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PresetsActivity">
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/preset_toolbar"
             android:layout_width="match_parent"
@@ -16,24 +18,26 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Presets"/>
+            app:title="Presets" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
     <ExpandableListView
         android:id="@+id/presets_item_list"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp" />
+        android:dividerHeight="0.5dp"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--<androidx.recyclerview.widget.RecyclerView-->
-        <!--android:id="@+id/presets_item_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_marginTop="?attr/actionBarSize"-->
-        <!--app:layout_constraintTop_toTopOf="parent"/>-->
+    <!--android:id="@+id/presets_item_list"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_marginTop="?attr/actionBarSize"-->
+    <!--app:layout_constraintTop_toTopOf="parent"/>-->
 
 </FrameLayout>
