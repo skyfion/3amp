@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,9 @@ import java.io.*
 class PresetsActivity : AppCompatActivity() {
 
     var presets: List<AmpPreset>? = null
-    private lateinit var presetsList: RecyclerView
+//    private lateinit var presetsList: RecyclerView
+
+    private lateinit var presetList: ExpandableListView
 
     @Inject
     lateinit var repository: AppDatabase
@@ -42,15 +45,18 @@ class PresetsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        presetsList = findViewById(R.id.presets_item_list)
         initListPresets()
 
     }
 
     private fun initListPresets() {
-        presetsList.layoutManager = LinearLayoutManager(this)
-        presetsList.adapter =
-                PresetAdapter(this, repository.presetDao(), amp)
+        presetList = findViewById(R.id.presets_item_list)
+        //presetList.setAdapter()
+
+//        presetsList = findViewById(R.id.presets_item_list)
+//        presetsList.layoutManager = LinearLayoutManager(this)
+//        presetsList.adapter =
+//                PresetAdapter(this, repository.presetDao(), amp)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -117,7 +123,7 @@ class PresetsActivity : AppCompatActivity() {
                                                         group = groupId))
                                     }
                                     onComplete {
-                                        (it?.presetsList?.adapter as PresetAdapter).refresh()
+                                        refreshList()
                                     }
                                 }
 
@@ -128,6 +134,9 @@ class PresetsActivity : AppCompatActivity() {
 
     }
 
+    private fun refreshList() {
+//        (it?.presetsList?.adapter as PresetAdapter).refresh()
+    }
 
 
 }
