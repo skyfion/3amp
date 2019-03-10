@@ -60,12 +60,7 @@ class PresetsActivity : AppCompatActivity() {
                 result[title] = presets.getValue(key).map { p -> p.title }
             }
             onComplete {
-                presetList.setAdapter(
-                        PresetExpandableListAdapter(
-                                it!!,
-                                result.keys.toList(),
-                                result
-                        ))
+                presetList.setAdapter(PresetExpandableListAdapter(it!!, result))
             }
         }
 

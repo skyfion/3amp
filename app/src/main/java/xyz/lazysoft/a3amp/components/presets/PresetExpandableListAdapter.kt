@@ -9,7 +9,9 @@ import android.widget.BaseExpandableListAdapter
 import android.widget.TextView
 import xyz.lazysoft.a3amp.R
 
-class PresetExpandableListAdapter(val context: Context, private val titleList: List<String>, val detail: HashMap<String, List<String>>) : BaseExpandableListAdapter() {
+class PresetExpandableListAdapter(val context: Context, private val detail: HashMap<String, List<String>>) : BaseExpandableListAdapter() {
+
+    private var titleList: List<String> = detail.keys.toList()
 
     override fun getGroup(listPosition: Int): Any {
         return titleList[listPosition]
