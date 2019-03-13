@@ -21,7 +21,6 @@
             app:title="Presets" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <ExpandableListView
         android:id="@+id/presets_item_list"
         android:layout_width="match_parent"
@@ -30,17 +29,8 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
         android:listSelector="@color/amber_a700"
-        android:theme="@style/AlertDialog.AppCompat.Light"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!--<androidx.recyclerview.widget.RecyclerView-->
-    <!--android:id="@+id/presets_item_list"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical"-->
-    <!--android:layout_marginTop="?attr/actionBarSize"-->
-    <!--app:layout_constraintTop_toTopOf="parent"/>-->
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

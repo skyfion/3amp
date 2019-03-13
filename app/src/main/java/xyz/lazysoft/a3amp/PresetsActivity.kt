@@ -5,15 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.AdapterView
 import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_presets.*
 import org.jetbrains.anko.*
-import xyz.lazysoft.a3amp.amp.*
+import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
+import xyz.lazysoft.a3amp.amp.YdlFile
 import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.components.presets.PresetExpandableListAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
@@ -164,7 +163,7 @@ class PresetsActivity : AppCompatActivity() {
                                                         group = groupId))
                                     }
                                     onComplete {
-                                        refreshList()
+                                        // refreshList()
                                     }
                                 }
 
