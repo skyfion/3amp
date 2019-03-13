@@ -26,7 +26,9 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
     fun refresh() {
         doAsync {
             detail.clear()
-            val groups = dao.getAllGroups()
+            val groups = dao.getAllGroups().toMutableList()
+            groups.add(AmpPresetGroup(uid = null, title = "Custom")) // default group
+
             val presets = dao.getAll().groupBy { it.group }
             presets.keys.forEach { key ->
                 groups.find { g -> g.uid == key }?.let {g ->

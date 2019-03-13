@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_presets.*
 import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.*
@@ -49,8 +50,8 @@ class PresetsActivity : AppCompatActivity() {
         listAdapter = PresetExpandableListAdapter(this, repository.presetDao())
         presetList.setAdapter(listAdapter)
 
-
-        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.rename_preset_or_group -> {
                     val obj = presetList.selectedItem
