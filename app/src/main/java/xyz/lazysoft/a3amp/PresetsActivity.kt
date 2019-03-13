@@ -5,16 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.AdapterView
 import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.onComplete
+import kotlinx.android.synthetic.main.activity_presets.*
+import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.*
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
-import xyz.lazysoft.a3amp.components.PresetAdapter
+import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.components.presets.PresetExpandableListAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AmpPresetGroup
@@ -24,16 +23,18 @@ import javax.inject.Inject
 
 class PresetsActivity : AppCompatActivity() {
 
-    var presets: List<AmpPreset>? = null
-//    private lateinit var presetsList: RecyclerView
-
-    private lateinit var presetList: ExpandableListView
+    @Inject
+    lateinit var amp: Amp
 
     @Inject
     lateinit var repository: AppDatabase
 
-    @Inject
-    lateinit var amp: Amp
+    var presets: List<AmpPreset>? = null
+
+    private lateinit var presetList: ExpandableListView
+
+    private lateinit var listAdapter: PresetExpandableListAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,30 +45,58 @@ class PresetsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        initListPresets()
+        presetList = findViewById(R.id.presets_item_list)
+        listAdapter = PresetExpandableListAdapter(this, repository.presetDao())
+        presetList.setAdapter(listAdapter)
+
+
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.rename_preset_or_group -> {
+                    val obj = presetList.selectedItem
+                    if (obj != null) {
+                        Dialogs.showInputDialog(this, "Rename", item.title.toString())
+                        { title ->
+                            when (obj) {
+                                is AmpPreset -> renamePreset(obj, title)
+                                is AmpPresetGroup -> renameGroup(obj, title)
+                            }
+                        }
+                    }
+                }
+                R.id.delete_preset_or_group -> {
+                    val obj = presetList.selectedItem
+                    if (obj != null) {
+                        alert("${getString(R.string.common_delete_dialog)} ${item.title}?") {
+                            yesButton {
+                                deleteItem(obj)
+                            }
+                            noButton {  }
+                        }.show()
+                    }
+
+                }
+            }
+            true
+        }
 
     }
 
-    private fun initListPresets() {
-        presetList = findViewById(R.id.presets_item_list)
-        val result = HashMap<String, List<String>>()
+    private fun deleteItem(item: Any) {
         doAsync {
-            val groups = repository.presetDao().getAllGroups()
-            val presets = repository.presetDao().getAll()
-                    .groupBy { it.group }
-            presets.keys.forEach { key ->
-                val title = groups.find { g -> g.uid == key }?.title ?: "Custom"
-                result[title] = presets.getValue(key).map { p -> p.title }
-            }
-            onComplete {
-                presetList.setAdapter(PresetExpandableListAdapter(it!!, result))
+            when (item) {
+                is AmpPreset -> repository.presetDao().delete(item)
+                is AmpPresetGroup -> repository.presetDao().deleteGroup(item)
             }
         }
+    }
 
-//        presetsList = findViewById(R.id.presets_item_list)
-//        presetsList.layoutManager = LinearLayoutManager(this)
-//        presetsList.adapter =
-//                PresetAdapter(this, repository.presetDao(), amp)
+    private fun renameGroup(item: AmpPresetGroup, title: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun renamePreset(item: AmpPreset, title: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -146,8 +175,9 @@ class PresetsActivity : AppCompatActivity() {
     }
 
     private fun refreshList() {
-//        (it?.presetsList?.adapter as PresetAdapter).refresh()
+        (presetList.adapter as PresetExpandableListAdapter).refresh()
     }
 
 
 }
+

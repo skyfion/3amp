@@ -3,18 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/load_preset"
         android:icon="@drawable/ic_load"
-        app:showAsAction="ifRoom"
         android:title="@string/load" />
     <item android:id="@+id/create_preset_group"
         android:icon="@drawable/ic_create_group"
-        app:showAsAction="ifRoom"
         android:title="@string/create_group"/>
     <item android:id="@+id/rename_preset_or_group"
         android:icon="@drawable/ic_rename"
-        app:showAsAction="ifRoom"
         android:title="@string/rename"/>
     <item android:id="@+id/delete_preset_or_group"
         android:icon="@drawable/ic_delete"
-        app:showAsAction="ifRoom"
         android:title="@string/delete" />
 </menu>

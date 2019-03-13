@@ -145,4 +145,5 @@
     <string name="rename">rename</string>
     <string name="load">load</string>
     <string name="create_group">create group</string>
+    <string name="common_delete_dialog">Delete</string>
 </resources>

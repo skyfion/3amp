@@ -254,8 +254,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    private fun savePresetAsDialog(): Boolean {
+    private fun savePresetAsDialog() {
         lateinit var dialog: DialogInterface
         lateinit var presetName: EditText
         dialog = alert {
@@ -295,10 +294,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         }.show()
-        return true
     }
 
-    private fun savePreset(): Boolean {
+    private fun savePreset() {
         thr.selectPreset?.let {preset ->
             doAsync {
                 preset.dump = thr.dumpState.dump
@@ -307,18 +305,14 @@ class MainActivity : AppCompatActivity() {
         }?: run {
             savePresetAsDialog()
         }
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.save_preset_as -> savePresetAsDialog()
             R.id.save_preset -> savePreset()
-            R.id.list_presets -> {
-                startActivity(Intent(this, PresetsActivity::class.java))
-                true
-            }
+            R.id.list_presets -> startActivity(Intent(this, PresetsActivity::class.java))
 //            R.id.test_menu -> {
 //                (thr.midiManager as AmpMidiManager)
 //                        .onMidiSystemExclusive(Constants.HEART_BEAT +
@@ -326,8 +320,8 @@ class MainActivity : AppCompatActivity() {
 //                                Constants.END.toByte())
 //                true
 //            }
-            else -> super.onOptionsItemSelected(item)
         }
+        return true
     }
 
 }

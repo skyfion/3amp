@@ -49,8 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemIconTint="@drawable/bottom_nav_presets"
+        app:itemTextColor="@drawable/bottom_nav_presets"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/presets_buttom_menu" />
 
 </FrameLayout>

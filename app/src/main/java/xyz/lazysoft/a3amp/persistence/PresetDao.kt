@@ -33,6 +33,9 @@ interface PresetDao {
 
     @Query("SELECT * FROM groups")
     fun getAllGroups(): List<AmpPresetGroup>
+
+    @Delete
+    fun deleteGroup(group: AmpPresetGroup)
 }
 
 
