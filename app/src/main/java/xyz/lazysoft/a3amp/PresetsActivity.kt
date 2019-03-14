@@ -5,12 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.Amp
+import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
 import xyz.lazysoft.a3amp.amp.YdlFile
 import xyz.lazysoft.a3amp.components.Dialogs
@@ -22,6 +24,8 @@ import javax.inject.Inject
 
 
 class PresetsActivity : AppCompatActivity() {
+
+    private val logger = AnkoLogger(Constants.TAG)
 
     @Inject
     lateinit var amp: Amp
@@ -49,9 +53,19 @@ class PresetsActivity : AppCompatActivity() {
         listAdapter = PresetExpandableListAdapter(this, repository.presetDao())
         presetList.setAdapter(listAdapter)
 
+
+        presetList.setOnItemClickListener { _, _, _, _ ->
+          //  val rename = findViewById<View>(R.id.rename_preset_or_group)
+            logger.info("click !!!!!!!!!")
+          //  rename.isEnabled = presetList.isSelected
+        }
+
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.load_preset -> {
+                    logger.info("load preset!!!")
+                }
                 R.id.rename_preset_or_group -> {
                     val obj = presetList.selectedItem
                     if (obj != null) {
@@ -71,7 +85,7 @@ class PresetsActivity : AppCompatActivity() {
                             yesButton {
                                 deleteItem(obj)
                             }
-                            noButton {  }
+                            noButton { }
                         }.show()
                     }
 
@@ -90,6 +104,7 @@ class PresetsActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun renameGroup(item: AmpPresetGroup, title: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
