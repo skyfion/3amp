@@ -34,6 +34,7 @@ class PresetsActivity : AppCompatActivity() {
     lateinit var repository: AppDatabase
 
     var presets: List<AmpPreset>? = null
+    var selected: Any? = null
 
     private lateinit var presetList: ExpandableListView
 
@@ -53,35 +54,80 @@ class PresetsActivity : AppCompatActivity() {
         listAdapter = PresetExpandableListAdapter(this, repository.presetDao())
         presetList.setAdapter(listAdapter)
 
+        val loadToolbarBtn = findViewById<View>(R.id.load_preset)
+        val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
+        val deleteToolbarBtn = findViewById<View>(R.id.delete_preset_or_group)
 
-        presetList.setOnItemClickListener { _, _, _, _ ->
-          //  val rename = findViewById<View>(R.id.rename_preset_or_group)
-            logger.info("click !!!!!!!!!")
-          //  rename.isEnabled = presetList.isSelected
+        loadToolbarBtn.isEnabled = false
+        renameToolbarBtn.isEnabled = false
+        deleteToolbarBtn.isEnabled = false
+
+        presetList.setOnChildClickListener { expandableListView, view, b, i, l ->
+            loadToolbarBtn.isEnabled = true
+            renameToolbarBtn.isEnabled = true
+            deleteToolbarBtn.isEnabled = true
+            selected = listAdapter.getChild(b, i)
+            true
+        }
+
+        presetList.setOnGroupClickListener { expandableListView, view, i, l ->
+            if (expandableListView.isGroupExpanded(i)) {
+                expandableListView.collapseGroup(i)
+            } else {
+                expandableListView.expandGroup(i)
+            }
+            selected = listAdapter.getGroup(i)
+
+            if ((selected as AmpPresetGroup).uid != null) {
+                renameToolbarBtn.isEnabled = true
+                deleteToolbarBtn.isEnabled = true
+            } else {
+                renameToolbarBtn.isEnabled = false
+                deleteToolbarBtn.isEnabled = false
+            }
+
+            loadToolbarBtn.isEnabled = false
+
+            true
+        }
+
+        presetList.setOnItemLongClickListener { adapterView, view, pos, id ->
+            // todo
+            false
         }
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.load_preset -> {
-                    logger.info("load preset!!!")
+                    val obj = selected
+                    when (obj) {
+                        is AmpPreset -> logger.info("${obj.uid} load preset!!! ${obj.title}")
+                    }
+                }
+                R.id.create_preset_group -> {
+                    Dialogs.showInputDialog(this, "New group", "") { groupTitle ->
+                        newGroup(groupTitle)
+                    }
                 }
                 R.id.rename_preset_or_group -> {
-                    val obj = presetList.selectedItem
+                    val obj = selected
                     if (obj != null) {
-                        Dialogs.showInputDialog(this, "Rename", item.title.toString())
+                        Dialogs.showInputDialog(this, "Rename ", obj.toString())
                         { title ->
                             when (obj) {
                                 is AmpPreset -> renamePreset(obj, title)
                                 is AmpPresetGroup -> renameGroup(obj, title)
                             }
                         }
+                    } else {
+                        logger.info("obj is null")
                     }
                 }
                 R.id.delete_preset_or_group -> {
-                    val obj = presetList.selectedItem
+                    val obj = selected
                     if (obj != null) {
-                        alert("${getString(R.string.common_delete_dialog)} ${item.title}?") {
+                        alert("${getString(R.string.common_delete_dialog)} $obj?") {
                             yesButton {
                                 deleteItem(obj)
                             }
@@ -102,16 +148,37 @@ class PresetsActivity : AppCompatActivity() {
                 is AmpPreset -> repository.presetDao().delete(item)
                 is AmpPresetGroup -> repository.presetDao().deleteGroup(item)
             }
+            onComplete {
+                listAdapter.refresh()
+            }
         }
     }
 
-
     private fun renameGroup(item: AmpPresetGroup, title: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        doAsync {
+            repository.presetDao().updateGroup(item.copy(title = title))
+            onComplete {
+                listAdapter.refresh()
+            }
+        }
     }
 
     private fun renamePreset(item: AmpPreset, title: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        doAsync {
+            repository.presetDao().update(item.copy(title = title))
+            onComplete {
+                listAdapter.refresh()
+            }
+        }
+    }
+
+    private fun newGroup(title: String) {
+        doAsync {
+            repository.presetDao().insertGroup(AmpPresetGroup(title = title))
+            onComplete {
+                listAdapter.refresh()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

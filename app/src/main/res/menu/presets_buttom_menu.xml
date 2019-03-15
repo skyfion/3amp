@@ -10,11 +10,9 @@
     <item android:id="@+id/rename_preset_or_group"
         android:icon="@drawable/ic_rename"
         app:showAsAction="ifRoom"
-        android:enabled="false"
         android:title="@string/rename"/>
     <item android:id="@+id/delete_preset_or_group"
         android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom"
-        android:enabled="false"
         android:title="@string/delete" />
 </menu>

@@ -14,6 +14,7 @@ import xyz.lazysoft.a3amp.R
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AmpPresetGroup
 import xyz.lazysoft.a3amp.persistence.PresetDao
+import java.util.*
 
 class PresetExpandableListAdapter(val context: Context, private val dao: PresetDao) : BaseExpandableListAdapter() {
 
@@ -30,9 +31,11 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
             groups.add(AmpPresetGroup(uid = null, title = "Custom")) // default group
 
             val presets = dao.getAll().groupBy { it.group }
-            presets.keys.forEach { key ->
-                groups.find { g -> g.uid == key }?.let {g ->
-                    detail[g] = presets.getValue(key)
+            groups.forEach { g ->
+                detail[g] = if (presets.containsKey(g.uid)) {
+                    presets.getValue(g.uid)
+                } else {
+                    emptyList()
                 }
             }
             onComplete {
@@ -42,12 +45,6 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
             }
         }
     }
-
-    fun rename() {
-
-    }
-
-
 
     fun addNewGroup(title: String) {
         doAsync {
@@ -78,6 +75,7 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
             layout.inflate(R.layout.preset_group, null)
         } else
             view
+        listView.isClickable = false
         val listTitleTextView = listView.findViewById<TextView>(R.id.listTitle)
         listTitleTextView.setTypeface(null, Typeface.BOLD)
         listTitleTextView.text = group.title
@@ -105,6 +103,7 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
             layoutInflater.inflate(R.layout.list_item, null)
         } else
             view
+        listView.isClickable = false
         val textView = listView.findViewById<TextView>(R.id.expandedListItem)
         textView.text = preset.title
         return listView
@@ -117,5 +116,6 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
     override fun getGroupCount(): Int {
         return detail.keys.size
     }
+
 
 }

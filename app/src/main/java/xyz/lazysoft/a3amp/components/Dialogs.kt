@@ -2,6 +2,7 @@ package xyz.lazysoft.a3amp.components
 
 import android.content.Context
 import android.content.DialogInterface
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.View
 import android.widget.EditText
@@ -18,13 +19,13 @@ object Dialogs {
             dialog = alert {
                 title = dialogTitle
                 isCancelable = true
-                customView<View> {
+                customView {
                     verticalLayout {
                         linearLayout {
                             text = editText {
                                 hint = "enter name" // todo move to resource
                             }.lparams(width = matchParent)
-
+                            text.text = SpannableStringBuilder(dialogValue)
                         }.lparams(width = matchParent)
                         linearLayout {
                             button("Cancel") {

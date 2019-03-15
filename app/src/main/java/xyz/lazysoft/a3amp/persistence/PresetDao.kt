@@ -28,6 +28,9 @@ interface PresetDao {
     @Update
     fun update(preset: AmpPreset)
 
+    @Update
+    fun updateGroup(group: AmpPresetGroup)
+
     @Insert
     fun insertGroup(group: AmpPresetGroup): Long
 
