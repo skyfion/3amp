@@ -39,6 +39,8 @@ class PresetsActivity : AppCompatActivity() {
     var presets: List<AmpPreset>? = null
     var selected: Any? = null
 
+    private lateinit var toolbar: Toolbar
+
     private lateinit var presetList: ExpandableListView
 
     private lateinit var listAdapter: PresetExpandableListAdapter
@@ -49,7 +51,7 @@ class PresetsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_presets)
-        val toolbar = findViewById<Toolbar>(R.id.preset_toolbar)
+        toolbar = findViewById<Toolbar>(R.id.preset_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -57,6 +59,8 @@ class PresetsActivity : AppCompatActivity() {
         presetList = findViewById(R.id.presets_item_list)
         listAdapter = PresetExpandableListAdapter(this, repository.presetDao())
         presetList.setAdapter(listAdapter)
+
+        updateToolbarTitle()
 
         val loadToolbarBtn = findViewById<View>(R.id.load_preset)
         val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
@@ -136,7 +140,10 @@ class PresetsActivity : AppCompatActivity() {
                 R.id.load_preset -> {
                     val obj = selected
                     when (obj) {
-                        is AmpPreset -> logger.info("${obj.uid} load preset!!! ${obj.title}")
+                        is AmpPreset -> {
+                            amp.selectPreset = obj
+                            updateToolbarTitle()
+                        }
                     }
                 }
                 R.id.create_preset_group -> {
@@ -174,6 +181,12 @@ class PresetsActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    private fun updateToolbarTitle() {
+        amp.selectPreset?.let {
+            toolbar.title = "${getString(R.string.presets_toolbar_title)} - ${it.title}"
+        }
     }
 
     private fun deleteItem(item: Any) {

@@ -19,6 +19,7 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.AmpModel
 import xyz.lazysoft.a3amp.components.AmpComponent
+import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
 import xyz.lazysoft.a3amp.persistence.AmpPreset
@@ -95,25 +96,27 @@ class MainActivity : AppCompatActivity() {
                 .addSpinner(cabMode, Const.CAB)
 
         // amp id detect
-        thr.modelAmpDetect = { model -> runOnUiThread {
+        thr.modelAmpDetect = { model ->
+            runOnUiThread {
 
-            val thrMode: Int? = when (model) {
-                AmpModel.THR10X -> R.array.thr10x_amps
-                AmpModel.THR10 -> R.array.thr10_amps
-                AmpModel.THR10C -> R.array.thr10c_amps
-                AmpModel.THR5 -> R.array.thr5_amps
-                AmpModel.THR5A -> R.array.thr5_amps
-            }
+                val thrMode: Int? = when (model) {
+                    AmpModel.THR10X -> R.array.thr10x_amps
+                    AmpModel.THR10 -> R.array.thr10_amps
+                    AmpModel.THR10C -> R.array.thr10c_amps
+                    AmpModel.THR5 -> R.array.thr5_amps
+                    AmpModel.THR5A -> R.array.thr5_amps
+                }
 
-            thrMode?.let {
-                (ampMode as AmpCarouselWrapper).setContent(it, this)
-            }
+                thrMode?.let {
+                    (ampMode as AmpCarouselWrapper).setContent(it, this)
+                }
 
-            val toolbar = findViewById<Toolbar>(R.id.amp_toolbar)
-            if (toolbar != null) {
-                toolbar.title = "${resources.getString(R.string.app_name)} - ${model.name}"
+                val toolbar = findViewById<Toolbar>(R.id.amp_toolbar)
+                if (toolbar != null) {
+                    toolbar.title = "${resources.getString(R.string.app_name)} - ${model.name}"
+                }
             }
-        } }
+        }
 
         // compressor
         thr.addKnob(
@@ -253,75 +256,37 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    private fun savePresetAsDialog() {
-        lateinit var dialog: DialogInterface
-        lateinit var presetName: EditText
-        dialog = alert {
-            title = "Save as .."
-            isCancelable = true
-            customView {
-                verticalLayout() {
-                    linearLayout() {
-                       presetName = editText {
-                            hint = "enter name"
-                        }.lparams(width = matchParent)
-                    }.lparams(width = matchParent)
-                    linearLayout() {
-                        button("Cancel") {
-                            onClick {
-                                dialog.dismiss()
-                            }
-                        }
-                        button("OK") {
-                            onClick {
-                                val presetTitle = presetName.text.toString()
-                                if (TextUtils.isEmpty(presetTitle)) {
-                                    presetName.error = "Enter name!"
-                                } else {
-                                    val preset = AmpPreset(
-                                            title = presetTitle,
-                                            dump = thr.dumpState.dump)
-                                    doAsync {
-                                        repository.presetDao().insert(preset)
-                                    }
-                                    dialog.dismiss()
-                                }
-                            }
-                        }
-                    }.lparams(width = matchParent)
-                }
-            }
-
-        }.show()
-    }
-
     private fun savePreset() {
-        thr.selectPreset?.let {preset ->
+        thr.selectPreset?.let { preset ->
             doAsync {
                 preset.dump = thr.dumpState.dump
                 repository.presetDao().update(preset)
             }
         }?: run {
-            savePresetAsDialog()
+            saveAs()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         when (item.itemId) {
-            R.id.save_preset_as -> savePresetAsDialog()
+            R.id.save_preset_as -> saveAs()
             R.id.save_preset -> savePreset()
             R.id.list_presets -> startActivity(Intent(this, PresetsActivity::class.java))
-//            R.id.test_menu -> {
-//                (thr.midiManager as AmpMidiManager)
-//                        .onMidiSystemExclusive(Constants.HEART_BEAT +
-//                                AmpModel.THR10C.id +
-//                                Constants.END.toByte())
-//                true
-//            }
         }
         return true
+    }
+
+    private fun saveAs() {
+        Dialogs.showInputDialog(this, getString(R.string.save_preset_as), "")
+        {
+            val preset = AmpPreset(
+                    title = it,
+                    dump = thr.dumpState.dump)
+            doAsync {
+                repository.presetDao().insert(preset)
+            }
+        }
     }
 
 }

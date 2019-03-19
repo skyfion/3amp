@@ -146,4 +146,5 @@
     <string name="load">load</string>
     <string name="create_group">create group</string>
     <string name="common_delete_dialog">Delete</string>
+    <string name="presets_toolbar_title">Presets</string>
 </resources>
