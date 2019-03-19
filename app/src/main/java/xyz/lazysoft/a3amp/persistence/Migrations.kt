@@ -17,7 +17,7 @@ object Migrations {
                             "`amp_model` INTEGER, " +
                             "`group_id` INTEGER, " +
                             "`dump` BLOB NOT NULL, " +
-                            "FOREIGN KEY(`group_id`) REFERENCES `groups`(`uid`) ON UPDATE NO ACTION ON DELETE NO ACTION );")
+                            "FOREIGN KEY(`group_id`) REFERENCES `groups`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE);")
                 database.execSQL("INSERT INTO presets(title, dump) SELECT title, dump FROM _presets_old;")
                 database.execSQL("DROP TABLE _presets_old;")
                 database.setTransactionSuccessful()
@@ -27,4 +27,6 @@ object Migrations {
 
         }
     }
+
+
 }

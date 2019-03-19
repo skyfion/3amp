@@ -9,13 +9,6 @@ import xyz.lazysoft.a3amp.persistence.RoomModule
 
 class AmpApplication : Application() {
 
-//    @Inject
-//    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-//
-//    override fun activityInjector(): AndroidInjector<Activity> {
-//       return dispatchingAndroidInjector
-//    }
-
     lateinit var component: AppComponent
 
     override fun onCreate() {

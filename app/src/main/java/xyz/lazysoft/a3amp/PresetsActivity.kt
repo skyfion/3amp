@@ -2,11 +2,14 @@ package xyz.lazysoft.a3amp
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.DragEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,6 +44,7 @@ class PresetsActivity : AppCompatActivity() {
     private lateinit var listAdapter: PresetExpandableListAdapter
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
@@ -92,8 +96,38 @@ class PresetsActivity : AppCompatActivity() {
         }
 
         presetList.setOnItemLongClickListener { adapterView, view, pos, id ->
-            // todo
+            logger.info("long click !")
+            if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                view.startDragAndDrop(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
+            }
             false
+        }
+
+        presetList.setOnDragListener { v, event ->
+            when (event.action) {
+                DragEvent.ACTION_DROP -> {
+                    val pos = presetList.pointToPosition(event.x.toInt(), event.y.toInt())
+                    val item = presetList.getItemAtPosition(pos)
+                    if (item != null && event.localState is AmpPreset) {
+                        val group = when (item) {
+                            is AmpPresetGroup -> item.uid
+                            is AmpPreset -> item.group
+                            else -> null
+                        }
+                        val preset = event.localState as AmpPreset
+                        if (preset.group != group) {
+                            doAsync {
+                                logger.debug("drag -> update group preset")
+                                repository.presetDao().update(preset.copy(group = group))
+                                onComplete {
+                                    listAdapter.refresh()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            true
         }
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
