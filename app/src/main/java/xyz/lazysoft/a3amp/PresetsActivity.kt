@@ -17,6 +17,7 @@ import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
+import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.amp.YdlFile
 import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.components.presets.PresetExpandableListAdapter
@@ -265,35 +266,33 @@ class PresetsActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
 
-        // The ACTION_OPEN_DOCUMENT intent was sent with the request code
-        // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
-        // response to some other intent, and the code below shouldn't run at all.
-
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // The document selected by the user won't be returned in the intent.
-            // Instead, a URI to that document will be contained in the return intent
-            // provided to this method as a parameter.
-            // Pull that URI using resultData.getData().
             resultData?.data?.also { uri ->
+                val fileName = Utils.getFileName(this, uri)
                 contentResolver.openInputStream(uri)?.let { inputStream ->
                     val ydl = YdlFile(inputStream)
                     ydl.presetData()
                             ?.filter { !it.isInit() }
                             ?.let { presets ->
-                                doAsync {
-                                    val groupName = "test"
-                                    val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
+                                Dialogs.showInputDialog(this,
+                                        getString(R.string.enter_a_preset_name),
+                                        fileName) { groupName ->
+                                    doAsync {
 
-                                    presets.forEach {
-                                        repository.presetDao().insert(
-                                                AmpPreset(title = it.name,
-                                                        dump = it.data,
-                                                        model = it.model?.id,
-                                                        group = groupId))
+                                        val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
+
+                                        presets.forEach {
+                                            repository.presetDao().insert(
+                                                    AmpPreset(title = it.name,
+                                                            dump = it.data,
+                                                            model = it.model?.id,
+                                                            group = groupId))
+                                        }
+                                        onComplete {
+                                            listAdapter.refresh()
+                                        }
                                     }
-                                    onComplete {
-                                        // refreshList()
-                                    }
+
                                 }
 
                             }

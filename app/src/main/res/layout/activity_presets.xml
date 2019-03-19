@@ -28,7 +28,6 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
-        android:listSelector="@color/amber_a700"
         android:choiceMode="singleChoice"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
         app:layout_constraintTop_toTopOf="parent" />

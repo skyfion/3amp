@@ -1,5 +1,9 @@
 package xyz.lazysoft.a3amp.amp
 
+import android.content.Context
+import android.net.Uri
+import android.provider.OpenableColumns
+import java.net.URI
 import java.nio.ByteBuffer
 
 object Utils {
@@ -19,5 +23,19 @@ object Utils {
         return ByteBuffer.wrap(ByteArray(4))
                 .putInt(value)
                 .array().drop(2).toByteArray()
+    }
+
+    fun getFileName(context: Context, uri: Uri): String {
+
+        if (uri.scheme == "content") {
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor.use {
+                if(cursor.moveToFirst()) {
+                    return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                }
+            }
+        }
+
+        return uri.path.substring(uri.path.lastIndexOf('/') + 1)
     }
 }
