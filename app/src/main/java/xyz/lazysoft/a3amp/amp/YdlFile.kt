@@ -1,5 +1,7 @@
 package xyz.lazysoft.a3amp.amp
 
+import android.content.res.Resources
+import xyz.lazysoft.a3amp.R
 import java.io.BufferedInputStream
 import java.io.InputStream
 import java.nio.charset.Charset
@@ -15,7 +17,18 @@ class YdlFile(inputStream: InputStream) {
     }
 
     private fun isValid(): Boolean {
-        return data.size == Constants.YDL_FILE_SIZE
+        return errorReason() == null
+    }
+
+    fun errorReason(): String? {
+        return when {
+            data.size != Constants.YDL_FILE_SIZE -> "This is not ydl format"
+//                Resources.getSystem().getString(R.string.is_not_ydl_file)
+//            data.slice(IntRange(0, 3)).toByteArray().toString(Charset.forName("US-ASCII"))
+//                    == Constants.YDL_HEADER_TEXT ->
+//                Resources.getSystem().getString(R.string.is_not_ydl_file) // todo
+            else -> null
+        }
     }
 
     fun presetData(): List<DataPreset>? {

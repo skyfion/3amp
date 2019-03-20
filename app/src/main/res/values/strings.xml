@@ -148,4 +148,5 @@
     <string name="common_delete_dialog">Delete</string>
     <string name="presets_toolbar_title">Presets</string>
     <string name="enter_a_preset_name">Enter a name</string>
+    <string name="is_not_ydl_file">This is not ydl file</string>
 </resources>

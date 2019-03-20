@@ -46,13 +46,11 @@ class PresetsActivity : AppCompatActivity() {
 
     private lateinit var listAdapter: PresetExpandableListAdapter
 
-
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_presets)
-        toolbar = findViewById<Toolbar>(R.id.preset_toolbar)
+        toolbar = findViewById(R.id.preset_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -103,7 +101,12 @@ class PresetsActivity : AppCompatActivity() {
         presetList.setOnItemLongClickListener { adapterView, view, pos, id ->
             logger.info("long click !")
             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                view.startDragAndDrop(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    view.startDragAndDrop(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
+                } else {
+                    view.startDrag(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
+                }
+
             }
             false
         }
@@ -263,39 +266,44 @@ class PresetsActivity : AppCompatActivity() {
         startActivityForResult(intent, READ_REQUEST_CODE)
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-
+        logger.debug("onActivityResult")
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.also { uri ->
+            resultData?.data?.let { uri ->
+                logger.debug("start import ydl")
                 val fileName = Utils.getFileName(this, uri)
                 contentResolver.openInputStream(uri)?.let { inputStream ->
                     val ydl = YdlFile(inputStream)
-                    ydl.presetData()
-                            ?.filter { !it.isInit() }
-                            ?.let { presets ->
-                                Dialogs.showInputDialog(this,
-                                        getString(R.string.enter_a_preset_name),
-                                        fileName) { groupName ->
-                                    doAsync {
+                    val err = ydl.errorReason()
+                    if (err != null) {
+                        alert(err) { okButton {} }.show()
+                    } else {
+                        ydl.presetData()
+                                ?.filter { !it.isInit() }
+                                ?.let { presets ->
+                                    Dialogs.showInputDialog(this,
+                                            getString(R.string.enter_a_preset_name),
+                                            fileName) { groupName ->
+                                        doAsync {
 
-                                        val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
+                                            val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
 
-                                        presets.forEach {
-                                            repository.presetDao().insert(
-                                                    AmpPreset(title = it.name,
-                                                            dump = it.data,
-                                                            model = it.model?.id,
-                                                            group = groupId))
+                                            presets.forEach {
+                                                repository.presetDao().insert(
+                                                        AmpPreset(title = it.name,
+                                                                dump = it.data,
+                                                                model = it.model?.id,
+                                                                group = groupId))
+                                            }
+                                            onComplete {
+                                                listAdapter.refresh()
+                                            }
                                         }
-                                        onComplete {
-                                            listAdapter.refresh()
-                                        }
+
                                     }
 
                                 }
-
-                            }
+                    }
                 }
             }
         }

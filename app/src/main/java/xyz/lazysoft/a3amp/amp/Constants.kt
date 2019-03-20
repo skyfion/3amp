@@ -14,6 +14,7 @@ class Constants {
         const val YDL_PRESET_COUNT = 100
         const val YDL_PRESET_BODY_SIZE = 261
         const val YDL_HEAD = 8
+        const val YDL_HEADER_TEXT = "DTAB"
         const val YDL_NAME = 64
         const val YDL_DATA = 192
         const val YDL_DATA_SHIFT = 69
