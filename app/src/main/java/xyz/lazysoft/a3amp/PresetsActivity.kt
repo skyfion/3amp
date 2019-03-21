@@ -50,7 +50,8 @@ class PresetsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_presets)
-        setSupportActionBar(preset_toolbar)
+        toolbar = preset_toolbar
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 

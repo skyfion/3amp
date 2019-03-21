@@ -20,10 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity
-            android:name=".AboutActivity"
-            android:label="@string/title_activity_about"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <!-- <provider -->
         <!-- android:name="xyz.lazysoft.a3amp.components.FileService" -->
         <!-- android:authorities="xyz.lazysoft.a3amp.components.fileservice" -->
@@ -39,7 +36,6 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -56,6 +52,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

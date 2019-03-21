@@ -1,26 +1,34 @@
 package xyz.lazysoft.a3amp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_about.*
+import kotlinx.android.synthetic.main.content_about.*
 import org.sufficientlysecure.donations.DonationsFragment
 
 
 class AboutActivity : AppCompatActivity() {
 
+    private fun getVersion(): String {
+        val pInfo = packageManager.getPackageInfo(packageName, 0)
+        return pInfo.versionName
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         setSupportActionBar(about_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+        title_about.text = "${getString(R.string.app_name)} ${getVersion()}"
 
         //donate
-
         val ft = supportFragmentManager.beginTransaction()
         val donationsFragment = DonationsFragment.newInstance(
                 BuildConfig.DEBUG, true,
-                Companion.GOOGLE_PUBKEY, GOOGLE_CATALOG,
+                GOOGLE_PUBKEY, GOOGLE_CATALOG,
                 resources.getStringArray(R.array.donation_google_catalog_values),
                 false, null, null, null,
                 false, null, null, false,
@@ -36,8 +44,14 @@ class AboutActivity : AppCompatActivity() {
         /**
          * Google
          */
-        const val GOOGLE_PUBKEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAg8bTVFK5zIg4FGYkHKKQ/j/iGZQlXU0qkAv2BA6epOX1ihbMz78iD4SmViJlECHN8bKMHxouRNd9pkmQKxwEBHg5/xDC/PHmSCXFx/gcY/xa4etA1CSfXjcsS9i94n+j0gGYUg69rNkp+p/09nO9sgfRTAQppTxtgKaXwpfKe1A8oqmDUfOnPzsEAG6ogQL6Svo6ynYLVKIvRPPhXkq+fp6sJ5YVT5Hr356yCXlM++G56Pk8Z+tPzNjjvGSSs/MsYtgFaqhPCsnKhb55xHkc8GJ9haq8k3PSqwMSeJHnGiDq5lzdmsjdmGkWdQq2jIhKlhMZMm5VQWn0T59+xjjIIwIDAQAB"
-        val GOOGLE_CATALOG = arrayOf("ntpsync.donation.1", "ntpsync.donation.2", "ntpsync.donation.3", "ntpsync.donation.5", "ntpsync.donation.8", "ntpsync.donation.13")
+        const val GOOGLE_PUBKEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxGOZ1xt4RKuFoY2UBFO9JhuSi1Is2/QB91IVxSp+Y5lG0HgLwcjt8hfn1CTPp5yj3RLduufYALtV+xcbjH87ETrWkPez1O3nt7+SF6I/PIXF4dWdbC1QiVSHls4PWFqAghZeDMEhPH4qVayJglz/oBgnRL5X4cDErir6tGtYrDZWZz7AWVxWsfYJDIzlUPklQtEyxpYDlNybCEJzVrOGam/TYTRr3Qs2gjeUi61Uehkh1Yy/wDzvwz7ZCr2zggw2TcqN4WV1Zh6AkzZfjtuHYv9sz4qQWO6hMDiJfxRluHBTw2e1oX9d02t8RCiIRMrrQiYwTYVLzO6EN1JdFUHm9QIDAQAB"
+        val GOOGLE_CATALOG = arrayOf(
+                "donation.1",
+                "donation.2",
+                "donation.3",
+                "donation.5",
+                "donation.8",
+                "donation.13")
     }
 
 
