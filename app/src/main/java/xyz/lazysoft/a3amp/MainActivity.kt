@@ -262,7 +262,7 @@ class MainActivity : AppCompatActivity() {
                 preset.dump = thr.dumpState.dump
                 repository.presetDao().update(preset)
             }
-        }?: run {
+        } ?: run {
             saveAs()
         }
     }
@@ -273,6 +273,7 @@ class MainActivity : AppCompatActivity() {
             R.id.save_preset_as -> saveAs()
             R.id.save_preset -> savePreset()
             R.id.list_presets -> startActivity(Intent(this, PresetsActivity::class.java))
+            R.id.about_btn -> startActivity(Intent(this, AboutActivity::class.java))
         }
         return true
     }

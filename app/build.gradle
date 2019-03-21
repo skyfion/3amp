@@ -68,6 +68,9 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.1.0-alpha04'
     androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha04'
 
+    // donats buttons
+    compile 'org.sufficientlysecure:donations:2.6'
+
     // inject Dagger-Android
     implementation "com.google.dagger:dagger:$dagger"
     implementation "com.google.dagger:dagger-android:$dagger"

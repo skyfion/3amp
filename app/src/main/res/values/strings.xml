@@ -149,4 +149,14 @@
     <string name="presets_toolbar_title">Presets</string>
     <string name="enter_a_preset_name">Enter a name</string>
     <string name="is_not_ydl_file">This is not ydl file</string>
+    <string name="about">about</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string-array name="donation_google_catalog_values">
+        <item>1 Euro</item>
+        <item>2 Euros</item>
+        <item>3 Euros</item>
+        <item>5 Euros</item>
+        <item>8 Euros</item>
+        <item>13 Euros</item>
+    </string-array>
 </resources>

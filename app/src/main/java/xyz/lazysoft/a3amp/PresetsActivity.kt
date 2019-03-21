@@ -12,6 +12,7 @@ import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_presets.*
 import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
@@ -49,8 +50,7 @@ class PresetsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_presets)
-        toolbar = findViewById(R.id.preset_toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(preset_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -110,7 +110,6 @@ class PresetsActivity : AppCompatActivity() {
                 } else {
                     view.startDrag(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
                 }
-
             }
             false
         }
