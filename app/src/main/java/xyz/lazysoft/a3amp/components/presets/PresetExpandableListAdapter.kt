@@ -1,11 +1,13 @@
 package xyz.lazysoft.a3amp.components.presets
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
+import android.widget.LinearLayout
 import android.widget.TextView
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.onComplete
@@ -17,7 +19,8 @@ import xyz.lazysoft.a3amp.persistence.PresetDao
 import java.util.*
 
 class PresetExpandableListAdapter(val context: Context, private val dao: PresetDao) : BaseExpandableListAdapter() {
-
+    private var selectedChildPos = NOT_SELECTED
+    private var selectedGroupPos = NOT_SELECTED
     private var detail = HashMap<AmpPresetGroup, List<AmpPreset>>()
 
     init {
@@ -46,13 +49,10 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
         }
     }
 
-    fun addNewGroup(title: String) {
-        doAsync {
-            dao.insertGroup(AmpPresetGroup(title = title))
-            onComplete {
-                refresh()
-            }
-        }
+    fun setSelection(childPos: Int, groupPos: Int) {
+        selectedChildPos = childPos
+        selectedGroupPos = groupPos
+        notifyDataSetChanged()
     }
 
     override fun getGroup(listPosition: Int): Any {
@@ -79,6 +79,7 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
         val listTitleTextView = listView.findViewById<TextView>(R.id.listTitle)
         listTitleTextView.setTypeface(null, Typeface.BOLD)
         listTitleTextView.text = group.title
+        selectView(listPosition, NOT_SELECTED, listView)
         return listView
     }
 
@@ -106,7 +107,29 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
         listView.isClickable = false
         val textView = listView.findViewById<TextView>(R.id.expandedListItem)
         textView.text = preset.title
+        selectView(groupPos, childPos, listView)
         return listView
+    }
+
+
+    private fun setTextColor(view: View, color: Int) {
+        val liner = view as? LinearLayout
+        liner?.let {
+            val text = it.getChildAt(0) as? TextView
+            text?.setTextColor(color)
+        }
+    }
+
+    private fun selectView(groupPos: Int, childPos: Int, view: View) {
+        if (childPos == selectedChildPos && groupPos == selectedGroupPos) {
+            // your color for selected item
+            view.setBackgroundColor(Color.parseColor("#ffab00"))
+            setTextColor(view, Color.BLACK)
+        } else {
+            // your color for non-selected item
+            view.setBackgroundColor(Color.TRANSPARENT)
+            setTextColor(view, Color.WHITE)
+        }
     }
 
     override fun getChildId(groupPos: Int, childPos: Int): Long {
@@ -115,6 +138,10 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
 
     override fun getGroupCount(): Int {
         return detail.keys.size
+    }
+
+    companion object {
+        const val NOT_SELECTED = -1
     }
 
 

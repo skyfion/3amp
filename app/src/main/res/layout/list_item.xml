@@ -9,6 +9,5 @@
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:paddingTop="10dp"
-        android:background="@drawable/item_bkg"
         android:paddingBottom="10dp" />
 </LinearLayout>

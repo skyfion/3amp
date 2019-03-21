@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -69,21 +68,26 @@ class PresetsActivity : AppCompatActivity() {
         renameToolbarBtn.isEnabled = false
         deleteToolbarBtn.isEnabled = false
 
-        presetList.setOnChildClickListener { expandableListView, view, b, i, l ->
+        presetList.setOnChildClickListener { expandableListView, view, groupPos, childPos, id ->
             loadToolbarBtn.isEnabled = true
             renameToolbarBtn.isEnabled = true
             deleteToolbarBtn.isEnabled = true
-            selected = listAdapter.getChild(b, i)
+
+            listAdapter.setSelection(childPos, groupPos)
+
+            selected = listAdapter.getChild(groupPos, childPos)
             true
         }
 
-        presetList.setOnGroupClickListener { expandableListView, view, i, l ->
-            if (expandableListView.isGroupExpanded(i)) {
-                expandableListView.collapseGroup(i)
+        presetList.setOnGroupClickListener { expandableListView, view, groupPos, id ->
+            if (expandableListView.isGroupExpanded(groupPos)) {
+                expandableListView.collapseGroup(groupPos)
             } else {
-                expandableListView.expandGroup(i)
+                expandableListView.expandGroup(groupPos)
             }
-            selected = listAdapter.getGroup(i)
+
+            listAdapter.setSelection(PresetExpandableListAdapter.NOT_SELECTED, groupPos)
+            selected = listAdapter.getGroup(groupPos)
 
             if ((selected as AmpPresetGroup).uid != null) {
                 renameToolbarBtn.isEnabled = true
@@ -248,7 +252,7 @@ class PresetsActivity : AppCompatActivity() {
         }
     }
 
-    fun performFileSearch() {
+    private fun performFileSearch() {
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
         // browser.
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -267,7 +271,6 @@ class PresetsActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        logger.debug("onActivityResult")
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let { uri ->
                 logger.debug("start import ydl")
@@ -309,11 +312,6 @@ class PresetsActivity : AppCompatActivity() {
         }
 
     }
-
-    private fun refreshList() {
-        (presetList.adapter as PresetExpandableListAdapter).refresh()
-    }
-
 
 }
 
