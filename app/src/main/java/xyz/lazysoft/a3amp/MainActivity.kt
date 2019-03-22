@@ -285,7 +285,10 @@ class MainActivity : AppCompatActivity() {
                     title = it,
                     dump = thr.dumpState.dump)
             doAsync {
-                repository.presetDao().insert(preset)
+                val id = repository.presetDao().insert(preset)
+                onComplete {
+                    thr.selectPreset = preset.copy(uid = id.toInt())
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ interface PresetDao {
     fun delete(user: AmpPreset)
 
     @Insert
-    fun insert(preset: AmpPreset)
+    fun insert(preset: AmpPreset): Long
 
     @Update
     fun update(preset: AmpPreset)
