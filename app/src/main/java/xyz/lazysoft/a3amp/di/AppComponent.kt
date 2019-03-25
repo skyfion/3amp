@@ -5,6 +5,7 @@ import dagger.Component
 import xyz.lazysoft.a3amp.AmpApplication
 import xyz.lazysoft.a3amp.MainActivity
 import xyz.lazysoft.a3amp.PresetsActivity
+import xyz.lazysoft.a3amp.SettingsFragment
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.AmpModule
 import xyz.lazysoft.a3amp.persistence.PresetDao
@@ -19,6 +20,7 @@ interface AppComponent {
     fun inject(application: AmpApplication)
     fun inject(mainActivity: MainActivity)
     fun inject(presetsActivity: PresetsActivity)
+    fun inject(settingFragment: SettingsFragment)
 
     fun ampPresetDao(): PresetDao
     fun dataBase(): AppDatabase

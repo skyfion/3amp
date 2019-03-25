@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="xyz.lazysoft.a3amp">
 
-    <uses-feature android:name="android.hardware.usb.host" /> <!-- To access Google+ APIs: -->
+    <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
+    <uses-feature android:name="android.hardware.usb.host" />
+
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission
         android:name="android.permission.MANAGE_DOCUMENTS"
         tools:ignore="ProtectedPermissions" />
@@ -36,6 +38,7 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -60,7 +63,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-
     </application>
 
 </manifest>

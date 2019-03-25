@@ -1,11 +1,15 @@
 package xyz.lazysoft.a3amp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.content_about.*
 import org.sufficientlysecure.donations.DonationsFragment
+import android.R.attr.data
+
+
 
 
 class AboutActivity : AppCompatActivity() {
@@ -13,6 +17,14 @@ class AboutActivity : AppCompatActivity() {
     private fun getVersion(): String {
         val pInfo = packageManager.getPackageInfo(packageName, 0)
         return pInfo.versionName
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val fragmentManager = supportFragmentManager
+        val fragment = fragmentManager.findFragmentByTag("donationsFragment")
+        fragment?.onActivityResult(requestCode, resultCode, data)
     }
 
     @SuppressLint("SetTextI18n")
