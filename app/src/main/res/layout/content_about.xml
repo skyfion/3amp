@@ -26,9 +26,7 @@
 
         <LinearLayout
             android:id="@+id/donations_activity_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            style="@style/empty_block">
         </LinearLayout>
 
     </LinearLayout>

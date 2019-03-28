@@ -50,8 +50,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <Space style="@style/knobBlock"/>
-
                 <LinearLayout style="@style/knobBlock">
                     <it.beppi.knoblibrary.Knob
                         android:id="@+id/master_knob"
@@ -69,10 +67,6 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-            </TableRow>
-
-            <TableRow>
                 <LinearLayout style="@style/knobBlock">
 
                     <it.beppi.knoblibrary.Knob

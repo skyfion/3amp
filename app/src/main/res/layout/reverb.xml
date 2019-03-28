@@ -1,59 +1,40 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/block_margin_bottom"
+    android:orientation="vertical"
     tools:showIn="@layout/activity_main">
 
-    <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/block_margin_bottom"
-        app:alignContent="stretch"
-        app:alignItems="stretch"
-        app:flexWrap="wrap">
+        android:layout_height="50dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <in.goodiebag.carouselpicker.CarouselPicker
+            android:id="@+id/reverb_mode_carousel"
+            style="@style/AppTheme.carouselPicker" />
 
-            <in.goodiebag.carouselpicker.CarouselPicker
-                android:id="@+id/reverb_mode_carousel"
-                style="@style/AppTheme.carouselPicker" />
+    </LinearLayout>
 
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/reverb_empty_block"
+        style="@style/empty_block" />
 
-        <LinearLayout
-            android:id="@+id/reverb_empty_block"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
+    <TableLayout
+        android:id="@+id/common_reverb_block"
+        style="@style/knobTable"
+        android:visibility="gone">
 
-        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/common_reverb_block"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/block_margin_bottom"
-            android:visibility="gone"
-            app:alignContent="stretch"
-            app:alignItems="stretch"
-            app:flexWrap="wrap">
+        <TableRow>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_time_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -65,20 +46,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_pre_delay_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -90,20 +64,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_low_cut"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -114,21 +81,18 @@
                         style="@style/AppTheme.valueTextKnob" />
                 </LinearLayout>
             </LinearLayout>
+        </TableRow>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+
+        <TableRow>
+
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_hi_cut_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -140,20 +104,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_hi_ratio_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -165,20 +122,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_low_ratio_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -189,21 +139,18 @@
                         style="@style/AppTheme.valueTextKnob" />
                 </LinearLayout>
             </LinearLayout>
+        </TableRow>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+        <TableRow>
+
+            <LinearLayout style="@style/knobBlock">
+
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_level_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -214,33 +161,24 @@
                         style="@style/AppTheme.valueTextKnob" />
                 </LinearLayout>
             </LinearLayout>
-        </com.google.android.flexbox.FlexboxLayout>
 
-        <com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/spring_reverb_block"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/block_margin_bottom"
-            android:visibility="gone"
-            app:alignContent="stretch"
-            app:alignItems="stretch"
-            app:flexWrap="wrap">
+        </TableRow>
+    </TableLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+    <TableLayout
+        android:id="@+id/spring_reverb_block"
+        style="@style/knobTable"
+        android:visibility="gone">
+
+        <TableRow>
+
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_spring_reverb"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -252,20 +190,15 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/knob_margin"
-                android:orientation="vertical">
+            <Space style="@style/knobBlock" />
+
+            <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
                     android:id="@+id/reverb_spring_filter_knob"
                     style="@style/AppTheme.knobs" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/AppTheme.labelBlock">
 
                     <TextView
                         style="@style/AppTheme.textKnob"
@@ -276,10 +209,9 @@
                         style="@style/AppTheme.valueTextKnob" />
                 </LinearLayout>
             </LinearLayout>
+        </TableRow>
 
-        </com.google.android.flexbox.FlexboxLayout>
-
-    </com.google.android.flexbox.FlexboxLayout>
+    </TableLayout>
 
 
-</FrameLayout>
+</LinearLayout>

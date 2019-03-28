@@ -3,14 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <!-- Knob style -->
     <style name="AppTheme.knobs" parent="AppTheme">
         <item name="kKnobDrawable">@drawable/knob6</item>
-        <item name="android:layout_width">96dp</item>
-        <item name="android:layout_height">96dp</item>
+        <item name="android:layout_width">@dimen/knob_size</item>
+        <item name="android:layout_height">@dimen/knob_size</item>
         <item name="kAnimationBounciness">10</item>
         <item name="kAnimationSpeed">5</item>
         <item name="kShowBalloonValues">false</item>
@@ -67,4 +66,32 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.labelBlock">
+        <item name="android:layout_width">@dimen/knob_size</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="knobBlock">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">@dimen/knob_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="knobTable">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:stretchColumns">*</item>
+    </style>
+
+    <style name="empty_block">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
 </resources>
