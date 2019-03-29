@@ -23,7 +23,7 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
         carousel.addOnPageChangeListener(this)
     }
 
-    private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
+    private var onSelectFunction: MutableSet<(pos: Int) -> Unit> = mutableSetOf()
 
     override fun setOnStateChanged(function: (pos: Int) -> Unit): AmpComponent<Int> {
         onSelectFunction.add(function)
