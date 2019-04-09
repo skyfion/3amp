@@ -4,13 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.lifecycle.Observer
 import it.beppi.knoblibrary.Knob
+import xyz.lazysoft.a3amp.amp.Amp
+import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.PresetDump
+import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
-class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
-    override val observe: Observer<PresetDump>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
+    override val observe: Observer<PresetDump> = Observer { dump ->
+        dump.getValueById(id)?.let { v ->
+            state = Utils.paramToInt(v)
+        }
+    }
+
+    private val startCmdID = Constants.SEND_CMD + id.toByte()
 
     private var onSelectFunction: ArrayList<(pos: Int) -> Unit> = ArrayList()
     private val interpolator: LinearInterpolator? = toRange?.let { LinearInterpolator(it) }
@@ -21,10 +29,13 @@ class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), Amp
                 knob.state = fn.valueToRange(toRange!!.first)
             }
         }
-        knob.setOnStateChanged { value ->
+        onSelectFunction.add { value ->
             onSelectFunction.forEach { f ->
                 f.invoke(interpolator?.valueInterpolated(value) ?: value)
             }
+        }
+        onSelectFunction.add { v ->
+            thr.sendCommand(startCmdID + Utils.intToParam(v) + Constants.END.toByte())
         }
     }
 

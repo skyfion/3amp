@@ -74,17 +74,21 @@ class Amp(val midiManager: SysExMidiManager) {
         }
 
         midiManager.sendSysExtListeners.add {
-            if (it != null && it.size > 9) {
-                val cmd = it.slice(IntRange(0, 6)).toByteArray()
-                if (cmd.contentEquals(Constants.SEND_CMD)) {
-                    dump.value?.let { d ->
-                        d.writeDump(it[7].toInt(), Pair(it[8], it[9]))
-                        dump.postValue(d)
-                    }
+            writeCommand(it)
+        }
+
+    }
+
+    private fun writeCommand(it: ByteArray?) {
+        if (it != null && it.size > 9) {
+            val cmd = it.slice(IntRange(0, 6)).toByteArray()
+            if (cmd.contentEquals(Constants.SEND_CMD)) {
+                dump.value?.let { d ->
+                    d.writeDump(it[7].toInt(), Pair(it[8], it[9]))
+                    dump.postValue(d)
                 }
             }
         }
-
     }
 
     fun open() {
@@ -102,6 +106,7 @@ class Amp(val midiManager: SysExMidiManager) {
     }
 
     fun sendCommand(cmd: ByteArray) {
+        writeCommand(cmd)
         midiManager.sendSysExCmd(cmd)
     }
 

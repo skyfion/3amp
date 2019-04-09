@@ -47,17 +47,19 @@ abstract class AbstractThrFragment : Fragment() {
         return ampCarouselWrapper
     }
 
-    fun initKnob(knob: Int, text: Int): AmpComponent<Int> {
-        return initKnob(knob, text, null)
+    fun initKnob(knob: Int, id: Int, text: Int): AmpComponent<Int> {
+        return initKnob(knob, id, text, null)
     }
 
-    fun initKnob(knob: Int, text: Int, range: Pair<Int, Int>?): AmpComponent<Int> {
-        val ampKnobWrapper = AmpKnobWrapper(fragmentView!!.findViewById(knob), range)
+    fun initKnob(knob: Int, id: Int, text: Int, range: Pair<Int, Int>?): AmpComponent<Int> {
+        val ampKnobWrapper = AmpKnobWrapper(fragmentView!!.findViewById(knob), id, thr, range)
         val knobText = fragmentView!!.findViewById<TextView>(text)
 
         ampKnobWrapper.setOnStateChanged {
             knobText.text = it.toString()
         }
+        thr.dump.observe(this, ampKnobWrapper.observe)
+
         return ampKnobWrapper
     }
 
