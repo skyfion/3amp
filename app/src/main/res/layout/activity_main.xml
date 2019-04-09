@@ -22,118 +22,107 @@
             app:title="3amp" />
     </com.google.android.material.appbar.AppBarLayout>
 
+
+  <LinearLayout
+      android:id="@+id/container"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+  </LinearLayout>
+
+
     <!--<com.google.android.material.tabs.TabLayout-->
     <!--android:id="@+id/amp_tab"-->
+    <!--android:visibility="gone"-->
     <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
     <!--android:background="@color/colorPrimary"-->
     <!--android:minHeight="?attr/actionBarSize"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--</com.google.android.material.tabs.TabLayout>-->
+    <!--app:tabGravity="fill"-->
+    <!--app:tabMaxWidth="0dp"-->
+    <!--app:tabMode="fixed" />-->
 
     <!--<com.nshmura.recyclertablayout.RecyclerTabLayout-->
-        <!--android:id="@+id/amp_tab"-->
-        <!--rtl_tabBackground="?attr/selectableItemBackground"-->
-        <!--rtl_tabIndicatorColor="?attr/colorAccent"-->
-        <!--rtl_tabIndicatorHeight="2dp"-->
-        <!--rtl_tabMaxWidth="264dp"-->
-        <!--rtl_tabMinWidth="72dp"-->
-        <!--rtl_tabPadding="0dp"-->
-        <!--rtl_tabPaddingBottom="0dp"-->
-        <!--rtl_tabPaddingEnd="12dp"-->
-        <!--rtl_tabPaddingStart="12dp"-->
-        <!--rtl_tabPaddingTop="0dp"-->
-        <!--rtl_tabSelectedTextColor="?android:textColorPrimary"-->
-        <!--rtl_tabTextAppearance="@android:style/TextAppearance.Small"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp" />-->
+    <!--android:id="@+id/amp_tab"-->
+    <!--rtl_tabBackground="?attr/selectableItemBackground"-->
+    <!--rtl_tabIndicatorColor="?attr/colorAccent"-->
+    <!--rtl_tabIndicatorHeight="2dp"-->
+    <!--rtl_tabMaxWidth="264dp"-->
+    <!--rtl_tabMinWidth="72dp"-->
+    <!--rtl_tabPadding="0dp"-->
+    <!--rtl_tabPaddingBottom="0dp"-->
+    <!--rtl_tabPaddingEnd="12dp"-->
+    <!--rtl_tabPaddingStart="12dp"-->
+    <!--rtl_tabPaddingTop="0dp"-->
+    <!--rtl_tabSelectedTextColor="?android:textColorPrimary"-->
+    <!--rtl_tabTextAppearance="@android:style/TextAppearance.Small"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="48dp" />-->
 
     <!--<com.kekstudio.dachshundtablayout.DachshundTabLayout-->
-        <!--android:id="@+id/amp_tab"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
+    <!--android:id="@+id/amp_tab"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"/>-->
 
-    <com.ogaclejapan.smarttablayout.SmartTabLayout
-        android:id="@+id/amp_tab"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:stl_indicatorAlwaysInCenter="true"
-        app:stl_indicatorWithoutPadding="false"
-        app:stl_indicatorInFront="false"
-        app:stl_indicatorInterpolation="smart"
-        app:stl_indicatorGravity="bottom"
-        app:stl_indicatorColor="@color/amber_a700"
-        app:stl_indicatorThickness="4dp"
-        app:stl_indicatorWidth="auto"
-        app:stl_indicatorCornerRadius="2dp"
-        app:stl_overlineColor="#4D000000"
-        app:stl_overlineThickness="0dp"
-        app:stl_underlineColor="#4D000000"
-        app:stl_underlineThickness="1dp"
-        app:stl_dividerColor="#4D000000"
-        app:stl_dividerThickness="1dp"
-        app:stl_defaultTabBackground="?attr/selectableItemBackground"
-        app:stl_defaultTabTextAllCaps="true"
-        app:stl_defaultTabTextColor="@color/design_default_color_on_primary"
-        app:stl_defaultTabTextSize="12sp"
-        app:stl_defaultTabTextHorizontalPadding="16dp"
-        app:stl_defaultTabTextMinWidth="0dp"
-        app:stl_distributeEvenly="false"
-        app:stl_clickable="true"
-        app:stl_titleOffset="24dp"
-        app:stl_drawDecorationAfterTab="false"
-        />
+    <!--<com.ogaclejapan.smarttablayout.SmartTabLayout-->
+    <!--android:id="@+id/amp_tab"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="48dp"-->
+    <!--app:stl_indicatorAlwaysInCenter="true"-->
+    <!--app:stl_indicatorWithoutPadding="false"-->
+    <!--app:stl_indicatorInFront="false"-->
+    <!--app:stl_indicatorInterpolation="smart"-->
+    <!--app:stl_indicatorGravity="bottom"-->
+    <!--app:stl_indicatorColor="@color/amber_a700"-->
+    <!--app:stl_indicatorThickness="4dp"-->
+    <!--app:stl_indicatorWidth="auto"-->
+    <!--app:stl_indicatorCornerRadius="2dp"-->
+    <!--app:stl_overlineColor="#4D000000"-->
+    <!--app:stl_overlineThickness="0dp"-->
+    <!--app:stl_underlineColor="#4D000000"-->
+    <!--app:stl_underlineThickness="1dp"-->
+    <!--app:stl_dividerColor="#4D000000"-->
+    <!--app:stl_dividerThickness="1dp"-->
+    <!--app:stl_defaultTabBackground="?attr/selectableItemBackground"-->
+    <!--app:stl_defaultTabTextAllCaps="true"-->
+    <!--app:stl_defaultTabTextColor="@color/design_default_color_on_primary"-->
+    <!--app:stl_defaultTabTextSize="12sp"-->
+    <!--app:stl_defaultTabTextHorizontalPadding="16dp"-->
+    <!--app:stl_defaultTabTextMinWidth="0dp"-->
+    <!--app:stl_distributeEvenly="false"-->
+    <!--app:stl_clickable="true"-->
+    <!--app:stl_titleOffset="24dp"-->
+    <!--app:stl_drawDecorationAfterTab="false"-->
+    <!--/>-->
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/amp_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--<androidx.viewpager.widget.ViewPager-->
+    <!--android:visibility="gone"-->
+    <!--android:id="@+id/amp_pager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-    </androidx.viewpager.widget.ViewPager>
+    <!--</androidx.viewpager.widget.ViewPager>-->
 
-    <LinearLayout
-        style="@style/empty_block"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:visibility="gone">
+    <!--<android.support.v4.widget.DrawerLayout-->
+    <!--android:id="@+id/drawer_layout"-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--tools:openDrawer="start">-->
 
-            <in.goodiebag.carouselpicker.CarouselPicker
-                android:id="@+id/tabs_carousel"
-                style="@style/AppTheme.carouselPicker" />
-        </LinearLayout>
 
-        <include
-            android:id="@+id/tab_amp"
-            layout="@layout/amp" />
+    <!--<android.support.design.widget.NavigationView-->
+    <!--android:id="@+id/nav_view"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="start"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--app:menu="@menu/"/>-->
 
-        <include
-            android:id="@+id/tab_compressor"
-            layout="@layout/compressor"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/tab_effects"
-            layout="@layout/effects"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/tab_delay"
-            layout="@layout/delay"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/tab_reverb"
-            layout="@layout/reverb"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/tab_gate"
-            layout="@layout/gate"
-            android:visibility="gone" />
-
-    </LinearLayout>
+    <!--</android.support.v4.widget.DrawerLayout>-->
 
 </LinearLayout>

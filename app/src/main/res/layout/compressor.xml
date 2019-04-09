@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <in.goodiebag.carouselpicker.CarouselPicker
@@ -70,15 +70,14 @@
 
     <LinearLayout
         android:id="@+id/compressor_rack"
-        android:layout_marginBottom="@dimen/block_margin_bottom"
         android:visibility="gone"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:orientation="vertical">
 
             <in.goodiebag.carouselpicker.CarouselPicker

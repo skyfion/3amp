@@ -2,12 +2,15 @@ package xyz.lazysoft.a3amp.components.wrappers
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.ArraySet
+import androidx.lifecycle.Observer
 import it.beppi.knoblibrary.Knob
+import xyz.lazysoft.a3amp.amp.PresetDump
 import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
 class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
+    override val observe: Observer<PresetDump>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
     private var onSelectFunction: ArrayList<(pos: Int) -> Unit> = ArrayList()
     private val interpolator: LinearInterpolator? = toRange?.let { LinearInterpolator(it) }
@@ -30,7 +33,7 @@ class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), Amp
         return this
     }
 
-    private fun chechkRange(value: Int): Boolean {
+    private fun checkRange(value: Int): Boolean {
         val range: IntRange = interpolator?.let {
             IntRange(it.y1, it.y2)
         }?: run {
@@ -42,7 +45,7 @@ class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), Amp
     override var state: Int
         get() = interpolator?.valueInterpolated(knob.state) ?: knob.state
         set(value) {
-            if (chechkRange(value)) {
+            if (checkRange(value)) {
                 runOnUiThread { knob.state = interpolator?.valueToRange(value) ?: value }
             }
         }

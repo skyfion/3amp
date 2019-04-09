@@ -15,7 +15,7 @@ import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
 import javax.inject.Inject
 
-abstract class AbstractThrFragment: Fragment() {
+abstract class AbstractThrFragment : Fragment() {
 
     @Inject
     lateinit var thr: Amp
@@ -29,18 +29,21 @@ abstract class AbstractThrFragment: Fragment() {
         super.onAttach(context)
     }
 
-    fun initCarousel(carousel: Int, content: Int): AmpComponent<Int> {
-        return initCarousel(carousel, content, null)
+    fun initCarousel(carousel: Int, content: Int, id: Int): AmpComponent<Int> {
+        return initCarousel(carousel, content, id, null)
     }
 
-    fun initCarousel(carousel: Int, content: Int,
-                             changeListener: ((mode: Int) -> Unit)?): AmpComponent<Int> {
+    fun initCarousel(carousel: Int, content: Int, id: Int,
+                     changeListener: ((mode: Int) -> Unit)?): AmpComponent<Int> {
 
         val carouselPicker = fragmentView!!.findViewById<CarouselPicker>(carousel)
-        val ampCarouselWrapper = AmpCarouselWrapper(carouselPicker)
+        val ampCarouselWrapper = AmpCarouselWrapper(carouselPicker, thr, id)
         ampCarouselWrapper.setContent(content, fragmentView!!.context)
         if (changeListener != null)
             ampCarouselWrapper.setOnStateChanged(changeListener)
+
+        thr.dump.observe(this, ampCarouselWrapper.observe)
+
         return ampCarouselWrapper
     }
 
@@ -62,15 +65,31 @@ abstract class AbstractThrFragment: Fragment() {
         return { value ->
             ids.map { fragmentView!!.findViewById<View>(it) }
                     .withIndex()
-                    .forEach { (index, view) -> view.visibility = if (index == value) View.VISIBLE else View.GONE }
+                    .forEach { (index, view) ->
+                        view.visibility = if (index == value) View.VISIBLE else View.GONE
+                    }
         }
     }
 
     abstract fun initFragment()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         fragmentView = inflater.inflate(fragmentId, container, false)
         initFragment()
         return fragmentView
+    }
+
+    companion object {
+        fun listFragments(): List<AbstractThrFragment> {
+            return listOf(
+                    AmpFragment(),
+                    CompressorFragment(),
+                    EffectsFragment(),
+                    DelayFragment(),
+                    ReverbFragment(),
+                    GateFragment())
+        }
     }
 }

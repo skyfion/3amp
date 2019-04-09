@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.doAsync
@@ -13,7 +16,7 @@ import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
-import xyz.lazysoft.a3amp.view.AmpPageAdapter
+import xyz.lazysoft.a3amp.view.AbstractThrFragment
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
@@ -59,23 +62,60 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private lateinit var fragments: List<AbstractThrFragment>
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(amp_toolbar)
+//        val actionbar: ActionBar? = supportActionBar
+//        actionbar?.apply {
+//            setDisplayHomeAsUpEnabled(true)
+//            setHomeAsUpIndicator(R.drawable.ic_menu)
+//        }
 
-        setSupportActionBar(findViewById(R.id.amp_toolbar))
+        fragments = AbstractThrFragment.listFragments()
 
-        amp_pager.adapter = AmpPageAdapter(
-                supportFragmentManager,
-                resources.getStringArray(R.array.tabs).toList())
-        // val tabs = findViewById<DachshundTabLayout>(R.id.amp_tab)
-        amp_tab.setViewPager(amp_pager)
+        val drawer = DrawerBuilder()
+                .withToolbar(amp_toolbar)
+                .withOnDrawerItemClickListener { view, position, drawerItem ->
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.container, fragments[drawerItem.identifier.toInt()])
+                            .commit()
+                    true
+                }
+                .withActivity(this)
+
+        val drawerMenu = resources.getStringArray(R.array.tabs)
+        IntRange(0, drawerMenu.size - 1).forEach {
+            drawer.addDrawerItems(
+                    PrimaryDrawerItem().withName(drawerMenu[it]).withIdentifier(it.toLong())
+            )
+        }
+
+        drawer.addDrawerItems(DividerDrawerItem())
+
+
+        drawer.build()
+//        val tabs = resources.getStringArray(R.array.tabs).toList()
+//        amp_pager.adapter = AmpPageAdapter(supportFragmentManager, tabs)
+//        amp_pager.offscreenPageLimit = tabs.size
+//
+//        // val tabs = findViewById<DachshundTabLayout>(R.id.amp_tab)
+//        amp_tab.setupWithViewPager(amp_pager)
         super.onCreate(savedInstanceState)
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container, fragments[0])
+                .commit()
 
         thr.open()
     }
+
 
     private fun savePreset() {
         thr.selectPreset?.let { preset ->
@@ -91,6 +131,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         when (item.itemId) {
+            // R.id.home -> drawer_layout.openDrawer(GravityCompat.START)
             R.id.save_preset_as -> saveAs()
             R.id.save_preset -> savePreset()
             R.id.list_presets -> startActivity(Intent(this, PresetsActivity::class.java))

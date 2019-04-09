@@ -4,7 +4,25 @@
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- ...and here we setting appcompat’s color theming attrs -->
+        <item name="colorPrimary">@color/material_drawer_primary</item>
+        <item name="colorPrimaryDark">@color/material_drawer_primary_dark</item>
+
+        <!-- MaterialDrawer specific values -->
+        <item name="material_drawer_background">@color/colorPrimary</item>
+        <item name="material_drawer_primary_text">@color/amber_a700</item>
+        <item name="material_drawer_primary_icon">@color/amber_a700</item>
+        <item name="material_drawer_secondary_text">@color/amber_a700</item>
+        <item name="material_drawer_hint_text">@color/white</item>
+        <item name="material_drawer_divider">@color/gray</item>
+        <item name="material_drawer_selected">@color/amber_a700</item> <!-- Material 2 defines 12% alpha, primary color -->
+        <item name="material_drawer_selected_legacy">@color/material_drawer_selected</item> <!-- Defines the color if legacy style (Material 1, is enabled) -->
+        <item name="material_drawer_selected_text">@color/black</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
+        <item name="material_drawer_legacy_style">false</item> <!-- Enables legacy Material 1 style -->
     </style>
+
     <!-- Knob style -->
     <style name="AppTheme.knobs" parent="AppTheme">
         <item name="kKnobDrawable">@drawable/knob6</item>
@@ -38,10 +56,11 @@
     </style>
 
     <style name="AppTheme.carouselPicker" parent="AppTheme">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="items_visible">three</item>
     </style>
 
@@ -84,7 +103,7 @@
     <style name="knobTable">
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:stretchColumns">*</item>
     </style>

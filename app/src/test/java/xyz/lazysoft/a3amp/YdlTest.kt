@@ -26,7 +26,7 @@ class YdlTest {
 
     @Test
     fun writeDumpState() {
-        val state = PresetDumpState(Constants.initPresetDump.toByteArray())
+        val state = PresetDump(Constants.initPresetDump.toByteArray())
         val reverbTime = Constants.REVERB_TIME
         state.writeDump(reverbTime, Pair(0, 99))
 
