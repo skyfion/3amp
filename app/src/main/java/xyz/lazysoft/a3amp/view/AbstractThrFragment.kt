@@ -31,17 +31,19 @@ abstract class AbstractThrFragment : Fragment() {
     }
 
     fun initCarousel(carousel: Int, content: Int, id: Int): AmpComponent<Int> {
-        return initCarousel(carousel, content, id, null)
+        return initCarousel(carousel, content, id, null, null)
     }
 
-    fun initCarousel(carousel: Int, content: Int, id: Int,
+    fun initCarousel(carousel: Int, content: Int, id: Int?, swId: Int?,
                      changeListener: ((mode: Int) -> Unit)?): AmpComponent<Int> {
 
         val carouselPicker = fragmentView!!.findViewById<CarouselPicker>(carousel)
         val ampCarouselWrapper = AmpCarouselWrapper(carouselPicker, thr, id)
         ampCarouselWrapper.setContent(content, fragmentView!!.context)
-        if (changeListener != null)
+        if (changeListener != null) {
+            ampCarouselWrapper.swId = swId
             ampCarouselWrapper.setOnStateChanged(changeListener)
+        }
 
         thr.dump.observe(this, ampCarouselWrapper.observe)
 

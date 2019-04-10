@@ -15,22 +15,50 @@ import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
-class AmpCarouselWrapper(private val carousel: CarouselPicker, private val thr: Amp, val id: Int) : Activity(),
+class AmpCarouselWrapper(private val carousel: CarouselPicker,
+                         private val thr: Amp, val id: Int?) : Activity(),
         AmpComponent<Int>, ViewPager.OnPageChangeListener {
+
+    var swId: Int? = null
 
     override val observe: Observer<PresetDump> = Observer { dump ->
         dump.getValueById(id)?.let { v ->
-            state = Utils.paramToInt(v)
+            val param = Utils.paramToInt(v)
+            if (swId != null) {
+                dump.getValueById(swId!!)?.let { sw ->
+                    if (sw[1] == Constants.OFF.toByte()) {
+                        state = 0
+                    } else {
+                        state = param.inc()
+                    }
+                }
+            } else {
+                state = param
+            }
         }
     }
 
     private val startCmdID = SEND_CMD + id.toByte() + 0x00
 
+
     private var onSelectFunction: MutableSet<(pos: Int) -> Unit> = mutableSetOf()
 
     init {
         carousel.addOnPageChangeListener(this)
-        onSelectFunction.add { v -> thr.sendCommand(startCmdID + v.toByte() + END.toByte()) }
+        onSelectFunction.add { v ->
+            if (swId != null) {
+                if (v == 0) {
+                    thr.sendCommand(SEND_CMD +
+                            Utils.byteArrayOf(swId!!, 0x00, Constants.OFF, Constants.END))
+                } else {
+                    thr.sendCommand(SEND_CMD +
+                            Utils.byteArrayOf(swId!!, 0x00, Constants.ON, Constants.END))
+                    thr.sendCommand(startCmdID + Utils.byteArrayOf(v - 1, END))
+                }
+            } else {
+                thr.sendCommand(startCmdID + v.toByte() + END.toByte())
+            }
+        }
     }
 
     override fun setOnStateChanged(function: (pos: Int) -> Unit): AmpComponent<Int> {

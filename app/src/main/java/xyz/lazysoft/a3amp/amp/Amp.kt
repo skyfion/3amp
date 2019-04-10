@@ -1,18 +1,10 @@
 package xyz.lazysoft.a3amp.amp
 
 import androidx.lifecycle.MutableLiveData
-import xyz.lazysoft.a3amp.amp.Constants.Companion.END
 import xyz.lazysoft.a3amp.amp.Constants.Companion.HEART_BEAT
-import xyz.lazysoft.a3amp.amp.Constants.Companion.OFF
-import xyz.lazysoft.a3amp.amp.Constants.Companion.ON
 import xyz.lazysoft.a3amp.amp.Constants.Companion.REQ_SETTINGS
-import xyz.lazysoft.a3amp.amp.Constants.Companion.SEND_CMD
 import xyz.lazysoft.a3amp.amp.Constants.Companion.TAG
 import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
-import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
-import xyz.lazysoft.a3amp.amp.Utils.intToParam
-import xyz.lazysoft.a3amp.amp.Utils.paramToInt
-import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.midi.SysExMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import java.util.logging.Logger
@@ -109,83 +101,23 @@ class Amp(val midiManager: SysExMidiManager) {
         midiManager.sendSysExCmd(cmd)
     }
 
-    /**
-     * Add common knob
-     */
-    fun addKnob(knob: AmpComponent<Int>, id: Int): Amp {
-        val sendCmd = Constants.SEND_CMD + id.toByte()
-        midiManager.sysExtListeners.add {
-            if (it != null && it.size > 9) {
-                val cmd = it.slice(IntRange(0, 7)).toByteArray()
-                if (cmd.contentEquals(sendCmd)) {
-                    knob.state = paramToInt(it.sliceArray(IntRange(8, 9)))
-                }
-            }
-        }
-        knob.setOnStateChanged {
-            //   logger.info("recive ${it} -> ${intToParam(it).joinToString()}")
-            midiManager.sendSysExCmd(sendCmd + intToParam(it) + END.toByte())
-        }
-        return this
-    }
 
-
-//    fun addSpinner(spinner: AmpComponent<Int>, id: Int): Amp {
-//        val cmdId = SEND_CMD + id.toByte() + 0x00
+//    fun addSwSpinner(carousel: AmpComponent<Int>, swId: Int): Amp {
+//        val cmdId = SEND_CMD + swId.toByte() + 0x00
 //        midiManager.sysExtListeners.add {
 //            if (it != null && it.size > 9) {
 //                val cmd = it.slice(IntRange(0, 8)).toByteArray()
 //                if (cmd.contentEquals(cmdId)) {
-//                    spinner.state = it[9].toInt()
+//                    carousel.state = if (it[9] == OFF.toByte()) 0 else 1
 //                }
 //            }
 //        }
-//        spinner.setOnStateChanged {
-//            midiManager.sendSysExCmd(cmdId + it.toByte() + END.toByte())
+//        carousel.setOnStateChanged {
+//            val value = if (it == 0) OFF else ON
+//            midiManager.sendSysExCmd(cmdId + value.toByte() + END.toByte())
 //        }
 //        return this
 //    }
-
-    fun addOffSpinner(spinner: AmpComponent<Int>, id: Int, swId: Int): Amp {
-        val swCmdId = SEND_CMD + swId.toByte() + 0x00
-        val cmdId = SEND_CMD + id.toByte() + 0x00
-        midiManager.sysExtListeners.add {
-            if (it != null && it.size > 9) {
-                val cmd = it.slice(IntRange(0, 8)).toByteArray()
-                if (cmd.contentEquals(swCmdId) && it[9] == OFF.toByte()) {
-                    spinner.state = 0
-                } else if (cmd.contentEquals(cmdId)) {
-                    spinner.state = it[9].toInt() + 1
-                }
-            }
-        }
-        spinner.setOnStateChanged {
-            if (it == 0)
-                midiManager.sendSysExCmd(SEND_CMD + byteArrayOf(swId, 0x00, OFF, END))
-            else {
-                midiManager.sendSysExCmd(SEND_CMD + byteArrayOf(swId, 0x00, ON, END))
-                midiManager.sendSysExCmd(SEND_CMD + byteArrayOf(id, 0x00, (it - 1), END))
-            }
-        }
-        return this
-    }
-
-    fun addSwSpinner(carousel: AmpComponent<Int>, swId: Int): Amp {
-        val cmdId = SEND_CMD + swId.toByte() + 0x00
-        midiManager.sysExtListeners.add {
-            if (it != null && it.size > 9) {
-                val cmd = it.slice(IntRange(0, 8)).toByteArray()
-                if (cmd.contentEquals(cmdId)) {
-                    carousel.state = if (it[9] == OFF.toByte()) 0 else 1
-                }
-            }
-        }
-        carousel.setOnStateChanged {
-            val value = if (it == 0) OFF else ON
-            midiManager.sendSysExCmd(cmdId + value.toByte() + END.toByte())
-        }
-        return this
-    }
 
     var selectPreset: AmpPreset? = null
         set(value) {
