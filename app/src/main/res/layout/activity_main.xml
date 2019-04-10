@@ -23,13 +23,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-  <LinearLayout
+  <RelativeLayout
       android:id="@+id/container"
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-  </LinearLayout>
+  </RelativeLayout>
 
 
     <!--<com.google.android.material.tabs.TabLayout-->

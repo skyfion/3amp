@@ -1,8 +1,15 @@
 package xyz.lazysoft.a3amp.amp
 
 import java.util.*
+import kotlin.NoSuchElementException
 
-class PresetDump(val dump: ByteArray) {
+class PresetDump(val data: ByteArray) {
+
+    var dump: ByteArray = when (data.size) {
+        Constants.THR_SYSEX_SIZE -> data.drop(Constants.THR_SYSEX_SHIFT).toByteArray()
+        Constants.YDL_DATA -> data.drop(Constants.YDL_DATA_SHIFT).toByteArray()
+        else -> throw NoSuchElementException("Unknown dump type")
+    }
 
     fun set(index: Int, value: Byte) {
         dump[index] = value
@@ -27,30 +34,30 @@ class PresetDump(val dump: ByteArray) {
 
     private fun calcCell(id: Int): Any? {
         return when (id) {
+            // this is conflict reverb time and spring reverb, they have one ID
+            // and also COMPRESSOR_STOMP_SUSTAIN and COMPRESSOR_RACK_THRESHOLD
+            // may by bag inside YDL format
             Constants.REVERB_TIME -> {
-                val mode = Constants.DUMP_MAP[Constants.REVERB_MODE] as Int
-                if (get(mode) == 3.toByte()) {
-                    193
+                if (get(Constants.REVERB_MODE) == 3.toByte()) {
+                    Constants.REVERB_TIME
                 } else {
-                    194
+                    Constants.REVERB_SPRING_FILTER
                 }
             }
             Constants.COMPRESSOR_STOMP_SUSTAIN -> {
-                val mode = Constants.DUMP_MAP[Constants.COMPRESSOR_MODE] as Int
-                if (get(mode) == 0.toByte()) {
-                    145
+                if (get(Constants.COMPRESSOR_MODE) == 0.toByte()) {
+                    Constants.COMPRESSOR_STOMP_SUSTAIN
                 } else {
-                    listOf(145, 146)
+                    listOf(Constants.COMPRESSOR_STOMP_SUSTAIN,
+                            Constants.COMPRESSOR_RACK_THRESHOLD)
                 }
             }
-            else -> Constants.DUMP_MAP[id]
+            else -> if (Constants.TWO_BYTES.contains(id)) listOf(id, id.inc()) else id
         }
     }
 
     fun writeDump(id: Int, value: Pair<Byte, Byte>) {
-        // this is conflict reverb time and spring reverb, they have one ID
-        // and also COMPRESSOR_STOMP_SUSTAIN and COMPRESSOR_RACK_THRESHOLD
-        // may by bag inside YDL format
+
         val cell = calcCell(id)
 
         when (cell) {

@@ -106,7 +106,6 @@ class Amp(val midiManager: SysExMidiManager) {
     }
 
     fun sendCommand(cmd: ByteArray) {
-        writeCommand(cmd)
         midiManager.sendSysExCmd(cmd)
     }
 
@@ -202,9 +201,13 @@ class Amp(val midiManager: SysExMidiManager) {
             //  val cmd = Constants.HEAD + Constants.DUMP_PREFIX + 0x31 + it + Constants.DUMP_POSTFIX + 0x1F + Constants.END
             //todo need unit test
             // logger.info("load dump -> " + it.joinToString())
+
+            // todo maybe send one command
             YdlDataConverter.thr5and10(it.toList()).forEach { cmd ->
                 midiManager.onMidiSystemExclusive(cmd)
             }
+
+            dump.postValue(PresetDump(it))
         }
     }
 }

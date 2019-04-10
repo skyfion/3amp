@@ -80,6 +80,15 @@ class Constants {
         val LIGHT_OFF = HEAD + byteArrayOf(0x30, 0x41, 0x30, 0x01, 0x00, END)
         val TAG = "3amp"
 
+        val TWO_BYTES = listOf(
+                COMPRESSOR_RACK_OUTPUT,
+                DELAY_TIME,
+                DELAY_HIGH_CUT,
+                DELAY_LOW_CUT,
+                REVERB_PRE_DELAY,
+                REVERB_LOW_CUT,
+                REVERB_HIGH_CUT)
+
         val DUMP_MAP = hashMapOf(
                 AMP to 128,
                 K_GAIN to 129,
@@ -92,7 +101,7 @@ class Constants {
                 COMPRESSOR_MODE to 144,
                 COMPRESSOR_STOMP_SUSTAIN to 145,
                 COMPRESSOR_STOMP_OUTPUT to 146,
-                //   COMPRESSOR_RACK_THRESHOLD to listOf(145, 146),
+                // COMPRESSOR_RACK_THRESHOLD to listOf(145, 146),
                 COMPRESSOR_RACK_ATTACK to 147,
                 COMPRESSOR_RACK_RELEASE to 148,
                 COMPRESSOR_RACK_RATIO to 149,

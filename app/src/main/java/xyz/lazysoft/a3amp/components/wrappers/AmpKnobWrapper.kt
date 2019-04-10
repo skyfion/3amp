@@ -14,7 +14,9 @@ import xyz.lazysoft.a3amp.components.AmpComponent
 class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
     override val observe: Observer<PresetDump> = Observer { dump ->
         dump.getValueById(id)?.let { v ->
-            state = Utils.paramToInt(v)
+            val newV = Utils.paramToInt(v)
+            if (state != newV)
+                state = newV
         }
     }
 
@@ -24,17 +26,18 @@ class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<In
     private val interpolator: LinearInterpolator? = toRange?.let { LinearInterpolator(it) }
 
     init {
-        interpolator?.let {fn ->
+        interpolator?.let { fn ->
             runOnUiThread {
                 knob.state = fn.valueToRange(toRange!!.first)
             }
         }
-        onSelectFunction.add { value ->
+
+        knob.setOnStateChanged { value ->
             onSelectFunction.forEach { f ->
                 f.invoke(interpolator?.valueInterpolated(value) ?: value)
             }
         }
-        onSelectFunction.add { v ->
+        setOnStateChanged { v ->
             thr.sendCommand(startCmdID + Utils.intToParam(v) + Constants.END.toByte())
         }
     }
@@ -47,10 +50,10 @@ class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<In
     private fun checkRange(value: Int): Boolean {
         val range: IntRange = interpolator?.let {
             IntRange(it.y1, it.y2)
-        }?: run {
+        } ?: run {
             IntRange(0, 100)
         }
-       return (value in range)
+        return (value in range)
     }
 
     override var state: Int

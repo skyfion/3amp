@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
         fragments = AbstractThrFragment.listFragments()
 
         val drawer = DrawerBuilder()
+                .withActivity(this)
                 .withToolbar(amp_toolbar)
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     supportFragmentManager
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                             .commit()
                     true
                 }
-                .withActivity(this)
+                .withDrawerWidthDp(200)
 
         val drawerMenu = resources.getStringArray(R.array.tabs)
         IntRange(0, drawerMenu.size - 1).forEach {

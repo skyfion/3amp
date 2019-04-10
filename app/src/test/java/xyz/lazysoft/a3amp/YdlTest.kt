@@ -32,6 +32,9 @@ class YdlTest {
 
         val index = Constants.DUMP_MAP[reverbTime] as Int
         Assert.assertEquals(state.get(index), 99.toByte())
+
+        val gain = Utils.paramToInt(state.getValueById(Constants.K_GAIN)!!)
+        Assert.assertEquals(gain, 50)
     }
 
     class StubMindiManager : SysExMidiManager {

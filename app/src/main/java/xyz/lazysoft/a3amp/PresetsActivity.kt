@@ -38,7 +38,7 @@ class PresetsActivity : AppCompatActivity() {
     lateinit var repository: AppDatabase
 
     var presets: List<AmpPreset>? = null
-    var selected: Any? = null
+    private var selected: Any? = null
 
     private lateinit var toolbar: Toolbar
 
@@ -104,7 +104,6 @@ class PresetsActivity : AppCompatActivity() {
         }
 
         presetList.setOnItemLongClickListener { adapterView, view, pos, id ->
-            logger.info("long click !")
             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     view.startDragAndDrop(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
@@ -129,7 +128,6 @@ class PresetsActivity : AppCompatActivity() {
                         val preset = event.localState as AmpPreset
                         if (preset.group != group) {
                             doAsync {
-                                logger.debug("drag -> update group preset")
                                 repository.presetDao().update(preset.copy(group = group))
                                 onComplete {
                                     listAdapter.refresh()
@@ -155,7 +153,8 @@ class PresetsActivity : AppCompatActivity() {
                     }
                 }
                 R.id.create_preset_group -> {
-                    Dialogs.showInputDialog(this, "New group", "") { groupTitle ->
+                    Dialogs.showInputDialog(this, "New group", "")
+                    { groupTitle ->
                         newGroup(groupTitle)
                     }
                 }
@@ -169,8 +168,6 @@ class PresetsActivity : AppCompatActivity() {
                                 is AmpPresetGroup -> renameGroup(obj, title)
                             }
                         }
-                    } else {
-                        logger.info("obj is null")
                     }
                 }
                 R.id.delete_preset_or_group -> {
@@ -271,6 +268,7 @@ class PresetsActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let { uri ->
                 logger.debug("start import ydl")
@@ -309,8 +307,8 @@ class PresetsActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
 
+        }
     }
 
 }

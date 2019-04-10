@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import it.beppi.knoblibrary.Knob
 import xyz.lazysoft.a3amp.AmpApplication
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.AmpComponent
@@ -47,16 +48,15 @@ abstract class AbstractThrFragment : Fragment() {
         return ampCarouselWrapper
     }
 
-    fun initKnob(knob: Int, id: Int, text: Int): AmpComponent<Int> {
-        return initKnob(knob, id, text, null)
+    fun initKnob(knob: Knob, text: TextView, id: Int): AmpComponent<Int> {
+        return initKnob(knob, text, id, null)
     }
 
-    fun initKnob(knob: Int, id: Int, text: Int, range: Pair<Int, Int>?): AmpComponent<Int> {
-        val ampKnobWrapper = AmpKnobWrapper(fragmentView!!.findViewById(knob), id, thr, range)
-        val knobText = fragmentView!!.findViewById<TextView>(text)
+    fun initKnob(knob: Knob, text: TextView, id: Int, range: Pair<Int, Int>?): AmpComponent<Int> {
+        val ampKnobWrapper = AmpKnobWrapper(knob, id, thr, range)
 
         ampKnobWrapper.setOnStateChanged {
-            knobText.text = it.toString()
+            text.text = it.toString()
         }
         thr.dump.observe(this, ampKnobWrapper.observe)
 
@@ -71,6 +71,10 @@ abstract class AbstractThrFragment : Fragment() {
                         view.visibility = if (index == value) View.VISIBLE else View.GONE
                     }
         }
+    }
+
+    fun <T : View?> find(id: Int): T {
+        return fragmentView!!.findViewById<T>(id)
     }
 
     abstract fun initFragment()
