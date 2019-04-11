@@ -2,34 +2,33 @@ package xyz.lazysoft.a3amp.components.wrappers
 
 import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
-import xyz.lazysoft.a3amp.amp.Constants.Companion.END
 import xyz.lazysoft.a3amp.amp.Constants.Companion.SEND_CMD
 import xyz.lazysoft.a3amp.amp.PresetDump
 import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
-class AmpCarouselWrapper(private val carousel: CarouselPicker,
-                         private val thr: Amp, val id: Int?) : Activity(),
+class AmpCarouselWrapper(private val carousel: CarouselPicker, private val thr: Amp, val id: Int?) :
         AmpComponent<Int>, ViewPager.OnPageChangeListener {
 
     var swId: Int? = null
 
     override val observe: Observer<PresetDump> = Observer { dump ->
-        dump.getValueById(id)?.let { v ->
+        dump.getValueById(id!!)?.let { v ->
             val param = Utils.paramToInt(v)
             if (swId != null) {
                 dump.getValueById(swId!!)?.let { sw ->
-                    if (sw[1] == Constants.OFF.toByte()) {
-                        state = 0
+                    state = if (sw[1] == Constants.OFF.toByte()) {
+                        0
                     } else {
-                        state = param.inc()
+                        param.inc()
                     }
                 }
             } else {
@@ -38,8 +37,9 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker,
         }
     }
 
-    private val startCmdID = SEND_CMD + id.toByte() + 0x00
-
+    private val startCmdID: ByteArray by lazy {
+        SEND_CMD + id!!.toByte() + 0x00
+    }
 
     private var onSelectFunction: MutableSet<(pos: Int) -> Unit> = mutableSetOf()
 
@@ -53,10 +53,10 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker,
                 } else {
                     thr.sendCommand(SEND_CMD +
                             Utils.byteArrayOf(swId!!, 0x00, Constants.ON, Constants.END))
-                    thr.sendCommand(startCmdID + Utils.byteArrayOf(v - 1, END))
+                    thr.sendCommand(startCmdID + Utils.byteArrayOf(v - 1, Constants.END))
                 }
             } else {
-                thr.sendCommand(startCmdID + v.toByte() + END.toByte())
+                thr.sendCommand(startCmdID + v.toByte() + Constants.END.toByte())
             }
         }
     }
@@ -69,7 +69,11 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker,
     override var state: Int
         get() = carousel.currentItem
         set(value) {
-            runOnUiThread { carousel.currentItem = value }
+            doAsync {
+                uiThread {
+                    carousel.currentItem = value
+                }
+            }
         }
 
     override fun onPageSelected(position: Int) {

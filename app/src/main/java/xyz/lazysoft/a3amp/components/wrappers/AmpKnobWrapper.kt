@@ -1,9 +1,10 @@
 package xyz.lazysoft.a3amp.components.wrappers
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.lifecycle.Observer
 import it.beppi.knoblibrary.Knob
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.PresetDump
@@ -11,7 +12,8 @@ import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
-class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
+class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<Int, Int>?) : AmpComponent<Int> {
+
     override val observe: Observer<PresetDump> = Observer { dump ->
         dump.getValueById(id)?.let { v ->
             val newV = Utils.paramToInt(v)
@@ -27,8 +29,10 @@ class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<In
 
     init {
         interpolator?.let { fn ->
-            runOnUiThread {
-                knob.state = fn.valueToRange(toRange!!.first)
+            doAsync {
+                uiThread {
+                    knob.state = fn.valueToRange(toRange!!.first)
+                }
             }
         }
 
@@ -38,7 +42,8 @@ class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<In
             }
         }
         setOnStateChanged { v ->
-            thr.sendCommand(startCmdID + Utils.intToParam(v) + Constants.END.toByte())
+            thr.midiManager
+                    .sendSysExCmd(startCmdID + Utils.intToParam(v) + Constants.END.toByte())
         }
     }
 
@@ -60,7 +65,11 @@ class AmpKnobWrapper(val knob: Knob, val id: Int, val thr: Amp, toRange: Pair<In
         get() = interpolator?.valueInterpolated(knob.state) ?: knob.state
         set(value) {
             if (checkRange(value)) {
-                runOnUiThread { knob.state = interpolator?.valueToRange(value) ?: value }
+                doAsync {
+                    uiThread {
+                        knob.state = interpolator?.valueToRange(value) ?: value
+                    }
+                }
             }
         }
 

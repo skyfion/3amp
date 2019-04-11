@@ -55,7 +55,7 @@ class Amp(val midiManager: SysExMidiManager) {
                 val sig = data.slice(IntRange(0, 6)).toByteArray()
                 if (sig.contentEquals(HEART_BEAT)) {
                     heartBeat = data
-                } else if (data.size == THR_DATA_SIZE) { // config from amp
+                } else if (data.size == THR_DATA_SIZE) { // config from thr
                     requestCallBack?.invoke(data)
                     requestCallBack = null
                     // chkeck header

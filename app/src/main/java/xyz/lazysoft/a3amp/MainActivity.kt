@@ -4,19 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.onComplete
+import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AppDatabase
 import xyz.lazysoft.a3amp.view.AbstractThrFragment
+import xyz.lazysoft.a3amp.view.AmpReviewFragment
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var repository: AppDatabase
 
+    private val topLevelFragments = listOf(
+            AmpReviewFragment(),
+            PresetsFragment())
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
@@ -37,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initAmp() {
 
-        // amp id detect
+        // thr id detect
 //        thr.modelAmpDetect = { model ->
 //            runOnUiThread {
 //
@@ -70,35 +75,41 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(amp_toolbar)
-//        val actionbar: ActionBar? = supportActionBar
-//        actionbar?.apply {
-//            setDisplayHomeAsUpEnabled(true)
-//            setHomeAsUpIndicator(R.drawable.ic_menu)
-//        }
 
         fragments = AbstractThrFragment.listFragments()
 
+        // drawer header
+        val header = ImageView(this)
+        header.image = getDrawable(R.drawable.header)
+        header.scaleType = ImageView.ScaleType.CENTER
+
         val drawer = DrawerBuilder()
+                .withHeader(header)
                 .withActivity(this)
                 .withToolbar(amp_toolbar)
-                .withOnDrawerItemClickListener { view, position, drawerItem ->
+                .withOnDrawerItemClickListener { _, _, drawerItem ->
                     supportFragmentManager
                             .beginTransaction()
                             .replace(R.id.container, fragments[drawerItem.identifier.toInt()])
                             .commit()
                     true
                 }
-                .withDrawerWidthDp(200)
+                .withDrawerWidthDp(250)
 
         val drawerMenu = resources.getStringArray(R.array.tabs)
         IntRange(0, drawerMenu.size - 1).forEach {
             drawer.addDrawerItems(
-                    PrimaryDrawerItem().withName(drawerMenu[it]).withIdentifier(it.toLong())
-            )
+                    PrimaryDrawerItem()
+                            .withName(drawerMenu[it])
+                            .withIdentifier(it.toLong()))
         }
 
         drawer.addDrawerItems(DividerDrawerItem())
 
+        mainBottomNav.setOnNavigationItemSelectedListener { item ->
+            replaceContext(item.itemId)
+            false
+        }
 
         drawer.build()
 //        val tabs = resources.getStringArray(R.array.tabs).toList()
@@ -107,14 +118,25 @@ class MainActivity : AppCompatActivity() {
 //
 //        // val tabs = findViewById<DachshundTabLayout>(R.id.amp_tab)
 //        amp_tab.setupWithViewPager(amp_pager)
+
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, fragments[0])
-                .commit()
+        replaceContext(R.id.mbm_amp)
+    }
 
-        thr.open()
+    private fun replaceContext(id: Int) {
+        val f: Fragment? = when (id) {
+            R.id.mbm_amp -> topLevelFragments[0]
+            R.id.mbm_presets -> topLevelFragments[1]
+            else -> null
+        }
+
+        f?.let { fragment ->
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit()
+        }
     }
 
 
@@ -135,7 +157,7 @@ class MainActivity : AppCompatActivity() {
             // R.id.home -> drawer_layout.openDrawer(GravityCompat.START)
             R.id.save_preset_as -> saveAs()
             R.id.save_preset -> savePreset()
-            R.id.list_presets -> startActivity(Intent(this, PresetsActivity::class.java))
+            R.id.list_presets -> startActivity(Intent(this, PresetsFragment::class.java))
             R.id.about_btn -> startActivity(Intent(this, AboutActivity::class.java))
         }
         return true

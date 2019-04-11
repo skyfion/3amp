@@ -16,10 +16,10 @@ import xyz.lazysoft.a3amp.midi.SysExMidiManager
 @RunWith(MockitoJUnitRunner::class)
 class AmpTest {
 //    private val midiManager = StubMidiManager()
-//    private val amp = Amp(midiManager)
+//    private val thr = Amp(midiManager)
 //
 //    init {
-//   //     amp.addKnob(, Constants.K_GAIN)
+//   //     thr.addKnob(, Constants.K_GAIN)
 //
 //    }
 //
@@ -45,7 +45,7 @@ class AmpTest {
 //        knobGain.numberOfStates = 100
 //        val knob = AmpKnobWrapper(knobGain, null)
 //
-//        amp.addKnob(knob, Constants.K_GAIN)
+//        thr.addKnob(knob, Constants.K_GAIN)
 //        midiManager.onMidiSystemExclusive(makeKnobCommand(Constants.K_GAIN, 50))
 //        Assert.assertEquals(knob.state, 50)
 //        midiManager.onMidiSystemExclusive(makeKnobCommand(Constants.K_GAIN, 0))

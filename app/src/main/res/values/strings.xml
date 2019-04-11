@@ -21,7 +21,7 @@
     <string name="reverb">Reverb</string>
     <string name="release">release</string>
     <string name="gate">Gate</string>
-    <string name="amp">AMP</string>
+    <string name="amp">amp</string>
     <dimen name="knob_margin">7dp</dimen>
     <string-array name="thr10_amps">
         <item>Clean</item>
@@ -141,7 +141,7 @@
     <string name="save_preset">save preset</string>
     <string name="save_preset_as">save preset as..</string>
     <string name="delete">delete</string>
-    <string name="import_ydl">Import YDL</string>
+    <string name="import_ydl">Import</string>
     <string name="rename">rename</string>
     <string name="load">load</string>
     <string name="create_group">create group</string>

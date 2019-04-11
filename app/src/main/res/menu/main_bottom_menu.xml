@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/mbm_amp"
+            android:title="@string/amp"
+            android:icon="@drawable/amp"/>
+        <item
+            android:id="@+id/mbm_presets"
+            android:title="@string/presets"
+            android:icon="@drawable/ic_view_list"/>
+</menu>

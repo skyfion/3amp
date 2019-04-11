@@ -14,12 +14,16 @@ import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.components.AmpComponent
 import xyz.lazysoft.a3amp.components.wrappers.AmpCarouselWrapper
 import xyz.lazysoft.a3amp.components.wrappers.AmpKnobWrapper
+import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
 
 abstract class AbstractThrFragment : Fragment() {
 
     @Inject
     lateinit var thr: Amp
+
+    @Inject
+    lateinit var repository: AppDatabase
 
     abstract val fragmentId: Int
 

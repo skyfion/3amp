@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
@@ -68,7 +68,7 @@
 
     </TableLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/compressor_rack"
         android:visibility="gone"
         android:layout_height="wrap_content"
@@ -89,9 +89,7 @@
                 style="@style/AppTheme.carouselPicker" />
         </LinearLayout>
 
-        <TableLayout style="@style/knobTable"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+        <TableLayout style="@style/knobTable">
 
             <TableRow>
 
@@ -179,5 +177,5 @@
         </TableLayout>
 
 
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

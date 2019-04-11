@@ -1,9 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/amp_carousel_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -15,6 +16,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@+id/amp_carousel_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -27,7 +29,6 @@
     <TableLayout style="@style/knobTable">
 
         <TableRow>
-
             <LinearLayout style="@style/knobBlock">
 
                 <it.beppi.knoblibrary.Knob
@@ -132,4 +133,4 @@
 
     </TableLayout>
 
-</LinearLayout>
+</RelativeLayout>

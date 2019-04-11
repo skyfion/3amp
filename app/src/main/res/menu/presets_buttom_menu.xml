@@ -15,4 +15,9 @@
         android:icon="@drawable/ic_delete"
         app:showAsAction="ifRoom"
         android:title="@string/delete" />
+    <item android:id="@+id/import_presets"
+        android:icon="@drawable/ic_import"
+        app:showAsAction="ifRoom"
+        android:title="@string/import_ydl"
+        />
 </menu>
