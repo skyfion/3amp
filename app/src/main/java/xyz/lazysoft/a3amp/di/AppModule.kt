@@ -18,12 +18,6 @@ class AppModule(private val app: AmpApplication) {
     }
 
 
-//    @Provides
-//    @Singleton
-//    fun providesActivity(): Activity {
-//        return activity
-//    }
-//
     @Provides
     @Singleton
     fun providesApplication(): Application {

@@ -9,4 +9,6 @@ immediate needs._
 
 https://paypal.me/fion?locale.x=ru_RU
 
+[![](docs/paypal.jpg)](https://www.paypal.me/fion)
+
 [![](docs/google-play-badge.png)](https://play.google.com/store/apps/details?id=xyz.lazysoft.a3amp)

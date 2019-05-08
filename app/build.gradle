@@ -62,11 +62,14 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+//    // rx
+//    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+
     // room db
-    implementation 'androidx.room:room-runtime:2.1.0-alpha06'
-    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha06'
-    kapt 'androidx.room:room-compiler:2.1.0-alpha06'
-    androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha06'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha07'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0-alpha07'
+    kapt 'androidx.room:room-compiler:2.1.0-alpha07'
+    androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha07'
 
     // tabs
     implementation 'com.nshmura:recyclertablayout:1.5.0'
@@ -98,7 +101,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     androidTestImplementation 'androidx.annotation:annotation:1.1.0-beta01'
 
@@ -123,4 +126,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     // Optional -- UI testing with UI Automator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 }

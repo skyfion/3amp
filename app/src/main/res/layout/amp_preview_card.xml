@@ -1,51 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="4dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="4dp">
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/preview_card"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="95dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
+
             <RelativeLayout
-                android:layout_height="wrap_content"
+                android:id="@+id/amp_preview_card_title_block"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:orientation="horizontal"
-                android:id="@+id/amp_preview_card_title_block">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_width="wrap_content"
                     android:id="@+id/preview_text"
-                    android:layout_alignParentStart="true"
-                    tools:text="Amp"
-                    android:layout_height="wrap_content" />
-                <Switch
-                    android:id="@+id/amp_preview_card_switch"
-                    android:layout_alignEnd="@+id/preview_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    tools:text="Amp" />
+
+                <Switch
+                    android:id="@+id/amp_preview_card_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/preview_text"
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
+
             <View
-                android:layout_below="@id/amp_preview_card_title_block"
+                android:id="@+id/card_view_separator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
-            <LinearLayout
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal"
+                android:layout_below="@id/amp_preview_card_title_block"
+                android:background="@android:color/darker_gray" />
+
+            <TableLayout
+                android:stretchColumns="*"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    tools:text="gain: 10 master: 10 bass: 20 mid: 30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_view_separator"
+                android:layout_alignParentBottom="true">
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="gain: 100" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="master: 100"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="bass: 100" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="middle: 100"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="treble: 100"/>
+                </TableRow>
+            </TableLayout>
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/card_view_separator"-->
+                <!---->
+                <!--android:orientation="horizontal">-->
+            <!--</LinearLayout>-->
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
