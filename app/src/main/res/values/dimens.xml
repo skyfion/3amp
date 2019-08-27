@@ -2,4 +2,5 @@
 <resources>
     <dimen name="block_margin_bottom">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="knob_size">96dp</dimen>
 </resources>
