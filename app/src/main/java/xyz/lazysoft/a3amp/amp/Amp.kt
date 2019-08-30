@@ -1,5 +1,6 @@
 package xyz.lazysoft.a3amp.amp
 
+import it.beppi.knoblibrary.Knob
 import xyz.lazysoft.a3amp.amp.Constants.Companion.END
 import xyz.lazysoft.a3amp.amp.Constants.Companion.HEART_BEAT
 import xyz.lazysoft.a3amp.amp.Constants.Companion.OFF
@@ -39,6 +40,7 @@ class Amp(val midiManager: SysExMidiManager) {
     private var requestCallBack: ((ByteArray) -> Unit)? = null
 
     val dumpState: PresetDumpState = PresetDumpState(Constants.initPresetDump.toByteArray())
+
 
     private var heartBeat: ByteArray? by Delegates.observable<ByteArray?>(null)
     { _, oldValue, newValue ->
@@ -109,6 +111,7 @@ class Amp(val midiManager: SysExMidiManager) {
             //   logger.info("recive ${it} -> ${intToParam(it).joinToString()}")
             midiManager.sendSysExCmd(sendCmd + intToParam(it) + END.toByte())
         }
+       // todo (knob as Knob).swipeDirection =
         return this
     }
 

@@ -1,21 +1,19 @@
 package xyz.lazysoft.a3amp
 
 import `in`.goodiebag.carouselpicker.CarouselPicker
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import org.jetbrains.anko.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.onComplete
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.AmpModel
 import xyz.lazysoft.a3amp.components.AmpComponent
@@ -206,7 +204,7 @@ class MainActivity : AppCompatActivity() {
             sequenceOf(R.id.reverb_empty_block,
                     R.id.common_reverb_block, R.id.spring_reverb_block)
                     .map { findViewById<View>(it) }
-                    .withIndex().forEach { it ->
+                    .withIndex().forEach {
                         val index = when (value) {
                             in 1..3 -> 1
                             4 -> 2
@@ -272,6 +270,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.save_preset_as -> saveAs()
             R.id.save_preset -> savePreset()
+            R.id.settings -> startActivity(Intent(this, SettingsActivity::class.java))
             R.id.list_presets -> startActivity(Intent(this, PresetsActivity::class.java))
             R.id.about_btn -> startActivity(Intent(this, AboutActivity::class.java))
         }

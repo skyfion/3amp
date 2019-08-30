@@ -1,4 +1,5 @@
 <resources>
+    <dimen name="knob_margin">7dp</dimen>
     <string name="app_name">3amp</string>
     <string name="amplifier">Amplifier:</string>
     <string name="gain">gain</string>
@@ -22,7 +23,48 @@
     <string name="release">release</string>
     <string name="gate">Gate</string>
     <string name="amp">AMP</string>
-    <dimen name="knob_margin">7dp</dimen>
+    <string name="speed">speed</string>
+    <string name="depth">depth</string>
+    <string name="mix">mix</string>
+    <string name="time">time</string>
+    <string name="feedback">feedback</string>
+    <string name="high_cut">high cut</string>
+    <string name="low_cut">low cut</string>
+    <string name="level">level</string>
+    <string name="pre_dalay">pre dalay</string>
+    <string name="high_ratio">high ratio</string>
+    <string name="low_ratio">low ratio</string>
+    <string name="attack">attack</string>
+    <string name="threshold">threshold</string>
+    <string name="manual">manual</string>
+    <string name="spread">spread</string>
+    <string name="freq">freq</string>
+    <string name="filter">filter</string>
+    <string name="presets">presets</string>
+    <string name="save_preset">save preset</string>
+    <string name="save_preset_as">save preset as..</string>
+    <string name="delete">delete</string>
+    <string name="import_ydl">Import YDL</string>
+    <string name="rename">rename</string>
+    <string name="load">load</string>
+    <string name="create_group">create group</string>
+    <string name="common_delete_dialog">Delete</string>
+    <string name="presets_toolbar_title">Presets</string>
+    <string name="enter_a_preset_name">Enter a name</string>
+    <string name="is_not_ydl_file">This is not ydl file</string>
+    <string name="about">about</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="knob_settings_header">Knobs</string>
+    <string name="sync_header">Sync</string>
+    <string name="signature_title">Your signature</string>
+    <string name="knob_mode_title">Knobs mode</string>
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="settings">settings</string>
     <string-array name="thr10_amps">
         <item>Clean</item>
         <item>Crunch</item>
@@ -76,6 +118,8 @@
         <item>4x10</item>
         <item>None</item>
     </string-array>
+
+    <!-- Preference Titles -->
     <string-array name="reverbs">
         <item>Disable</item>
         <item>Hall</item>
@@ -88,6 +132,8 @@
         <item>Stomp</item>
         <item>Rack</item>
     </string-array>
+
+    <!-- Messages Preferences -->
     <string-array name="effects">
         <item>Disable</item>
         <item>Chorus</item>
@@ -103,6 +149,8 @@
         <item>Reverb</item>
         <item>Gate</item>
     </string-array>
+
+    <!-- Sync Preferences -->
     <string-array name="sw_modes">
         <item>Disable</item>
         <item>Enable</item>
@@ -120,37 +168,6 @@
         <item>Medium</item>
         <item>Hard</item>
     </string-array>
-    <string name="speed">speed</string>
-    <string name="depth">depth</string>
-    <string name="mix">mix</string>
-    <string name="time">time</string>
-    <string name="feedback">feedback</string>
-    <string name="high_cut">high cut</string>
-    <string name="low_cut">low cut</string>
-    <string name="level">level</string>
-    <string name="pre_dalay">pre dalay</string>
-    <string name="high_ratio">high ratio</string>
-    <string name="low_ratio">low ratio</string>
-    <string name="attack">attack</string>
-    <string name="threshold">threshold</string>
-    <string name="manual">manual</string>
-    <string name="spread">spread</string>
-    <string name="freq">freq</string>
-    <string name="filter">filter</string>
-    <string name="presets">presets</string>
-    <string name="save_preset">save preset</string>
-    <string name="save_preset_as">save preset as..</string>
-    <string name="delete">delete</string>
-    <string name="import_ydl">Import YDL</string>
-    <string name="rename">rename</string>
-    <string name="load">load</string>
-    <string name="create_group">create group</string>
-    <string name="common_delete_dialog">Delete</string>
-    <string name="presets_toolbar_title">Presets</string>
-    <string name="enter_a_preset_name">Enter a name</string>
-    <string name="is_not_ydl_file">This is not ydl file</string>
-    <string name="about">about</string>
-    <string name="title_activity_about">AboutActivity</string>
     <string-array name="donation_google_catalog_values">
         <item>1 Euro</item>
         <item>2 Euros</item>

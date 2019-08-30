@@ -10,6 +10,9 @@
         android:id="@+id/save_preset_as"
         android:title="@string/save_preset_as" />
     <item
+        android:id="@+id/settings"
+        android:title="@string/settings"/>
+    <item
         android:id="@+id/about_btn"
         android:title="@string/about"/>
 </menu>

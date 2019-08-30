@@ -2,17 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="xyz.lazysoft.a3amp">
-
     <!-- To access Google+ APIs: -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature android:name="android.hardware.usb.host" />
-
-    <uses-permission android:name="com.android.vending.BILLING" />
-    <uses-permission
-        android:name="android.permission.MANAGE_DOCUMENTS"
-        tools:ignore="ProtectedPermissions" />
-
     <application
         android:name=".AmpApplication"
         android:allowBackup="true"
@@ -22,7 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xyz.lazysoft.a3amp.MainActivity" />
+        </activity>
         <!-- <provider -->
         <!-- android:name="xyz.lazysoft.a3amp.components.FileService" -->
         <!-- android:authorities="xyz.lazysoft.a3amp.components.fileservice" -->
@@ -35,19 +32,14 @@
         <!-- </provider> -->
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="android.support.VERSION"
-            android:value="26.1.0"
-            tools:replace="android:value" />
 
         <activity
             android:name=".PresetsActivity"
@@ -56,6 +48,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
         <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about"
@@ -64,6 +57,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <meta-data
+            android:name="android.support.VERSION"
+            android:value="26.1.0"
+            tools:replace="android:value" />
     </application>
+
+    <uses-feature android:name="android.hardware.usb.host" />
+
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission
+        android:name="android.permission.MANAGE_DOCUMENTS"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
