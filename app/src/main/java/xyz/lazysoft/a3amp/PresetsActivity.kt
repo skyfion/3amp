@@ -1,5 +1,6 @@
 package xyz.lazysoft.a3amp
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
@@ -69,7 +70,8 @@ class PresetsActivity : AppCompatActivity() {
         renameToolbarBtn.isEnabled = false
         deleteToolbarBtn.isEnabled = false
 
-        presetList.setOnChildClickListener { expandableListView, view, groupPos, childPos, id ->
+        presetList.setOnChildClickListener { _, _, groupPos,
+                                             childPos, _ ->
             loadToolbarBtn.isEnabled = true
             renameToolbarBtn.isEnabled = true
             deleteToolbarBtn.isEnabled = true
@@ -80,7 +82,8 @@ class PresetsActivity : AppCompatActivity() {
             true
         }
 
-        presetList.setOnGroupClickListener { expandableListView, view, groupPos, id ->
+        presetList.setOnGroupClickListener { expandableListView, _,
+                                             groupPos, _ ->
             if (expandableListView.isGroupExpanded(groupPos)) {
                 expandableListView.collapseGroup(groupPos)
             } else {
@@ -270,6 +273,7 @@ class PresetsActivity : AppCompatActivity() {
         startActivityForResult(intent, READ_REQUEST_CODE)
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let { uri ->

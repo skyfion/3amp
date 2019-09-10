@@ -1,20 +1,15 @@
 package xyz.lazysoft.a3amp
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import kotlinx.android.synthetic.main.settings_activity.*
 
 
-class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key.equals("knob_mode")) {
-//            val connectionPref = findPreference(key)
-//            // Set summary to be the user-description for the selected value
-//            connectionPref.setSummary(sharedPreferences?.getString(key, ""))
-        }
+class SettingsActivity : AppCompatActivity() {
+    companion object {
+        const val KNOB_MODE = "knob_mode"
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
@@ -22,7 +17,9 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
                 .beginTransaction()
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
+        setSupportActionBar(settings_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -30,6 +27,5 @@ class SettingsActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferen
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
         }
     }
-
 
 }

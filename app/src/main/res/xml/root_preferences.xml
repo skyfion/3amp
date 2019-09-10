@@ -24,7 +24,7 @@
 <!--            app:useSimpleSummaryProvider="true" />-->
 
         <ListPreference
-            app:defaultValue="circular"
+            app:defaultValue="4"
             app:entries="@array/knob_mode_entries"
             app:entryValues="@array/knob_mode_values"
             app:key="knob_mode"

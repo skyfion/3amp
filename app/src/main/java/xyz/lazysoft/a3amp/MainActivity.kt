@@ -2,6 +2,7 @@ package xyz.lazysoft.a3amp
 
 import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +12,8 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
+import it.beppi.knoblibrary.Knob
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.onComplete
@@ -25,7 +28,28 @@ import xyz.lazysoft.a3amp.persistence.AppDatabase
 import javax.inject.Inject
 import xyz.lazysoft.a3amp.amp.Constants.Companion as Const
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key != null && key == SettingsActivity.KNOB_MODE) {
+            setKnobMode(sharedPreferences?.getString(key, Knob.SWIPEDIRECTION_CIRCULAR.toString()))
+        }
+    }
+
+    private fun setKnobMode(mode: String?) {
+        mode?.let {
+            knobs.map { k -> k.knob.swipeDirection = it.toInt() }
+        }
+    }
+
+    private fun initSettings() {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        setKnobMode(pref.getString(SettingsActivity.KNOB_MODE,
+                Knob.SWIPEDIRECTION_CIRCULAR.toString()))
+    }
+
+    private var sharedPref: SharedPreferences? = null
+
     private val logger = AnkoLogger(Const.TAG)
 
     @Inject
@@ -33,6 +57,8 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var repository: AppDatabase
+
+    val knobs = mutableListOf<AmpKnobWrapper>()
 
     private fun initKnob(knob: Int, text: Int): AmpComponent<Int> {
         return initKnob(knob, text, null)
@@ -51,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         ampKnobWrapper.setOnStateChanged {
             knobText.text = it.toString()
         }
+        knobs.add(ampKnobWrapper)
         return ampKnobWrapper
     }
 
@@ -249,9 +276,11 @@ class MainActivity : AppCompatActivity() {
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_main)
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPref?.registerOnSharedPreferenceChangeListener(this)
         initAmp()
+        initSettings()
         setSupportActionBar(findViewById(R.id.amp_toolbar))
-
     }
 
     private fun savePreset() {

@@ -43,6 +43,6 @@
         app:itemIconTint="@drawable/bottom_nav_presets"
         app:itemTextColor="@drawable/bottom_nav_presets"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/presets_buttom_menu" />
+        app:menu="@menu/presets_menu" />
 
 </FrameLayout>

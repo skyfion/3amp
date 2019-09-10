@@ -1,6 +1,5 @@
 package xyz.lazysoft.a3amp.amp
 
-import it.beppi.knoblibrary.Knob
 import xyz.lazysoft.a3amp.amp.Constants.Companion.END
 import xyz.lazysoft.a3amp.amp.Constants.Companion.HEART_BEAT
 import xyz.lazysoft.a3amp.amp.Constants.Companion.OFF
@@ -85,14 +84,12 @@ class Amp(val midiManager: SysExMidiManager) {
         YdlDataConverter.thr5and10(dumpState.dump.toList()).forEach { cmd ->
             midiManager.onMidiSystemExclusive(cmd)
         }
-
     }
 
     private fun applyDump(dump: ByteArray) {
         YdlDataConverter.dumpTo(dump)
                 .forEach { midiManager.onMidiSystemExclusive(it) }
     }
-
 
     /**
      * Add common knob
