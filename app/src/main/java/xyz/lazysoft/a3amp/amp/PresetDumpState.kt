@@ -18,12 +18,10 @@ class PresetDumpState(val dump: ByteArray) {
 
 
     fun writeDump(id: Int, value: Pair<Byte, Byte>) {
-
         // this is conflict reverb time and spring reverb, they have one ID
         // and also COMPRESSOR_STOMP_SUSTAIN and COMPRESSOR_RACK_THRESHOLD
-        // may by bag inside YDL format
-        val cell =
-                when (id) {
+        // maybe is a mistake inside YDL format
+        val cell = when (id) {
                     Constants.REVERB_TIME -> {
                         val mode = Constants.DUMP_MAP[Constants.REVERB_MODE] as Int
                         if (get(mode) == 3.toByte()) {
@@ -42,7 +40,6 @@ class PresetDumpState(val dump: ByteArray) {
                     }
                     else -> Constants.DUMP_MAP[id]
                 }
-
 
         when (cell) {
             is List<*> -> {

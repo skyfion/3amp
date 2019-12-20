@@ -19,7 +19,7 @@ import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
 import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
 import xyz.lazysoft.a3amp.amp.Utils
-import xyz.lazysoft.a3amp.amp.YdlFile
+import xyz.lazysoft.a3amp.amp.YdFile
 import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.components.presets.PresetExpandableListAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
@@ -42,9 +42,7 @@ class PresetsActivity : AppCompatActivity() {
     var selected: Any? = null
 
     private lateinit var toolbar: Toolbar
-
     private lateinit var presetList: ExpandableListView
-
     private lateinit var listAdapter: PresetExpandableListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,8 +147,7 @@ class PresetsActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.load_preset -> {
-                    val obj = selected
-                    when (obj) {
+                    when (val obj = selected) {
                         is AmpPreset -> {
                             amp.selectPreset = obj
                             updateToolbarTitle()
@@ -172,8 +169,6 @@ class PresetsActivity : AppCompatActivity() {
                                 is AmpPresetGroup -> renameGroup(obj, title)
                             }
                         }
-                    } else {
-                        logger.info("obj is null")
                     }
                 }
                 R.id.delete_preset_or_group -> {
@@ -277,15 +272,14 @@ class PresetsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             resultData?.data?.let { uri ->
-                logger.debug("start import ydl")
                 val fileName = Utils.getFileName(this, uri)
                 contentResolver.openInputStream(uri)?.let { inputStream ->
-                    val ydl = YdlFile(inputStream)
-                    val err = ydl.errorReason()
+                    val ydfile = YdFile(inputStream)
+                    val err = ydfile.errorReason()
                     if (err != null) {
                         alert(err) { okButton {} }.show()
                     } else {
-                        ydl.presetData()
+                        ydfile.presetData()
                                 ?.filter { !it.isInit() }
                                 ?.let { presets ->
                                     Dialogs.showInputDialog(this,
@@ -293,7 +287,9 @@ class PresetsActivity : AppCompatActivity() {
                                             fileName) { groupName ->
                                         doAsync {
 
-                                            val groupId = repository.presetDao().insertGroup(AmpPresetGroup(title = groupName)).toInt()
+                                            val groupId = repository.presetDao()
+                                                    .insertGroup(AmpPresetGroup(title = groupName))
+                                                    .toInt()
 
                                             presets.forEach {
                                                 repository.presetDao().insert(

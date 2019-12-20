@@ -44,7 +44,7 @@
     <string name="save_preset">save preset</string>
     <string name="save_preset_as">save preset as..</string>
     <string name="delete">delete</string>
-    <string name="import_ydl">Import YDL</string>
+    <string name="import_ydl">Import YDL or YDP</string>
     <string name="rename">rename</string>
     <string name="load">load</string>
     <string name="create_group">create group</string>

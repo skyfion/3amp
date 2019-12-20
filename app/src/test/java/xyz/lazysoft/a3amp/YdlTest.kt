@@ -3,7 +3,6 @@ package xyz.lazysoft.a3amp
 import org.junit.Assert
 import org.junit.Test
 import xyz.lazysoft.a3amp.amp.*
-import xyz.lazysoft.a3amp.midi.SysExMidiManager
 
 class YdlTest {
     private val dump: Array<Byte> = arrayOf(
@@ -21,16 +20,26 @@ class YdlTest {
 
     @Test
     fun parseYdlFile() {
-        val inputStream =  ClassLoader.getSystemClassLoader().getResourceAsStream("test.ydl")
-        val presets = YdlFile(inputStream).presetData()!!
+        val inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("test.ydl")
+        val presets = YdFile(inputStream).presetData()!!
         val preset = presets[0]
-        Assert.assertEquals(preset.name, "MODERN HM backing")
+        Assert.assertEquals(preset.name, PRESET_NAME)
         Assert.assertEquals(preset.model, AmpModel.THR10)
     }
 
     @Test
+    fun parseYdpFile() {
+        val inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream("test.ydp")
+        val ydFile = YdFile(inputStream)
+        val presets = ydFile.presetData()!!
+        Assert.assertTrue(presets.size == 1)
+        val preset = presets.first()
+        Assert.assertEquals(preset.name, PRESET_NAME)
+    }
+
+    @Test
     fun parseDumpTest() {
-       val cmds = YdlDataConverter.dumpTo(dump.toByteArray())
+        val cmds = YdlDataConverter.dumpTo(dump.toByteArray())
         Assert.assertEquals(cmds.isNotEmpty(), true)
         Assert.assertEquals(cmds.size, 31)
     }
@@ -45,14 +54,7 @@ class YdlTest {
         Assert.assertEquals(state.get(index), 99.toByte())
     }
 
-    class StubMindiManager : SysExMidiManager {
-        override var sysExtListeners: ArrayList<(ByteArray?) -> Unit>
-            get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-            set(value) {}
-        override var sendSysExtListeners: ArrayList<(ByteArray?) -> Unit>
-            get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-            set(value) {}
-
+    companion object {
+        const val PRESET_NAME = "MODERN HM backing"
     }
-
 }

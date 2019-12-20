@@ -10,11 +10,15 @@ class Constants {
         const val THR_SYSEX_SIZE = 256
         const val THR_SYSEX_SHIFT = 128
 
+        const val YDP_FILE_SIZE = 265
+        const val YDP_HEADER_TEXT = "DTAB"
+        const val YDP_HEAD = 4
+
         const val YDL_FILE_SIZE = 26108
         const val YDL_PRESET_COUNT = 100
         const val YDL_PRESET_BODY_SIZE = 261
         const val YDL_HEAD = 8
-        const val YDL_HEADER_TEXT = "DTAB"
+        const val YDL_HEADER_TEXT = "DTAB01d"
         const val YDL_NAME = 64
         const val YDL_DATA = 192
         const val YDL_DATA_SHIFT = 69
