@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.content_about.*
 import org.sufficientlysecure.donations.DonationsFragment
-import android.R.attr.data
-
-
 
 
 class AboutActivity : AppCompatActivity() {
@@ -39,10 +36,11 @@ class AboutActivity : AppCompatActivity() {
         //donate
         val ft = supportFragmentManager.beginTransaction()
         val donationsFragment = DonationsFragment.newInstance(
-                BuildConfig.DEBUG, true,
+                BuildConfig.DEBUG, false,
                 GOOGLE_PUBKEY, GOOGLE_CATALOG,
                 resources.getStringArray(R.array.donation_google_catalog_values),
-                false, null, null, null,
+                true, PAYPAL_USER, PAYPAL_CURRENCY_CODE,
+                getString(R.string.donation_paypal_item),
                 false, null, null, false,
                 null)
 
@@ -53,6 +51,10 @@ class AboutActivity : AppCompatActivity() {
     }
 
     companion object {
+
+        const val PAYPAL_USER = "sky.fion@gmail.com"
+        const val PAYPAL_CURRENCY_CODE = "USD"
+
         /**
          * Google
          */

@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
-import android.view.View
 import android.widget.EditText
 import org.jetbrains.anko.*
-import org.jetbrains.anko.custom.customView
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 object Dialogs {
