@@ -6,65 +6,62 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
-import android.view.Menu
-import android.view.MenuItem
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ExpandableListView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_presets.*
 import org.jetbrains.anko.*
-import xyz.lazysoft.a3amp.amp.Amp
+import org.jetbrains.anko.support.v4.alert
 import xyz.lazysoft.a3amp.amp.Constants
-import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
 import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.amp.YdFile
 import xyz.lazysoft.a3amp.components.Dialogs
 import xyz.lazysoft.a3amp.components.presets.PresetExpandableListAdapter
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AmpPresetGroup
-import xyz.lazysoft.a3amp.persistence.AppDatabase
-import javax.inject.Inject
 
 
-class PresetsActivity : AppCompatActivity() {
+class PresetsFragment : Fragment() {
 
-    private val logger = AnkoLogger(Constants.TAG)
-
-    @Inject
-    lateinit var amp: Amp
-
-    @Inject
-    lateinit var repository: AppDatabase
-
-    var presets: List<AmpPreset>? = null
-    var selected: Any? = null
-
-    private lateinit var toolbar: Toolbar
-    private lateinit var presetList: ExpandableListView
+    private lateinit var viewModel: PresetsViewModel
+    private lateinit var presetsList: ExpandableListView
     private lateinit var listAdapter: PresetExpandableListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    companion object {
+        fun newInstance() = PresetsFragment()
+    }
 
-        super.onCreate(savedInstanceState)
-        (application as AmpApplication).component.inject(this)
+    private fun <T : View> findViewById(id: Int): T {
+       return view!!.findViewById(id)
+    }
 
-        setContentView(R.layout.activity_presets)
-        toolbar = preset_toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val inflate = inflater.inflate(R.layout.presets_fragment, container, false)
 
-        val dao = repository.presetDao()
+        presetsList = findViewById(R.id.presets_item_list)
 
-        presetList = findViewById(R.id.presets_item_list)
-        listAdapter = PresetExpandableListAdapter(this, dao.getAllGroups(), dao.getAll())
-        presetList.setAdapter(listAdapter)
+        return inflate
+    }
 
-        updateToolbarTitle()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(PresetsViewModel::class.java)
 
-        val loadToolbarBtn = findViewById<View>(R.id.load_preset)
+        listAdapter = PresetExpandableListAdapter(activity!!, viewModel.groups,
+                viewModel.presets)
+
+        presetsList.setAdapter(listAdapter)
+
+        initFragment()
+    }
+
+
+    private fun initFragment() {
+        val loadToolbarBtn =   findViewById<View>(R.id.load_preset)
         val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
         val deleteToolbarBtn = findViewById<View>(R.id.delete_preset_or_group)
 
@@ -72,7 +69,7 @@ class PresetsActivity : AppCompatActivity() {
         renameToolbarBtn.isEnabled = false
         deleteToolbarBtn.isEnabled = false
 
-        presetList.setOnChildClickListener { _, _, groupPos,
+        presetsList.setOnChildClickListener { _, _, groupPos,
                                              childPos, _ ->
             loadToolbarBtn.isEnabled = true
             renameToolbarBtn.isEnabled = true
@@ -80,11 +77,11 @@ class PresetsActivity : AppCompatActivity() {
 
             listAdapter.setSelection(childPos, groupPos)
 
-            selected = listAdapter.getChild(groupPos, childPos)
+            viewModel.selected = listAdapter.getChild(groupPos, childPos)
             true
         }
 
-        presetList.setOnGroupClickListener { expandableListView, _,
+        presetsList.setOnGroupClickListener { expandableListView, _,
                                              groupPos, _ ->
             if (expandableListView.isGroupExpanded(groupPos)) {
                 expandableListView.collapseGroup(groupPos)
@@ -93,9 +90,9 @@ class PresetsActivity : AppCompatActivity() {
             }
 
             listAdapter.setSelection(PresetExpandableListAdapter.NOT_SELECTED, groupPos)
-            selected = listAdapter.getGroup(groupPos)
+            viewModel.selected = listAdapter.getGroup(groupPos)
 
-            if ((selected as AmpPresetGroup).uid != null) {
+            if ((viewModel.selected as AmpPresetGroup).uid != null) {
                 renameToolbarBtn.isEnabled = true
                 deleteToolbarBtn.isEnabled = true
             } else {
@@ -108,8 +105,7 @@ class PresetsActivity : AppCompatActivity() {
             true
         }
 
-        presetList.setOnItemLongClickListener { adapterView, view, pos, id ->
-            logger.info("long click !")
+        presetsList.setOnItemLongClickListener { adapterView, view, pos, id ->
             if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     view.startDragAndDrop(null, View.DragShadowBuilder(view), adapterView.getItemAtPosition(pos), 0)
@@ -120,11 +116,11 @@ class PresetsActivity : AppCompatActivity() {
             false
         }
 
-        presetList.setOnDragListener { v, event ->
+        presetsList.setOnDragListener { _, event ->
             when (event.action) {
                 DragEvent.ACTION_DROP -> {
-                    val pos = presetList.pointToPosition(event.x.toInt(), event.y.toInt())
-                    val item = presetList.getItemAtPosition(pos)
+                    val pos = presetsList.pointToPosition(event.x.toInt(), event.y.toInt())
+                    val item = presetsList.getItemAtPosition(pos)
                     if (item != null && event.localState is AmpPreset) {
                         val group = when (item) {
                             is AmpPresetGroup -> item.uid
@@ -134,8 +130,7 @@ class PresetsActivity : AppCompatActivity() {
                         val preset = event.localState as AmpPreset
                         if (preset.group != group) {
                             doAsync {
-                                logger.debug("drag -> update group preset")
-                                dao.update(preset.copy(group = group))
+                                viewModel.updatePreset(preset.copy(group = group))
                                 onComplete {
                                     listAdapter.refresh()
                                 }
@@ -151,22 +146,22 @@ class PresetsActivity : AppCompatActivity() {
         bottomNavigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.load_preset -> {
-                    when (val obj = selected) {
+                    when (val obj = viewModel.selected) {
                         is AmpPreset -> {
-                            amp.selectPreset = obj
+                            viewModel.selectPreset = obj
                             updateToolbarTitle()
                         }
                     }
                 }
                 R.id.create_preset_group -> {
-                    Dialogs.showInputDialog(this, "New group", "") { groupTitle ->
+                    Dialogs.showInputDialog(activity!!, "New group", "") { groupTitle ->
                         newGroup(groupTitle)
                     }
                 }
                 R.id.rename_preset_or_group -> {
-                    val obj = selected
+                    val obj = viewModel.selected
                     if (obj != null) {
-                        Dialogs.showInputDialog(this, "Rename ", obj.toString())
+                        Dialogs.showInputDialog(activity!!, "Rename ", obj.toString())
                         { title ->
                             when (obj) {
                                 is AmpPreset -> renamePreset(obj, title)
@@ -176,7 +171,7 @@ class PresetsActivity : AppCompatActivity() {
                     }
                 }
                 R.id.delete_preset_or_group -> {
-                    val obj = selected
+                    val obj = viewModel.selected
                     if (obj != null) {
                         alert("${getString(R.string.common_delete_dialog)} $obj?") {
                             yesButton {
@@ -190,20 +185,20 @@ class PresetsActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
     private fun updateToolbarTitle() {
-        amp.selectPreset?.let {
-            toolbar.title = "${getString(R.string.presets_toolbar_title)} - ${it.title}"
-        }
+        // todo
+//        amp.selectPreset?.let {
+//            toolbar.title = "${getString(R.string.presets_toolbar_title)} - ${it.title}"
+//        }
     }
 
     private fun deleteItem(item: Any) {
         doAsync {
             when (item) {
-                is AmpPreset -> repository.presetDao().delete(item)
-                is AmpPresetGroup -> repository.presetDao().deleteGroup(item)
+                is AmpPreset -> viewModel.deletePreset(item)
+                is AmpPresetGroup -> viewModel.deleteGroup(item)
             }
             onComplete {
                 listAdapter.refresh()
@@ -213,7 +208,7 @@ class PresetsActivity : AppCompatActivity() {
 
     private fun renameGroup(item: AmpPresetGroup, title: String) {
         doAsync {
-            repository.presetDao().updateGroup(item.copy(title = title))
+            viewModel.updateGroup(item.copy(title = title))
             onComplete {
                 listAdapter.refresh()
             }
@@ -222,7 +217,7 @@ class PresetsActivity : AppCompatActivity() {
 
     private fun renamePreset(item: AmpPreset, title: String) {
         doAsync {
-            repository.presetDao().update(item.copy(title = title))
+            viewModel.updatePreset(item.copy(title = title))
             onComplete {
                 listAdapter.refresh()
             }
@@ -231,26 +226,10 @@ class PresetsActivity : AppCompatActivity() {
 
     private fun newGroup(title: String) {
         doAsync {
-            repository.presetDao().insertGroup(AmpPresetGroup(title = title))
+            viewModel.insertGroup(AmpPresetGroup(title = title))
             onComplete {
                 listAdapter.refresh()
             }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_presets, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.import_ydl -> {
-                performFileSearch()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -269,15 +248,16 @@ class PresetsActivity : AppCompatActivity() {
             type = "*/*"
         }
 
-        startActivityForResult(intent, READ_REQUEST_CODE)
+        startActivityForResult(intent, Constants.READ_REQUEST_CODE)
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == Constants.READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val context = activity!!
             resultData?.data?.let { uri ->
-                val fileName = Utils.getFileName(this, uri)
-                contentResolver.openInputStream(uri)?.let { inputStream ->
+                val fileName = Utils.getFileName(context, uri)
+                context.contentResolver.openInputStream(uri)?.let { inputStream ->
                     val ydfile = YdFile(inputStream)
                     val err = ydfile.errorReason()
                     if (err != null) {
@@ -286,17 +266,17 @@ class PresetsActivity : AppCompatActivity() {
                         ydfile.presetData()
                                 ?.filter { !it.isInit() }
                                 ?.let { presets ->
-                                    Dialogs.showInputDialog(this,
+                                    Dialogs.showInputDialog(context,
                                             getString(R.string.enter_a_preset_name),
                                             fileName) { groupName ->
                                         doAsync {
 
-                                            val groupId = repository.presetDao()
+                                            val groupId = viewModel
                                                     .insertGroup(AmpPresetGroup(title = groupName))
                                                     .toInt()
 
                                             presets.forEach {
-                                                repository.presetDao().insert(
+                                                viewModel.insertPreset(
                                                         AmpPreset(title = it.name,
                                                                 dump = it.data,
                                                                 model = it.model?.id,
@@ -314,8 +294,7 @@ class PresetsActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
-}
 
+}

@@ -15,10 +15,12 @@ import org.jetbrains.anko.uiThread
 import xyz.lazysoft.a3amp.R
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import xyz.lazysoft.a3amp.persistence.AmpPresetGroup
-import xyz.lazysoft.a3amp.persistence.PresetDao
 import java.util.*
 
-class PresetExpandableListAdapter(val context: Context, private val dao: PresetDao) : BaseExpandableListAdapter() {
+class PresetExpandableListAdapter(val context: Context,
+                                  private val groups: List<AmpPresetGroup>,
+                                  private val presets: List<AmpPreset>)
+    : BaseExpandableListAdapter() {
     private var selectedChildPos = NOT_SELECTED
     private var selectedGroupPos = NOT_SELECTED
     private var detail = HashMap<AmpPresetGroup, List<AmpPreset>>()
@@ -30,10 +32,10 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
     fun refresh() {
         doAsync {
             detail.clear()
-            val groups = dao.getAllGroups().toMutableList()
+            val groups = groups.toMutableList()
             groups.add(AmpPresetGroup(uid = null, title = "Custom")) // default group
 
-            val presets = dao.getAll().groupBy { it.group }
+            val presets = presets.groupBy { it.group }
             groups.forEach { g ->
                 detail[g] = if (presets.containsKey(g.uid)) {
                     presets.getValue(g.uid)
@@ -70,11 +72,13 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
     override fun getGroupView(listPosition: Int, isExpanded: Boolean,
                               view: View?, parent: ViewGroup?): View {
         val group = getGroup(listPosition) as AmpPresetGroup
-        val listView = if (view == null) {
-            val layout = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            layout.inflate(R.layout.preset_group, null)
-        } else
-            view
+        val listView =
+                if (view == null) {
+                    val layout = context
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    layout.inflate(R.layout.preset_group, null)
+                } else
+                    view
         listView.isClickable = false
         val listTitleTextView = listView.findViewById<TextView>(R.id.listTitle)
         listTitleTextView.setTypeface(null, Typeface.BOLD)
@@ -98,12 +102,13 @@ class PresetExpandableListAdapter(val context: Context, private val dao: PresetD
     override fun getChildView(groupPos: Int, childPos: Int, p2: Boolean,
                               view: View?, viewGroup: ViewGroup?): View {
         val preset = getChild(groupPos, childPos) as AmpPreset
-        val listView = if (view == null) {
-            val layoutInflater = context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            layoutInflater.inflate(R.layout.list_item, null)
-        } else
-            view
+        val listView =
+                if (view == null) {
+                    val layoutInflater = context
+                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    layoutInflater.inflate(R.layout.list_item, null)
+                } else
+                    view
         listView.isClickable = false
         val textView = listView.findViewById<TextView>(R.id.expandedListItem)
         textView.text = preset.title
