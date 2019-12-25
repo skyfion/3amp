@@ -11,7 +11,7 @@ import xyz.lazysoft.a3amp.amp.Constants.Companion.THR_DATA_SIZE
 import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
 import xyz.lazysoft.a3amp.amp.Utils.intToParam
 import xyz.lazysoft.a3amp.amp.Utils.paramToInt
-import xyz.lazysoft.a3amp.components.AmpComponent
+import xyz.lazysoft.a3amp.components.wrappers.AmpComponent
 import xyz.lazysoft.a3amp.midi.SysExMidiManager
 import xyz.lazysoft.a3amp.persistence.AmpPreset
 import java.util.logging.Logger
@@ -71,7 +71,7 @@ class Amp(val midiManager: SysExMidiManager) {
         midiManager.sendSysExtListeners.add {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 6)).toByteArray()
-                if (cmd.contentEquals(Constants.SEND_CMD)) {
+                if (cmd.contentEquals(SEND_CMD)) {
                     dumpState.writeDump(it[7].toInt(), Pair(it[8], it[9]))
                 }
             }
@@ -95,7 +95,7 @@ class Amp(val midiManager: SysExMidiManager) {
      * Add common knob
      */
     fun addKnob(knob: AmpComponent<Int>, id: Int): Amp {
-        val sendCmd = Constants.SEND_CMD + id.toByte()
+        val sendCmd = SEND_CMD + id.toByte()
         midiManager.sysExtListeners.add {
             if (it != null && it.size > 9) {
                 val cmd = it.slice(IntRange(0, 7)).toByteArray()
@@ -111,30 +111,6 @@ class Amp(val midiManager: SysExMidiManager) {
        // todo (knob as Knob).swipeDirection =
         return this
     }
-
-    /**
-     * Switch on\off block effect
-     */
-    fun addSwitch(sw: AmpComponent<Boolean>, id: ByteArray): Amp {
-        val cmdId = SEND_CMD + id + 0x00
-        midiManager.sysExtListeners.add {
-            if (it != null && it.size > 9) {
-                val cmd = it.slice(IntRange(0, 8)).toByteArray()
-                if (cmd.contentEquals(cmdId)) {
-                    when (it[9].toInt()) {
-                        ON -> sw.state = true
-                        OFF -> sw.state = false
-                    }
-                }
-            }
-        }
-        sw.setOnStateChanged {
-            val mode = if (it) ON else OFF
-            midiManager.sendSysExCmd(cmdId + mode.toByte() + END.toByte())
-        }
-        return this
-    }
-
 
     fun addSpinner(spinner: AmpComponent<Int>, id: Int): Amp {
         val cmdId = SEND_CMD + id.toByte() + 0x00

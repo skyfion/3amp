@@ -4,13 +4,11 @@ import `in`.goodiebag.carouselpicker.CarouselPicker
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.util.ArraySet
 import androidx.viewpager.widget.ViewPager
 import xyz.lazysoft.a3amp.amp.Constants
-import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
-class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
+open class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
         AmpComponent<Int>, ViewPager.OnPageChangeListener {
 
     override fun onPageScrollStateChanged(state: Int) {
@@ -23,7 +21,7 @@ class AmpCarouselWrapper(private val carousel: CarouselPicker) : Activity(),
         carousel.addOnPageChangeListener(this)
     }
 
-    private var onSelectFunction: ArraySet<(pos: Int) -> Unit> = ArraySet()
+    private var onSelectFunction: HashSet<(pos: Int) -> Unit> = HashSet()
 
     override fun setOnStateChanged(function: (pos: Int) -> Unit): AmpComponent<Int> {
         onSelectFunction.add(function)

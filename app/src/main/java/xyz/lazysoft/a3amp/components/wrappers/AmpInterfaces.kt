@@ -1,4 +1,4 @@
-package xyz.lazysoft.a3amp.components
+package xyz.lazysoft.a3amp.components.wrappers
 
 
 interface AmpComponent<T> {

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AmpFragment">
+
+    <LinearLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <in.goodiebag.carouselpicker.CarouselPicker
+                android:id="@+id/tabs_carousel"
+                style="@style/AppTheme.carouselPicker" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <include
+                android:id="@+id/tab_amp"
+                layout="@layout/amp" />
+
+            <include
+                android:id="@+id/tab_compressor"
+                layout="@layout/compressor"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/tab_effects"
+                layout="@layout/effects"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/tab_delay"
+                layout="@layout/delay"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/tab_reverb"
+                layout="@layout/reverb"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/tab_gate"
+                layout="@layout/gate"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

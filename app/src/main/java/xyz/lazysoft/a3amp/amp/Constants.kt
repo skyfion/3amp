@@ -3,7 +3,7 @@ package xyz.lazysoft.a3amp.amp
 import xyz.lazysoft.a3amp.amp.Utils.byteArrayOf
 
 class Constants {
-    companion object {
+    companion  object {
 
         const val THR_DATA_SIZE = 276
         const val THR_DUMP_OFFSET = 18

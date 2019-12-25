@@ -2,9 +2,7 @@ package xyz.lazysoft.a3amp.components.wrappers
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.ArraySet
 import it.beppi.knoblibrary.Knob
-import xyz.lazysoft.a3amp.components.AmpComponent
 
 @SuppressLint("Registered")
 class AmpKnobWrapper(val knob: Knob, toRange: Pair<Int, Int>?) : Activity(), AmpComponent<Int> {
