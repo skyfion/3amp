@@ -3,6 +3,8 @@
 
 # 3amp 
 
+:warning: project is deprecated.
+
 This is a mobile app for amps Yamaha thr series. 
 
 What you need:
