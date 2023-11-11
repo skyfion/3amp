@@ -3,6 +3,7 @@ package xyz.lazysoft.a3amp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import org.sufficientlysecure.donations.DonationsFragment
 
@@ -30,15 +31,17 @@ class AboutActivity : AppCompatActivity() {
       //  setSupportActionBar(about_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-      //  title_about.text = "${getString(R.string.app_name)} ${getVersion()}"
+        val titleAbout = findViewById<TextView>(R.id.title_about)
+
+        titleAbout.text = "${getString(R.string.app_name)} ${getVersion()}"
 
         //donate
         val ft = supportFragmentManager.beginTransaction()
         val donationsFragment = DonationsFragment.newInstance(
-                BuildConfig.DEBUG, false,
+                BuildConfig.DEBUG, true,
                 GOOGLE_PUBKEY, GOOGLE_CATALOG,
                 resources.getStringArray(R.array.donation_google_catalog_values),
-                true, PAYPAL_USER, PAYPAL_CURRENCY_CODE,
+                false, null, null,
                 getString(R.string.donation_paypal_item),
                 false, null, null, false,
                 null)
@@ -50,9 +53,6 @@ class AboutActivity : AppCompatActivity() {
     }
 
     companion object {
-
-        const val PAYPAL_USER = "sky.fion@gmail.com"
-        const val PAYPAL_CURRENCY_CODE = "USD"
 
         /**
          * Google

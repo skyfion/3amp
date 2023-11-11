@@ -1,6 +1,5 @@
 package xyz.lazysoft.a3amp
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
@@ -10,13 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
-import xyz.lazysoft.a3amp.amp.Constants.Companion.READ_REQUEST_CODE
 import xyz.lazysoft.a3amp.amp.Utils
 import xyz.lazysoft.a3amp.amp.YdFile
 import xyz.lazysoft.a3amp.components.Dialogs
@@ -48,7 +47,7 @@ class PresetsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_presets)
-      //  toolbar = preset_toolbar
+        toolbar = findViewById(R.id.preset_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -59,19 +58,19 @@ class PresetsActivity : AppCompatActivity() {
 
         updateToolbarTitle()
 
-    //    val loadToolbarBtn = findViewById<View>(R.id.load_preset)
-     //   val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
-     //   val deleteToolbarBtn = findViewById<View>(R.id.delete_preset_or_group)
+        val loadToolbarBtn = findViewById<View>(R.id.load_preset)
+        val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
+        val deleteToolbarBtn = findViewById<View>(R.id.delete_preset_or_group)
 
-    //    loadToolbarBtn.isEnabled = false
-    //    renameToolbarBtn.isEnabled = false
-    //    deleteToolbarBtn.isEnabled = false
+        loadToolbarBtn.isEnabled = false
+        renameToolbarBtn.isEnabled = false
+        deleteToolbarBtn.isEnabled = false
 
         presetList.setOnChildClickListener { _, _, groupPos,
                                              childPos, _ ->
-     //       loadToolbarBtn.isEnabled = true
-     //       renameToolbarBtn.isEnabled = true
-     //       deleteToolbarBtn.isEnabled = true
+            loadToolbarBtn.isEnabled = true
+            renameToolbarBtn.isEnabled = true
+            deleteToolbarBtn.isEnabled = true
 
             listAdapter.setSelection(childPos, groupPos)
 
@@ -90,15 +89,15 @@ class PresetsActivity : AppCompatActivity() {
             listAdapter.setSelection(PresetExpandableListAdapter.NOT_SELECTED, groupPos)
             selected = listAdapter.getGroup(groupPos)
 
-//            if ((selected as AmpPresetGroup).uid != null) {
-//                renameToolbarBtn.isEnabled = true
-//                deleteToolbarBtn.isEnabled = true
-//            } else {
-//                renameToolbarBtn.isEnabled = false
-//                deleteToolbarBtn.isEnabled = false
-//            }
-//
-//            loadToolbarBtn.isEnabled = false
+            if ((selected as AmpPresetGroup).uid != null) {
+                renameToolbarBtn.isEnabled = true
+                deleteToolbarBtn.isEnabled = true
+            } else {
+                renameToolbarBtn.isEnabled = false
+                deleteToolbarBtn.isEnabled = false
+            }
+
+            loadToolbarBtn.isEnabled = false
 
             true
         }
@@ -249,6 +248,50 @@ class PresetsActivity : AppCompatActivity() {
         }
     }
 
+    private var openPresetLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result?.data?.data?.let { uri ->
+                    val fileName = Utils.getFileName(this, uri)
+                    contentResolver.openInputStream(uri)?.let { inputStream ->
+                        val ydfile = YdFile(inputStream)
+                        val err = ydfile.errorReason()
+                        if (err != null) {
+                            alert(err) { okButton {} }.show()
+                        } else {
+                            ydfile.presetData()
+                                ?.filter { !it.isInit() }
+                                ?.let { presets ->
+                                    Dialogs.showInputDialog(this,
+                                        getString(R.string.enter_a_preset_name),
+                                        fileName) { groupName ->
+                                        doAsync {
+
+                                            val groupId = repository.presetDao()
+                                                .insertGroup(AmpPresetGroup(title = groupName))
+                                                .toInt()
+
+                                            presets.forEach {
+                                                repository.presetDao().insert(
+                                                    AmpPreset(title = it.name,
+                                                        dump = it.data,
+                                                        model = it.model?.id,
+                                                        group = groupId))
+                                            }
+                                            onComplete {
+                                                listAdapter.refresh()
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
     private fun performFileSearch() {
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
         // browser.
@@ -264,53 +307,7 @@ class PresetsActivity : AppCompatActivity() {
             type = "*/*"
         }
 
-        startActivityForResult(intent, READ_REQUEST_CODE)
-    }
-
-    @Deprecated("Deprecated in Java")
-    @SuppressLint("MissingSuperCall")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
-        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            resultData?.data?.let { uri ->
-                val fileName = Utils.getFileName(this, uri)
-                contentResolver.openInputStream(uri)?.let { inputStream ->
-                    val ydfile = YdFile(inputStream)
-                    val err = ydfile.errorReason()
-                    if (err != null) {
-                        alert(err) { okButton {} }.show()
-                    } else {
-                        ydfile.presetData()
-                                ?.filter { !it.isInit() }
-                                ?.let { presets ->
-                                    Dialogs.showInputDialog(this,
-                                            getString(R.string.enter_a_preset_name),
-                                            fileName) { groupName ->
-                                        doAsync {
-
-                                            val groupId = repository.presetDao()
-                                                    .insertGroup(AmpPresetGroup(title = groupName))
-                                                    .toInt()
-
-                                            presets.forEach {
-                                                repository.presetDao().insert(
-                                                        AmpPreset(title = it.name,
-                                                                dump = it.data,
-                                                                model = it.model?.id,
-                                                                group = groupId))
-                                            }
-                                            onComplete {
-                                                listAdapter.refresh()
-                                            }
-                                        }
-
-                                    }
-
-                                }
-                    }
-                }
-            }
-        }
-
+        openPresetLauncher.launch(intent)
     }
 
 }
