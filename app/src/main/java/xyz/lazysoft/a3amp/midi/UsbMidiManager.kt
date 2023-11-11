@@ -84,12 +84,14 @@ abstract class UsbMidiManager(context: Context) : UsbMidiDriver(context), SysExM
 
 
 
+    @Deprecated("Deprecated in Java")
     override fun onDeviceDetached(p0: UsbDevice) {
 
     }
 
 
 
+    @Deprecated("Deprecated in Java")
     override fun onDeviceAttached(p0: UsbDevice) {
 
     }

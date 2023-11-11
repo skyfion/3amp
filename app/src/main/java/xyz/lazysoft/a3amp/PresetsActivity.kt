@@ -13,7 +13,6 @@ import android.widget.ExpandableListView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_presets.*
 import org.jetbrains.anko.*
 import xyz.lazysoft.a3amp.amp.Amp
 import xyz.lazysoft.a3amp.amp.Constants
@@ -49,7 +48,7 @@ class PresetsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         (application as AmpApplication).component.inject(this)
         setContentView(R.layout.activity_presets)
-        toolbar = preset_toolbar
+      //  toolbar = preset_toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -60,19 +59,19 @@ class PresetsActivity : AppCompatActivity() {
 
         updateToolbarTitle()
 
-        val loadToolbarBtn = findViewById<View>(R.id.load_preset)
-        val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
-        val deleteToolbarBtn = findViewById<View>(R.id.delete_preset_or_group)
+    //    val loadToolbarBtn = findViewById<View>(R.id.load_preset)
+     //   val renameToolbarBtn = findViewById<View>(R.id.rename_preset_or_group)
+     //   val deleteToolbarBtn = findViewById<View>(R.id.delete_preset_or_group)
 
-        loadToolbarBtn.isEnabled = false
-        renameToolbarBtn.isEnabled = false
-        deleteToolbarBtn.isEnabled = false
+    //    loadToolbarBtn.isEnabled = false
+    //    renameToolbarBtn.isEnabled = false
+    //    deleteToolbarBtn.isEnabled = false
 
         presetList.setOnChildClickListener { _, _, groupPos,
                                              childPos, _ ->
-            loadToolbarBtn.isEnabled = true
-            renameToolbarBtn.isEnabled = true
-            deleteToolbarBtn.isEnabled = true
+     //       loadToolbarBtn.isEnabled = true
+     //       renameToolbarBtn.isEnabled = true
+     //       deleteToolbarBtn.isEnabled = true
 
             listAdapter.setSelection(childPos, groupPos)
 
@@ -91,15 +90,15 @@ class PresetsActivity : AppCompatActivity() {
             listAdapter.setSelection(PresetExpandableListAdapter.NOT_SELECTED, groupPos)
             selected = listAdapter.getGroup(groupPos)
 
-            if ((selected as AmpPresetGroup).uid != null) {
-                renameToolbarBtn.isEnabled = true
-                deleteToolbarBtn.isEnabled = true
-            } else {
-                renameToolbarBtn.isEnabled = false
-                deleteToolbarBtn.isEnabled = false
-            }
-
-            loadToolbarBtn.isEnabled = false
+//            if ((selected as AmpPresetGroup).uid != null) {
+//                renameToolbarBtn.isEnabled = true
+//                deleteToolbarBtn.isEnabled = true
+//            } else {
+//                renameToolbarBtn.isEnabled = false
+//                deleteToolbarBtn.isEnabled = false
+//            }
+//
+//            loadToolbarBtn.isEnabled = false
 
             true
         }
@@ -268,6 +267,7 @@ class PresetsActivity : AppCompatActivity() {
         startActivityForResult(intent, READ_REQUEST_CODE)
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {

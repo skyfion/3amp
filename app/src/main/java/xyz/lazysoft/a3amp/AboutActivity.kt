@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_about.*
-import kotlinx.android.synthetic.main.content_about.*
 import org.sufficientlysecure.donations.DonationsFragment
 
 
@@ -16,6 +14,7 @@ class AboutActivity : AppCompatActivity() {
         return pInfo.versionName
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -28,10 +27,10 @@ class AboutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
-        setSupportActionBar(about_toolbar)
+      //  setSupportActionBar(about_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        title_about.text = "${getString(R.string.app_name)} ${getVersion()}"
+      //  title_about.text = "${getString(R.string.app_name)} ${getVersion()}"
 
         //donate
         val ft = supportFragmentManager.beginTransaction()

@@ -30,12 +30,16 @@ object Utils {
         if (uri.scheme == "content") {
             val cursor = context.contentResolver.query(uri, null, null, null, null)
             cursor.use {
-                if(cursor.moveToFirst()) {
-                    return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                if (cursor != null) {
+                    if(cursor.moveToFirst()) {
+                        if (cursor != null) {
+                            return cursor.getString(0)
+                        } // cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    }
                 }
             }
         }
 
-        return uri.path.substring(uri.path.lastIndexOf('/') + 1)
+        return uri.path!!.substring(uri.path!!.lastIndexOf('/') + 1)
     }
 }
