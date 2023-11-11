@@ -40,10 +40,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "uid"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": [
@@ -78,10 +78,10 @@
           }
         ],
         "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "uid"
-          ],
-          "autoGenerate": true
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -90,7 +90,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"786e9477ae6fc9844c3f966d296c3cd4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '786e9477ae6fc9844c3f966d296c3cd4')"
     ]
   }
 }
