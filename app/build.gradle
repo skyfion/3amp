@@ -18,7 +18,7 @@ android {
         applicationId "xyz.lazysoft.a3amp"
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 22
+        versionCode 23
         versionName '1.12'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
@@ -73,9 +73,6 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.6.0'
     kapt 'androidx.room:room-compiler:2.6.0'
     androidTestImplementation 'androidx.room:room-testing:2.6.0'
-
-    // donation buttons
-    implementation 'org.sufficientlysecure:donations:2.6'
 
     // inject Dagger-Android
     implementation "com.google.dagger:dagger:$dagger"

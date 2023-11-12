@@ -1,27 +1,15 @@
 package xyz.lazysoft.a3amp
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import org.sufficientlysecure.donations.DonationsFragment
-
 
 class AboutActivity : AppCompatActivity() {
 
     private fun getVersion(): String {
         val pInfo = packageManager.getPackageInfo(packageName, 0)
         return pInfo.versionName
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        val fragmentManager = supportFragmentManager
-        val fragment = fragmentManager.findFragmentByTag("donationsFragment")
-        fragment?.onActivityResult(requestCode, resultCode, data)
     }
 
     @SuppressLint("SetTextI18n")
@@ -34,22 +22,6 @@ class AboutActivity : AppCompatActivity() {
         val titleAbout = findViewById<TextView>(R.id.title_about)
 
         titleAbout.text = "${getString(R.string.app_name)} ${getVersion()}"
-
-        //donate
-        val ft = supportFragmentManager.beginTransaction()
-        val donationsFragment = DonationsFragment.newInstance(
-                BuildConfig.DEBUG, true,
-                GOOGLE_PUBKEY, GOOGLE_CATALOG,
-                resources.getStringArray(R.array.donation_google_catalog_values),
-                false, null, null,
-                getString(R.string.donation_paypal_item),
-                false, null, null, false,
-                null)
-
-
-        ft.replace(R.id.donations_activity_container, donationsFragment, "donationsFragment")
-        ft.commit()
-
     }
 
     companion object {
