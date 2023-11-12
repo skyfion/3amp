@@ -30,6 +30,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
+        <TextView
+            android:id="@+id/text_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/thank_you_text" />
+
+        <Button
+            android:id="@+id/button_buy_coffee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buy_me_a_coffee" />
+
+
+
     </LinearLayout>
 
 

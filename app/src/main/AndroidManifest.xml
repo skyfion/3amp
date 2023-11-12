@@ -65,11 +65,8 @@
 
     <uses-feature android:name="android.hardware.usb.host" />
 
-    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission
         android:name="android.permission.MANAGE_DOCUMENTS"
         tools:ignore="ProtectedPermissions" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
